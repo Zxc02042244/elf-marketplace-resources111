@@ -692,6 +692,8 @@
         const price = row?.price;
         const tx = row?.tx;
         const updated = row?.updatedAt ? formatTime(new Date(row.updatedAt)) : "-";
+        const sellerName = tx?.sellerName || "-";
+        const buyerName = tx?.buyerName || "-";
 
         return `
           <article class="card">
@@ -711,6 +713,14 @@
               <div class="detail">
                 <span>Total Amount</span>
                 <strong>${formatPrice(tx?.totalAmountSigil)}</strong>
+              </div>
+              <div class="detail">
+                <span>Seller</span>
+                <strong>${escapeHtml(sellerName)}</strong>
+              </div>
+              <div class="detail">
+                <span>Buyer</span>
+                <strong>${escapeHtml(buyerName)}</strong>
               </div>
               <div class="detail">
                 <span>Order Type</span>
@@ -762,14 +772,35 @@
       const itemNum = Number(tx.itemNum);
       const totalAmountSigil = Number(tx.totalAmount) / 1e9;
       const price = totalAmountSigil / itemNum;
+      const orderType = Number(tx.orderType);
+      const orderUser = {
+        id: tx.orderUserId,
+        name: tx.orderUserName || "-"
+      };
+      const trader = {
+        id: tx.traderId,
+        name: tx.traderName || "-"
+      };
+      const seller = orderType === 1 ? orderUser : orderType === 2 ? trader : null;
+      const buyer = orderType === 1 ? trader : orderType === 2 ? orderUser : null;
 
       return {
         price,
         updatedAt: Date.now(),
         tx: {
           itemNum,
-          orderType: Number(tx.orderType),
-          totalAmountSigil
+          orderType,
+          totalAmountSigil,
+          txnId: tx.txnId,
+          txnTime: tx.txnTime,
+          orderUserId: orderUser.id,
+          orderUserName: orderUser.name,
+          traderId: trader.id,
+          traderName: trader.name,
+          sellerId: seller?.id,
+          sellerName: seller?.name,
+          buyerId: buyer?.id,
+          buyerName: buyer?.name
         }
       };
     }
