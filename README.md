@@ -1,11 +1,12 @@
-# Elf Marketplace Resources
+# Elf Marketplace Prices
 
-Static price dashboard for Elf Continent Marketplace resource items.
+Static price dashboard for Elf Continent Marketplace Resources and General items.
 
 ## Features
 
 - Tracks Resources items such as crops, fruit, wood, ore, egg, and milk.
-- Refreshes recent transaction prices every 5 seconds.
+- Tracks General items such as gift cards, treasure maps, relics, and blueprints.
+- Refreshes recent transaction prices every 5 seconds for the selected market tab.
 - Shows latest price, quantity, total amount, and update time.
 - Includes search and sorting.
 

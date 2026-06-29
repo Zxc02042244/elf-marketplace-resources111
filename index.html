@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Elf Marketplace Resources</title>
+  <title>Elf Marketplace Prices</title>
   <style>
     :root {
-      --bg: #111511;
-      --panel: #182019;
-      --panel-2: #202920;
-      --line: #344235;
+      --bg: #101411;
+      --panel: #18211a;
+      --panel-2: #202a22;
+      --line: #344437;
       --text: #eef4eb;
-      --muted: #a9b7a4;
+      --muted: #a8b7a5;
       --accent: #8ecf78;
       --accent-2: #f0c66d;
       --bad: #f06f64;
-      --good: #8bd28d;
       --shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
     }
 
@@ -27,9 +26,9 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(circle at 20% 0%, rgba(142, 207, 120, 0.16), transparent 32%),
-        radial-gradient(circle at 80% 8%, rgba(240, 198, 109, 0.12), transparent 28%),
-        linear-gradient(180deg, #182018 0%, #111511 42%, #0c100d 100%);
+        radial-gradient(circle at 16% 0%, rgba(142, 207, 120, 0.16), transparent 34%),
+        radial-gradient(circle at 86% 6%, rgba(240, 198, 109, 0.12), transparent 30%),
+        linear-gradient(180deg, #182018 0%, var(--bg) 44%, #0b100d 100%);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       letter-spacing: 0;
@@ -42,7 +41,7 @@
     }
 
     .app {
-      width: min(1180px, calc(100% - 28px));
+      width: min(1200px, calc(100% - 28px));
       margin: 0 auto;
       padding: 24px 0 36px;
     }
@@ -71,7 +70,9 @@
       background: linear-gradient(135deg, #5fa85f, #2e6b42);
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: var(--shadow);
-      font-size: 24px;
+      color: #f7ffe8;
+      font-size: 12px;
+      font-weight: 900;
     }
 
     h1 {
@@ -117,7 +118,7 @@
 
     .controls {
       display: grid;
-      grid-template-columns: minmax(180px, 1fr) 180px auto;
+      grid-template-columns: auto minmax(180px, 1fr) 180px auto;
       gap: 10px;
       align-items: center;
       background: rgba(24, 32, 25, 0.88);
@@ -126,6 +127,36 @@
       padding: 12px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.42);
+      overflow: hidden;
+    }
+
+    .tab {
+      min-width: 112px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 13px;
+    }
+
+    .tab:last-child {
+      border-right: 0;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: #102010;
     }
 
     .field {
@@ -152,7 +183,7 @@
       border-radius: 8px;
       color: #102010;
       background: var(--accent);
-      font-weight: 800;
+      font-weight: 850;
       cursor: pointer;
       padding: 0 16px;
     }
@@ -189,17 +220,18 @@
       font-size: 22px;
       font-weight: 850;
       line-height: 1.1;
+      overflow-wrap: anywhere;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
       gap: 12px;
     }
 
     .card {
       position: relative;
-      min-height: 190px;
+      min-height: 198px;
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 14px;
@@ -225,14 +257,25 @@
       min-width: 0;
     }
 
-    .item-img {
+    .item-media {
       width: 54px;
       height: 54px;
       border-radius: 8px;
       border: 1px solid var(--line);
       background: var(--panel-2);
-      object-fit: contain;
+      display: grid;
+      place-items: center;
+      color: var(--accent-2);
+      font-size: 18px;
+      font-weight: 900;
       flex: 0 0 auto;
+      overflow: hidden;
+    }
+
+    .item-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .item-name {
@@ -254,6 +297,7 @@
       line-height: 1;
       font-weight: 900;
       color: var(--accent-2);
+      overflow-wrap: anywhere;
     }
 
     .price small {
@@ -309,6 +353,18 @@
       text-align: left;
     }
 
+    @media (max-width: 900px) {
+      .controls {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tabs,
+      .field,
+      .refresh {
+        width: 100%;
+      }
+    }
+
     @media (max-width: 760px) {
       .topbar {
         align-items: flex-start;
@@ -330,7 +386,7 @@
 
     @media (max-width: 430px) {
       .app {
-        width: min(100% - 20px, 1180px);
+        width: min(100% - 20px, 1200px);
       }
 
       .summary {
@@ -347,10 +403,10 @@
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="mark" aria-hidden="true">◇</div>
+        <div class="mark" aria-hidden="true">ELF</div>
         <div>
-          <h1>Elf Marketplace Resources</h1>
-          <div class="subtitle">Resources recent transaction prices, refreshed every 5 seconds.</div>
+          <h1>Elf Marketplace Prices</h1>
+          <div class="subtitle">Resources and General recent transaction prices, refreshed every 5 seconds for the selected tab.</div>
         </div>
       </div>
       <div class="status" aria-live="polite">
@@ -360,7 +416,11 @@
     </header>
 
     <section class="controls" aria-label="Dashboard controls">
-      <input class="field" id="search" type="search" placeholder="Search item name or ID" autocomplete="off" />
+      <div class="tabs" role="tablist" aria-label="Market category">
+        <button class="tab active" type="button" data-category="Resources" role="tab" aria-selected="true">Resources</button>
+        <button class="tab" type="button" data-category="General" role="tab" aria-selected="false">General</button>
+      </div>
+      <input class="field" id="search" type="search" placeholder="Search item name, group, or ID" autocomplete="off" />
       <select class="field" id="sort">
         <option value="default">Default order</option>
         <option value="price-desc">Price high to low</option>
@@ -372,12 +432,12 @@
 
     <section class="summary" aria-label="Market summary">
       <div class="metric">
-        <div class="metric-label">Tracked Items</div>
-        <div class="metric-value" id="metric-count">0</div>
+        <div class="metric-label">Selected Market</div>
+        <div class="metric-value" id="metric-market">Resources</div>
       </div>
       <div class="metric">
         <div class="metric-label">Items With Price</div>
-        <div class="metric-value" id="metric-priced">0</div>
+        <div class="metric-value" id="metric-priced">0 / 0</div>
       </div>
       <div class="metric">
         <div class="metric-label">Average Price</div>
@@ -397,9 +457,9 @@
     const API_BASE = "https://elf-market-api.vercel.app";
     const IMG_BASE = "https://jinzaroo.github.io/Elf-calculator/images/";
     const REFRESH_MS = 5 * 1000;
-    const REQUEST_DELAY_MS = 150;
+    const REQUEST_DELAY_MS = 120;
 
-    const ITEMS = [
+    const RESOURCES = [
       { id: 21101, name: "Carrot", group: "Crop" },
       { id: 21102, name: "Potato", group: "Crop" },
       { id: 21103, name: "Pumpkin", group: "Crop" },
@@ -434,12 +494,95 @@
       { id: 321, name: "Milk", group: "Animal" }
     ];
 
+    const GENERAL = [
+      { id: 15, name: "Gem Gift Card", group: "Gift Card" },
+      { id: 2000, name: "Damaged Treasure Map", group: "Treasure Map" },
+      { id: 2101, name: "Leather Hydration Bag", group: "Relic" },
+      { id: 2102, name: "Turpentine Torch", group: "Relic" },
+      { id: 2103, name: "Skinning Knife", group: "Relic" },
+      { id: 2104, name: "Animal Skin Quiver", group: "Relic" },
+      { id: 2105, name: "Hunting Horn", group: "Relic" },
+      { id: 2106, name: "Brass Lantern", group: "Relic" },
+      { id: 2107, name: "Whetstone", group: "Relic" },
+      { id: 2108, name: "Sealed Coarse Salt Shaker", group: "Relic" },
+      { id: 2109, name: "Flint", group: "Relic" },
+      { id: 2110, name: "Bundle Of Linen Rope", group: "Relic" },
+      { id: 2111, name: "Hand Drawn Area Sketch", group: "Relic" },
+      { id: 2112, name: "Paint Sealed Letter", group: "Relic" },
+      { id: 2113, name: "Dark Camouflage Cloak", group: "Relic" },
+      { id: 2114, name: "Shabby Metal Sign", group: "Relic" },
+      { id: 2115, name: "Bronze Pocket Watch", group: "Relic" },
+      { id: 2116, name: "Complete Antlers", group: "Relic" },
+      { id: 2117, name: "Old Pipe", group: "Relic" },
+      { id: 2118, name: "Portable Wine Bottle", group: "Relic" },
+      { id: 2119, name: "Animal Tooth Necklace", group: "Relic" },
+      { id: 2120, name: "Animal Bone Dice", group: "Relic" },
+      { id: 2201, name: "Bronze Telescope", group: "Relic" },
+      { id: 2202, name: "Forged Seal", group: "Relic" },
+      { id: 2203, name: "Nautical Compass", group: "Relic" },
+      { id: 2204, name: "Crystal Monocle", group: "Relic" },
+      { id: 2205, name: "Portable Balance", group: "Relic" },
+      { id: 2206, name: "Precision Hourglass", group: "Relic" },
+      { id: 2207, name: "Brass Astrolabe", group: "Relic" },
+      { id: 2208, name: "Exquisite Nautical Charts", group: "Relic" },
+      { id: 2209, name: "Seiko Magnifying Glass", group: "Relic" },
+      { id: 2210, name: "Music Box", group: "Relic" },
+      { id: 201001, name: "Blueprint - Rootbud Pin", group: "Blueprint" },
+      { id: 201002, name: "Blueprint - Earthbud Clasp", group: "Blueprint" },
+      { id: 201003, name: "Blueprint - Vine Clip", group: "Blueprint" },
+      { id: 201004, name: "Blueprint - Greenbud Pin", group: "Blueprint" },
+      { id: 201005, name: "Blueprint - Rosy Chain", group: "Blueprint" },
+      { id: 201006, name: "Blueprint - Sweetroot Clasp", group: "Blueprint" },
+      { id: 201007, name: "Blueprint - Grain Pin", group: "Blueprint" },
+      { id: 201008, name: "Blueprint - Sungrain Drop", group: "Blueprint" },
+      { id: 201101, name: "Blueprint - Seedling Pin", group: "Blueprint" },
+      { id: 201102, name: "Blueprint - Fieldbloom Pin", group: "Blueprint" },
+      { id: 201103, name: "Blueprint - Rootbloom Pin", group: "Blueprint" },
+      { id: 201104, name: "Blueprint - Soil Clasp", group: "Blueprint" },
+      { id: 201105, name: "Blueprint - Vinebloom Clip", group: "Blueprint" },
+      { id: 201106, name: "Blueprint - Verdant Pin", group: "Blueprint" },
+      { id: 201107, name: "Blueprint - Rosy Pin", group: "Blueprint" },
+      { id: 201108, name: "Blueprint - Rootleaf Pin", group: "Blueprint" },
+      { id: 201801, name: "Blueprint - Goldgrain Pin", group: "Blueprint" },
+      { id: 201802, name: "Blueprint - Sungrain Charm", group: "Blueprint" },
+      { id: 202001, name: "Blueprint-Budwood Charm", group: "Blueprint" },
+      { id: 202002, name: "Blueprint - Whiteleaf Charm", group: "Blueprint" },
+      { id: 202101, name: "Blueprint - Pebble Charm", group: "Blueprint" },
+      { id: 202401, name: "Blueprint - Vigor Charm", group: "Blueprint" },
+      { id: 202501, name: "Blueprint - Fortune Charm", group: "Blueprint" },
+      { id: 203001, name: "Blueprint - Rootbud Book", group: "Blueprint" },
+      { id: 203002, name: "Blueprint - Earthbud Book", group: "Blueprint" },
+      { id: 203003, name: "Blueprint - Vine Book", group: "Blueprint" },
+      { id: 203004, name: "Blueprint - Greenbud Book", group: "Blueprint" },
+      { id: 203005, name: "Blueprint - Rosy Book", group: "Blueprint" },
+      { id: 203006, name: "Blueprint - Sweetroot Book", group: "Blueprint" },
+      { id: 203007, name: "Blueprint - Grain Book", group: "Blueprint" },
+      { id: 203008, name: "Blueprint - Sungrain Book", group: "Blueprint" },
+      { id: 203101, name: "Blueprint - Seedling Book", group: "Blueprint" },
+      { id: 203102, name: "Blueprint - Field Book", group: "Blueprint" },
+      { id: 203801, name: "Blueprint - Workshop Book", group: "Blueprint" },
+      { id: 203802, name: "Blueprint - Kitchen Book", group: "Blueprint" },
+      { id: 203803, name: "Blueprint - Bakery Book", group: "Blueprint" },
+      { id: 204001, name: "Blueprint - Starbell", group: "Blueprint" },
+      { id: 204002, name: "Blueprint - Field Lamp", group: "Blueprint" },
+      { id: 204003, name: "Blueprint - Grove Lamp", group: "Blueprint" },
+      { id: 204004, name: "Blueprint - Mine Lamp", group: "Blueprint" },
+      { id: 204005, name: "Blueprint - Herd Bell", group: "Blueprint" }
+    ];
+
+    const ITEMS = [
+      ...RESOURCES.map((item, order) => ({ ...item, category: "Resources", order })),
+      ...GENERAL.map((item, order) => ({ ...item, category: "General", order }))
+    ];
+
     const state = {
+      activeCategory: "Resources",
       prices: new Map(),
       loading: false,
       nextRefreshAt: null,
       refreshTimer: null,
-      countdownTimer: null
+      countdownTimer: null,
+      refreshRunId: 0
     };
 
     const el = {
@@ -450,10 +593,11 @@
       refresh: document.getElementById("refresh"),
       grid: document.getElementById("grid"),
       error: document.getElementById("error-area"),
-      count: document.getElementById("metric-count"),
+      market: document.getElementById("metric-market"),
       priced: document.getElementById("metric-priced"),
       average: document.getElementById("metric-average"),
-      next: document.getElementById("metric-next")
+      next: document.getElementById("metric-next"),
+      tabs: [...document.querySelectorAll(".tab")]
     };
 
     function sleep(ms) {
@@ -479,11 +623,26 @@
       return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     }
 
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getCategoryItems() {
+      return ITEMS.filter((item) => item.category === state.activeCategory);
+    }
+
     function getVisibleItems() {
       const query = el.search.value.trim().toLowerCase();
-      let items = ITEMS.filter((item) => {
+      let items = getCategoryItems().filter((item) => {
         if (!query) return true;
-        return item.name.toLowerCase().includes(query) || String(item.id).includes(query) || item.group.toLowerCase().includes(query);
+        return item.name.toLowerCase().includes(query) ||
+          item.group.toLowerCase().includes(query) ||
+          String(item.id).includes(query);
       });
 
       const sort = el.sort.value;
@@ -493,23 +652,38 @@
         if (sort === "name") return a.name.localeCompare(b.name);
         if (sort === "price-asc") return (pa ?? Number.POSITIVE_INFINITY) - (pb ?? Number.POSITIVE_INFINITY);
         if (sort === "price-desc") return (pb ?? Number.NEGATIVE_INFINITY) - (pa ?? Number.NEGATIVE_INFINITY);
-        return ITEMS.findIndex((item) => item.id === a.id) - ITEMS.findIndex((item) => item.id === b.id);
+        return a.order - b.order;
       });
 
       return items;
     }
 
+    function renderItemMedia(item) {
+      const fallback = escapeHtml(item.name.slice(0, 1).toUpperCase());
+      if (item.category === "Resources") {
+        return `
+          <div class="item-media">
+            <img class="item-img" src="${IMG_BASE}${item.id}.png" alt="${escapeHtml(item.name)}" onerror="this.replaceWith(document.createTextNode('${fallback}'))" />
+          </div>
+        `;
+      }
+      return `<div class="item-media" aria-hidden="true">${fallback}</div>`;
+    }
+
     function render() {
+      const categoryItems = getCategoryItems();
       const visible = getVisibleItems();
-      const pricedItems = ITEMS.map((item) => state.prices.get(item.id)).filter((row) => Number.isFinite(row?.price));
+      const pricedItems = categoryItems
+        .map((item) => state.prices.get(item.id))
+        .filter((row) => Number.isFinite(row?.price));
       const average = pricedItems.length ? pricedItems.reduce((sum, row) => sum + row.price, 0) / pricedItems.length : null;
 
-      el.count.textContent = String(ITEMS.length);
-      el.priced.textContent = String(pricedItems.length);
+      el.market.textContent = state.activeCategory;
+      el.priced.textContent = `${pricedItems.length} / ${categoryItems.length}`;
       el.average.textContent = average ? formatPrice(average) : "-";
 
       if (!visible.length) {
-        el.grid.innerHTML = '<div class="empty">No matching resources.</div>';
+        el.grid.innerHTML = `<div class="empty">No matching ${state.activeCategory.toLowerCase()} items.</div>`;
         return;
       }
 
@@ -522,10 +696,10 @@
         return `
           <article class="card">
             <div class="card-head">
-              <img class="item-img" src="${IMG_BASE}${item.id}.png" alt="${item.name}" onerror="this.style.visibility='hidden'" />
+              ${renderItemMedia(item)}
               <div>
-                <div class="item-name">${item.name}</div>
-                <div class="item-meta">${item.group} · ID ${item.id}</div>
+                <div class="item-name">${escapeHtml(item.name)}</div>
+                <div class="item-meta">${escapeHtml(item.category)} / ${escapeHtml(item.group)} - ID ${item.id}</div>
               </div>
             </div>
             <div class="price">${formatPrice(price)}<small>Sigil</small></div>
@@ -572,7 +746,7 @@
       return `Bearer ${data.data.accessToken}`;
     }
 
-    async function fetchResourcePrice(item, accessToken) {
+    async function fetchItemPrice(item, accessToken) {
       const url = `${API_BASE}/api/price?itemId=${item.id}&accessToken=${encodeURIComponent(accessToken)}`;
       const res = await fetch(url);
       const data = await res.json();
@@ -609,19 +783,24 @@
 
     async function refreshPrices() {
       if (state.loading) return;
+      const runId = ++state.refreshRunId;
+      const category = state.activeCategory;
+      const items = getCategoryItems();
+
       state.loading = true;
       el.refresh.disabled = true;
       el.error.innerHTML = "";
-      setStatus("loading", "Refreshing token...");
+      setStatus("loading", `Refreshing ${category} token...`);
 
       try {
         const accessToken = await getAccessToken();
 
-        for (let index = 0; index < ITEMS.length; index += 1) {
-          const item = ITEMS[index];
-          setStatus("loading", `Loading ${item.name} (${index + 1}/${ITEMS.length})`);
+        for (let index = 0; index < items.length; index += 1) {
+          if (runId !== state.refreshRunId) return;
+          const item = items[index];
+          setStatus("loading", `Loading ${item.name} (${index + 1}/${items.length})`);
           try {
-            state.prices.set(item.id, await fetchResourcePrice(item, accessToken));
+            state.prices.set(item.id, await fetchItemPrice(item, accessToken));
           } catch (error) {
             state.prices.set(item.id, { price: null, tx: null, updatedAt: Date.now(), error: error.message });
           }
@@ -629,20 +808,45 @@
           await sleep(REQUEST_DELAY_MS);
         }
 
-        setStatus("ok", `Updated ${formatTime(new Date())}`);
+        setStatus("ok", `${category} updated ${formatTime(new Date())}`);
       } catch (error) {
         setStatus("error", "Update failed");
-        el.error.innerHTML = `<div class="error-box">${error.message}</div>`;
+        el.error.innerHTML = `<div class="error-box">${escapeHtml(error.message)}</div>`;
       } finally {
-        state.loading = false;
-        el.refresh.disabled = false;
-        scheduleNextRefresh();
+        if (runId === state.refreshRunId) {
+          state.loading = false;
+          el.refresh.disabled = false;
+          scheduleNextRefresh();
+        }
       }
+    }
+
+    function switchCategory(category) {
+      if (state.activeCategory === category) return;
+      state.activeCategory = category;
+      state.refreshRunId += 1;
+      state.loading = false;
+      el.refresh.disabled = false;
+      el.error.innerHTML = "";
+      clearTimeout(state.refreshTimer);
+      state.nextRefreshAt = null;
+
+      el.tabs.forEach((tab) => {
+        const active = tab.dataset.category === category;
+        tab.classList.toggle("active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+
+      render();
+      refreshPrices();
     }
 
     el.search.addEventListener("input", render);
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
+    el.tabs.forEach((tab) => {
+      tab.addEventListener("click", () => switchCategory(tab.dataset.category));
+    });
 
     state.countdownTimer = setInterval(updateCountdown, 1000);
     render();
