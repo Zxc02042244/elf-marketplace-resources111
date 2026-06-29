@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elf Marketplace Resources</title>
+  <style>
+    :root {
+      --bg: #111511;
+      --panel: #182019;
+      --panel-2: #202920;
+      --line: #344235;
+      --text: #eef4eb;
+      --muted: #a9b7a4;
+      --accent: #8ecf78;
+      --accent-2: #f0c66d;
+      --bad: #f06f64;
+      --good: #8bd28d;
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(142, 207, 120, 0.16), transparent 32%),
+        radial-gradient(circle at 80% 8%, rgba(240, 198, 109, 0.12), transparent 28%),
+        linear-gradient(180deg, #182018 0%, #111511 42%, #0c100d 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 36px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #5fa85f, #2e6b42);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: var(--shadow);
+      font-size: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 36px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(142, 207, 120, 0.16);
+    }
+
+    .dot.loading {
+      background: var(--accent-2);
+      box-shadow: 0 0 0 4px rgba(240, 198, 109, 0.16);
+    }
+
+    .dot.error {
+      background: var(--bad);
+      box-shadow: 0 0 0 4px rgba(240, 111, 100, 0.16);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) 180px auto;
+      gap: 10px;
+      align-items: center;
+      background: rgba(24, 32, 25, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .field {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.42);
+      color: var(--text);
+      outline: none;
+      padding: 0 12px;
+    }
+
+    .field:focus {
+      border-color: var(--accent);
+    }
+
+    select.field {
+      cursor: pointer;
+    }
+
+    .refresh {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      color: #102010;
+      background: var(--accent);
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0 16px;
+    }
+
+    .refresh:disabled {
+      cursor: progress;
+      opacity: 0.66;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .metric {
+      min-height: 82px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(24, 32, 25, 0.84);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .metric-value {
+      margin-top: 6px;
+      font-size: 22px;
+      font-weight: 850;
+      line-height: 1.1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 190px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: rgba(24, 32, 25, 0.9);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(142, 207, 120, 0.11), transparent 45%);
+      pointer-events: none;
+    }
+
+    .card-head {
+      position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .item-img {
+      width: 54px;
+      height: 54px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .item-name {
+      font-size: 16px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .item-meta {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .price {
+      position: relative;
+      margin-top: 18px;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 900;
+      color: var(--accent-2);
+    }
+
+    .price small {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    .details {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .detail {
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.34);
+      border: 1px solid rgba(52, 66, 53, 0.8);
+      padding: 9px;
+      min-width: 0;
+    }
+
+    .detail span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .detail strong {
+      display: block;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .error-box,
+    .empty {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      background: rgba(24, 32, 25, 0.9);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .error-box {
+      margin-top: 12px;
+      border-color: rgba(240, 111, 100, 0.5);
+      color: #ffc4bd;
+      text-align: left;
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .status {
+        justify-content: flex-start;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 430px) {
+      .app {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">◇</div>
+        <div>
+          <h1>Elf Marketplace Resources</h1>
+          <div class="subtitle">Resources recent transaction prices, refreshed every 5 seconds.</div>
+        </div>
+      </div>
+      <div class="status" aria-live="polite">
+        <span class="dot loading" id="status-dot"></span>
+        <span id="status-text">Preparing...</span>
+      </div>
+    </header>
+
+    <section class="controls" aria-label="Dashboard controls">
+      <input class="field" id="search" type="search" placeholder="Search item name or ID" autocomplete="off" />
+      <select class="field" id="sort">
+        <option value="default">Default order</option>
+        <option value="price-desc">Price high to low</option>
+        <option value="price-asc">Price low to high</option>
+        <option value="name">Name A-Z</option>
+      </select>
+      <button class="refresh" id="refresh" type="button">Refresh</button>
+    </section>
+
+    <section class="summary" aria-label="Market summary">
+      <div class="metric">
+        <div class="metric-label">Tracked Items</div>
+        <div class="metric-value" id="metric-count">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Items With Price</div>
+        <div class="metric-value" id="metric-priced">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Average Price</div>
+        <div class="metric-value" id="metric-average">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Next Refresh</div>
+        <div class="metric-value" id="metric-next">-</div>
+      </div>
+    </section>
+
+    <div id="error-area"></div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const API_BASE = "https://elf-market-api.vercel.app";
+    const IMG_BASE = "https://jinzaroo.github.io/Elf-calculator/images/";
+    const REFRESH_MS = 5 * 1000;
+    const REQUEST_DELAY_MS = 150;
+
+    const ITEMS = [
+      { id: 21101, name: "Carrot", group: "Crop" },
+      { id: 21102, name: "Potato", group: "Crop" },
+      { id: 21103, name: "Pumpkin", group: "Crop" },
+      { id: 21104, name: "Broccoli", group: "Crop" },
+      { id: 21105, name: "Tomato", group: "Crop" },
+      { id: 21106, name: "Beet", group: "Crop" },
+      { id: 21107, name: "Wheat", group: "Crop" },
+      { id: 21108, name: "Corn", group: "Crop" },
+      { id: 21109, name: "Chili", group: "Crop" },
+      { id: 21110, name: "Strawberry", group: "Crop" },
+      { id: 21111, name: "Watermelon", group: "Crop" },
+      { id: 21112, name: "Ryegrass", group: "Crop" },
+      { id: 22101, name: "Betel Nut", group: "Fruit" },
+      { id: 22102, name: "Banana", group: "Fruit" },
+      { id: 22103, name: "Dates", group: "Fruit" },
+      { id: 22104, name: "Mango", group: "Fruit" },
+      { id: 22105, name: "Sugar Apple", group: "Fruit" },
+      { id: 22106, name: "Cherry", group: "Fruit" },
+      { id: 22107, name: "Green Plum", group: "Fruit" },
+      { id: 22108, name: "Grape", group: "Fruit" },
+      { id: 22109, name: "Pomegranate", group: "Fruit" },
+      { id: 22110, name: "Coconut", group: "Fruit" },
+      { id: 211, name: "Poplar Wood", group: "Wood" },
+      { id: 212, name: "Birch Wood", group: "Wood" },
+      { id: 213, name: "Pine Wood", group: "Wood" },
+      { id: 214, name: "Oak Wood", group: "Wood" },
+      { id: 221, name: "Stone", group: "Ore" },
+      { id: 222, name: "Copper Ore", group: "Ore" },
+      { id: 223, name: "Iron Ore", group: "Ore" },
+      { id: 224, name: "Mithril Ore", group: "Ore" },
+      { id: 311, name: "Egg", group: "Animal" },
+      { id: 321, name: "Milk", group: "Animal" }
+    ];
+
+    const state = {
+      prices: new Map(),
+      loading: false,
+      nextRefreshAt: null,
+      refreshTimer: null,
+      countdownTimer: null
+    };
+
+    const el = {
+      dot: document.getElementById("status-dot"),
+      status: document.getElementById("status-text"),
+      search: document.getElementById("search"),
+      sort: document.getElementById("sort"),
+      refresh: document.getElementById("refresh"),
+      grid: document.getElementById("grid"),
+      error: document.getElementById("error-area"),
+      count: document.getElementById("metric-count"),
+      priced: document.getElementById("metric-priced"),
+      average: document.getElementById("metric-average"),
+      next: document.getElementById("metric-next")
+    };
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function setStatus(kind, text) {
+      el.dot.className = "dot" + (kind === "loading" ? " loading" : kind === "error" ? " error" : "");
+      el.status.textContent = text;
+    }
+
+    function formatPrice(value) {
+      if (!Number.isFinite(value) || value <= 0) return "-";
+      return value >= 1 ? value.toFixed(4) : value.toFixed(6);
+    }
+
+    function formatInteger(value) {
+      if (!Number.isFinite(value)) return "-";
+      return new Intl.NumberFormat("en-US").format(value);
+    }
+
+    function formatTime(date) {
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+
+    function getVisibleItems() {
+      const query = el.search.value.trim().toLowerCase();
+      let items = ITEMS.filter((item) => {
+        if (!query) return true;
+        return item.name.toLowerCase().includes(query) || String(item.id).includes(query) || item.group.toLowerCase().includes(query);
+      });
+
+      const sort = el.sort.value;
+      items = [...items].sort((a, b) => {
+        const pa = state.prices.get(a.id)?.price;
+        const pb = state.prices.get(b.id)?.price;
+        if (sort === "name") return a.name.localeCompare(b.name);
+        if (sort === "price-asc") return (pa ?? Number.POSITIVE_INFINITY) - (pb ?? Number.POSITIVE_INFINITY);
+        if (sort === "price-desc") return (pb ?? Number.NEGATIVE_INFINITY) - (pa ?? Number.NEGATIVE_INFINITY);
+        return ITEMS.findIndex((item) => item.id === a.id) - ITEMS.findIndex((item) => item.id === b.id);
+      });
+
+      return items;
+    }
+
+    function render() {
+      const visible = getVisibleItems();
+      const pricedItems = ITEMS.map((item) => state.prices.get(item.id)).filter((row) => Number.isFinite(row?.price));
+      const average = pricedItems.length ? pricedItems.reduce((sum, row) => sum + row.price, 0) / pricedItems.length : null;
+
+      el.count.textContent = String(ITEMS.length);
+      el.priced.textContent = String(pricedItems.length);
+      el.average.textContent = average ? formatPrice(average) : "-";
+
+      if (!visible.length) {
+        el.grid.innerHTML = '<div class="empty">No matching resources.</div>';
+        return;
+      }
+
+      el.grid.innerHTML = visible.map((item) => {
+        const row = state.prices.get(item.id);
+        const price = row?.price;
+        const tx = row?.tx;
+        const updated = row?.updatedAt ? formatTime(new Date(row.updatedAt)) : "-";
+
+        return `
+          <article class="card">
+            <div class="card-head">
+              <img class="item-img" src="${IMG_BASE}${item.id}.png" alt="${item.name}" onerror="this.style.visibility='hidden'" />
+              <div>
+                <div class="item-name">${item.name}</div>
+                <div class="item-meta">${item.group} · ID ${item.id}</div>
+              </div>
+            </div>
+            <div class="price">${formatPrice(price)}<small>Sigil</small></div>
+            <div class="details">
+              <div class="detail">
+                <span>Last Quantity</span>
+                <strong>${formatInteger(tx?.itemNum)}</strong>
+              </div>
+              <div class="detail">
+                <span>Total Amount</span>
+                <strong>${formatPrice(tx?.totalAmountSigil)}</strong>
+              </div>
+              <div class="detail">
+                <span>Order Type</span>
+                <strong>${tx?.orderType === 1 ? "Ask" : tx?.orderType === 2 ? "Bid" : "-"}</strong>
+              </div>
+              <div class="detail">
+                <span>Updated</span>
+                <strong>${updated}</strong>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function updateCountdown() {
+      if (!state.nextRefreshAt) {
+        el.next.textContent = "-";
+        return;
+      }
+      const remaining = Math.max(0, state.nextRefreshAt - Date.now());
+      const minutes = Math.floor(remaining / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      el.next.textContent = `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    async function getAccessToken() {
+      const res = await fetch(`${API_BASE}/api/refresh`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok || data.code !== 0) {
+        throw new Error(data.message || `Token refresh failed (${res.status})`);
+      }
+      return `Bearer ${data.data.accessToken}`;
+    }
+
+    async function fetchResourcePrice(item, accessToken) {
+      const url = `${API_BASE}/api/price?itemId=${item.id}&accessToken=${encodeURIComponent(accessToken)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!res.ok || data.code !== 0) {
+        throw new Error(data.message || `Price request failed (${res.status})`);
+      }
+
+      if (!data.data?.length) {
+        return { price: null, tx: null, updatedAt: Date.now() };
+      }
+
+      const tx = data.data[0];
+      const itemNum = Number(tx.itemNum);
+      const totalAmountSigil = Number(tx.totalAmount) / 1e9;
+      const price = totalAmountSigil / itemNum;
+
+      return {
+        price,
+        updatedAt: Date.now(),
+        tx: {
+          itemNum,
+          orderType: Number(tx.orderType),
+          totalAmountSigil
+        }
+      };
+    }
+
+    function scheduleNextRefresh() {
+      clearTimeout(state.refreshTimer);
+      state.nextRefreshAt = Date.now() + REFRESH_MS;
+      state.refreshTimer = setTimeout(() => refreshPrices(), REFRESH_MS);
+      updateCountdown();
+    }
+
+    async function refreshPrices() {
+      if (state.loading) return;
+      state.loading = true;
+      el.refresh.disabled = true;
+      el.error.innerHTML = "";
+      setStatus("loading", "Refreshing token...");
+
+      try {
+        const accessToken = await getAccessToken();
+
+        for (let index = 0; index < ITEMS.length; index += 1) {
+          const item = ITEMS[index];
+          setStatus("loading", `Loading ${item.name} (${index + 1}/${ITEMS.length})`);
+          try {
+            state.prices.set(item.id, await fetchResourcePrice(item, accessToken));
+          } catch (error) {
+            state.prices.set(item.id, { price: null, tx: null, updatedAt: Date.now(), error: error.message });
+          }
+          render();
+          await sleep(REQUEST_DELAY_MS);
+        }
+
+        setStatus("ok", `Updated ${formatTime(new Date())}`);
+      } catch (error) {
+        setStatus("error", "Update failed");
+        el.error.innerHTML = `<div class="error-box">${error.message}</div>`;
+      } finally {
+        state.loading = false;
+        el.refresh.disabled = false;
+        scheduleNextRefresh();
+      }
+    }
+
+    el.search.addEventListener("input", render);
+    el.sort.addEventListener("change", render);
+    el.refresh.addEventListener("click", refreshPrices);
+
+    state.countdownTimer = setInterval(updateCountdown, 1000);
+    render();
+    refreshPrices();
+  </script>
+</body>
+</html>
