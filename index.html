@@ -282,6 +282,167 @@
       overflow-wrap: anywhere;
     }
 
+    .analytics {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .analytics-toolbar,
+    .analytics-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(24, 32, 25, 0.86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .analytics-toolbar {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) 150px 190px;
+      gap: 10px;
+      padding: 12px;
+      align-items: center;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .analytics-panel {
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .analytics-panel.wide {
+      grid-column: 1 / -1;
+    }
+
+    .panel-title {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mini-metric {
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(8, 12, 8, 0.3);
+      min-width: 0;
+    }
+
+    .mini-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .mini-value {
+      display: block;
+      font-size: 18px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .score-wrap {
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-line {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(8, 12, 8, 0.48);
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      overflow: hidden;
+    }
+
+    .score-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--bad));
+      transition: width 180ms ease;
+    }
+
+    .table-list,
+    .warning-list,
+    .network-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .data-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1.2fr) minmax(80px, 0.75fr) minmax(80px, 0.65fr) minmax(80px, 0.65fr);
+      gap: 8px;
+      align-items: center;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.3);
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .data-row.six {
+      grid-template-columns: minmax(120px, 1.2fr) repeat(5, minmax(72px, 0.68fr));
+    }
+
+    .data-main {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+    }
+
+    .data-sub {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    .data-stat {
+      min-width: 0;
+    }
+
+    .data-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .data-stat strong {
+      display: block;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .warning-item {
+      border: 1px solid rgba(240, 198, 109, 0.45);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(240, 198, 109, 0.08);
+      color: #ffe2a1;
+      font-size: 13px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
@@ -438,12 +599,27 @@
         grid-template-columns: 1fr;
       }
 
+      .analytics-toolbar,
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .analytics-panel.wide {
+        grid-column: auto;
+      }
+
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
       .summary {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .transaction-head,
-      .transaction-row {
+      .transaction-row,
+      .data-row,
+      .data-row.six {
         grid-template-columns: 1fr;
       }
 
@@ -524,6 +700,56 @@
         <div class="transaction-count" id="transaction-count">0 transactions</div>
       </div>
       <div class="transaction-list" id="transaction-results" aria-live="polite"></div>
+    </section>
+
+    <section class="analytics" aria-label="Marketplace analytics dashboard">
+      <div class="analytics-toolbar">
+        <input class="field" id="analytics-player" type="search" placeholder="Analyze player name" autocomplete="off" />
+        <select class="field" id="leaderboard-limit">
+          <option value="10">Top 10</option>
+          <option value="50">Top 50</option>
+        </select>
+        <select class="field" id="leaderboard-sort">
+          <option value="revenue">Sort by total income</option>
+          <option value="count">Sort by trade count</option>
+        </select>
+      </div>
+
+      <div class="analytics-grid">
+        <section class="analytics-panel">
+          <h2 class="panel-title">Player Income Ranking</h2>
+          <div class="table-list" id="leaderboard-list"></div>
+        </section>
+
+        <section class="analytics-panel">
+          <h2 class="panel-title">Related Accounts</h2>
+          <div class="network-list" id="network-list"></div>
+        </section>
+
+        <section class="analytics-panel">
+          <h2 class="panel-title">Marketplace Pattern Score</h2>
+          <div class="score-wrap">
+            <div class="mini-grid" id="score-metrics"></div>
+            <div class="score-line" aria-hidden="true"><div class="score-fill" id="score-fill"></div></div>
+            <div class="table-list" id="score-detail"></div>
+          </div>
+        </section>
+
+        <section class="analytics-panel">
+          <h2 class="panel-title">Market Pattern Notices</h2>
+          <div class="warning-list" id="warning-list"></div>
+        </section>
+
+        <section class="analytics-panel">
+          <h2 class="panel-title">Daily Sigil Income</h2>
+          <div class="table-list" id="daily-income-list"></div>
+        </section>
+
+        <section class="analytics-panel">
+          <h2 class="panel-title">Item Market Concentration</h2>
+          <div class="table-list" id="item-concentration-list"></div>
+        </section>
+      </div>
     </section>
     <section class="grid" id="grid" aria-live="polite"></section>
   </main>
@@ -665,11 +891,22 @@
       status: document.getElementById("status-text"),
       search: document.getElementById("search"),
       playerSearch: document.getElementById("player-search"),
+      analyticsPlayer: document.getElementById("analytics-player"),
+      leaderboardLimit: document.getElementById("leaderboard-limit"),
+      leaderboardSort: document.getElementById("leaderboard-sort"),
       sort: document.getElementById("sort"),
       refresh: document.getElementById("refresh"),
       grid: document.getElementById("grid"),
       transactionCount: document.getElementById("transaction-count"),
       transactionResults: document.getElementById("transaction-results"),
+      leaderboardList: document.getElementById("leaderboard-list"),
+      networkList: document.getElementById("network-list"),
+      scoreMetrics: document.getElementById("score-metrics"),
+      scoreFill: document.getElementById("score-fill"),
+      scoreDetail: document.getElementById("score-detail"),
+      warningList: document.getElementById("warning-list"),
+      dailyIncomeList: document.getElementById("daily-income-list"),
+      itemConcentrationList: document.getElementById("item-concentration-list"),
       error: document.getElementById("error-area"),
       market: document.getElementById("metric-market"),
       priced: document.getElementById("metric-priced"),
@@ -824,6 +1061,404 @@
       `).join("");
     }
 
+    function playerKey(name) {
+      return String(name || "").trim().toLowerCase();
+    }
+
+    function isKnownPlayer(name) {
+      const value = String(name || "").trim();
+      return value && value !== "-";
+    }
+
+    function getAllPlayerNames(transactions) {
+      const names = new Map();
+      transactions.forEach((tx) => {
+        [tx.sellerName, tx.buyerName, tx.orderUserName, tx.traderName].forEach((name) => {
+          if (isKnownPlayer(name) && !names.has(playerKey(name))) {
+            names.set(playerKey(name), name);
+          }
+        });
+      });
+      return names;
+    }
+
+    function resolvePlayerName(query, transactions) {
+      const value = query.trim();
+      if (!value) return null;
+      const key = playerKey(value);
+      const names = getAllPlayerNames(transactions);
+      if (names.has(key)) return names.get(key);
+      const partial = [...names.entries()].find(([nameKey]) => nameKey.includes(key));
+      return partial?.[1] || value;
+    }
+
+    function getPlayerTransactions(playerName, transactions) {
+      const key = playerKey(playerName);
+      if (!key) return [];
+      return transactions.filter((tx) => playerKey(tx.sellerName) === key || playerKey(tx.buyerName) === key);
+    }
+
+    function renderLeaderboard(transactions) {
+      if (!transactions.length) {
+        el.leaderboardList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
+        return;
+      }
+
+      const stats = new Map();
+      transactions.forEach((tx) => {
+        if (!isKnownPlayer(tx.sellerName)) return;
+        const key = playerKey(tx.sellerName);
+        const row = stats.get(key) || {
+          name: tx.sellerName,
+          revenue: 0,
+          tradeCount: 0,
+          buyers: new Set()
+        };
+        row.revenue += Number(tx.totalAmountSigil) || 0;
+        row.tradeCount += 1;
+        if (isKnownPlayer(tx.buyerName)) row.buyers.add(playerKey(tx.buyerName));
+        stats.set(key, row);
+      });
+
+      const limit = Number(el.leaderboardLimit.value);
+      const sort = el.leaderboardSort.value;
+      const rows = [...stats.values()]
+        .sort((a, b) => sort === "count" ? b.tradeCount - a.tradeCount || b.revenue - a.revenue : b.revenue - a.revenue || b.tradeCount - a.tradeCount)
+        .slice(0, limit);
+
+      if (!rows.length) {
+        el.leaderboardList.innerHTML = '<div class="empty">No seller income records yet.</div>';
+        return;
+      }
+
+      el.leaderboardList.innerHTML = rows.map((row, index) => `
+        <article class="data-row">
+          <div class="data-main">#${index + 1} ${escapeHtml(row.name)}<span class="data-sub">${row.buyers.size} related buyers</span></div>
+          <div class="data-stat"><span>Total Income</span><strong>${formatPrice(row.revenue)}</strong></div>
+          <div class="data-stat"><span>Trade Count</span><strong>${formatInteger(row.tradeCount)}</strong></div>
+          <div class="data-stat"><span>Avg Income</span><strong>${formatPrice(row.revenue / row.tradeCount)}</strong></div>
+        </article>
+      `).join("");
+    }
+
+    function buildNetwork(playerName, transactions) {
+      const rows = new Map();
+      const key = playerKey(playerName);
+      getPlayerTransactions(playerName, transactions).forEach((tx) => {
+        const isSeller = playerKey(tx.sellerName) === key;
+        const counterpartyName = isSeller ? tx.buyerName : tx.sellerName;
+        if (!isKnownPlayer(counterpartyName) || playerKey(counterpartyName) === key) return;
+        const counterpartyKey = playerKey(counterpartyName);
+        const row = rows.get(counterpartyKey) || {
+          name: counterpartyName,
+          count: 0,
+          total: 0,
+          items: new Set(),
+          lastTxnTime: 0
+        };
+        row.count += 1;
+        row.total += Number(tx.totalAmountSigil) || 0;
+        row.items.add(tx.itemName);
+        row.lastTxnTime = Math.max(row.lastTxnTime, Number(tx.txnTime) || 0);
+        rows.set(counterpartyKey, row);
+      });
+      return [...rows.values()].sort((a, b) => b.count - a.count || b.total - a.total);
+    }
+
+    function renderNetwork(transactions) {
+      const query = el.analyticsPlayer.value.trim();
+      if (!query) {
+        el.networkList.innerHTML = '<div class="empty">Enter a player name for related accounts.</div>';
+        return;
+      }
+
+      const playerName = resolvePlayerName(query, transactions);
+      const rows = buildNetwork(playerName, transactions);
+      if (!rows.length) {
+        el.networkList.innerHTML = `<div class="empty">${escapeHtml(playerName)} has no loaded related-account records.</div>`;
+        return;
+      }
+
+      el.networkList.innerHTML = `
+        <article class="data-row">
+          <div class="data-main">${escapeHtml(playerName)}<span class="data-sub">Main account</span></div>
+          <div class="data-stat"><span>Related</span><strong>${formatInteger(rows.length)}</strong></div>
+          <div class="data-stat"><span>Trades</span><strong>${formatInteger(rows.reduce((sum, row) => sum + row.count, 0))}</strong></div>
+          <div class="data-stat"><span>Total</span><strong>${formatPrice(rows.reduce((sum, row) => sum + row.total, 0))}</strong></div>
+        </article>
+        ${rows.slice(0, 30).map((row) => `
+          <article class="data-row">
+            <div class="data-main">${escapeHtml(row.name)}<span class="data-sub">${[...row.items].slice(0, 3).map(escapeHtml).join(", ")}</span></div>
+            <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
+            <div class="data-stat"><span>Total Amount</span><strong>${formatPrice(row.total)}</strong></div>
+            <div class="data-stat"><span>Last Seen</span><strong>${formatTransactionTime(row.lastTxnTime)}</strong></div>
+          </article>
+        `).join("")}
+      `;
+    }
+
+    function getPairKey(tx) {
+      return [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
+    }
+
+    function maxGroupedCount(transactions, getKey) {
+      const counts = new Map();
+      transactions.forEach((tx) => {
+        const key = getKey(tx);
+        if (!key) return;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      });
+      return Math.max(0, ...counts.values());
+    }
+
+    function getScoreLevel(score) {
+      if (score <= 30) return "正常";
+      if (score <= 60) return "值得觀察";
+      if (score <= 80) return "高度集中";
+      return "異常模式";
+    }
+
+    function computePatternScore(transactions, playerName) {
+      const subjectTransactions = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
+      const txCount = subjectTransactions.length;
+      if (!txCount) {
+        return { score: 0, level: "正常", txCount: 0, relatedCount: 0, lowRatio: 0, repeatRatio: 0, maxHourDensity: 0 };
+      }
+
+      const relatedCount = playerName
+        ? buildNetwork(playerName, transactions).length
+        : getAllPlayerNames(subjectTransactions).size;
+      const lowCount = subjectTransactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length;
+      const lowRatio = lowCount / txCount;
+      const maxRepeat = maxGroupedCount(subjectTransactions, (tx) => `${tx.itemId}:${tx.itemNum}`);
+      const repeatRatio = maxRepeat / txCount;
+      const maxHourDensity = maxGroupedCount(subjectTransactions, (tx) => {
+        const time = Number(tx.txnTime);
+        return Number.isFinite(time) && time > 0 ? String(Math.floor(time / 3600)) : "";
+      });
+
+      const tradeFactor = Math.min(25, txCount * 0.7);
+      const accountFactor = Math.min(20, playerName ? relatedCount * 2.5 : relatedCount * 0.35);
+      const lowFactor = Math.min(20, lowRatio * 40);
+      const repeatFactor = Math.min(20, repeatRatio * 28);
+      const densityFactor = Math.min(15, maxHourDensity * 1.4);
+      const score = Math.round(Math.min(100, tradeFactor + accountFactor + lowFactor + repeatFactor + densityFactor));
+
+      return {
+        score,
+        level: getScoreLevel(score),
+        txCount,
+        relatedCount,
+        lowRatio,
+        repeatRatio,
+        maxHourDensity
+      };
+    }
+
+    function renderPatternScore(transactions) {
+      const query = el.analyticsPlayer.value.trim();
+      const playerName = query ? resolvePlayerName(query, transactions) : null;
+      const result = computePatternScore(transactions, playerName);
+      el.scoreFill.style.width = `${result.score}%`;
+      el.scoreMetrics.innerHTML = `
+        <div class="mini-metric"><span class="mini-label">Score</span><strong class="mini-value">${result.score}</strong></div>
+        <div class="mini-metric"><span class="mini-label">Level</span><strong class="mini-value">${escapeHtml(result.level)}</strong></div>
+        <div class="mini-metric"><span class="mini-label">Subject</span><strong class="mini-value">${escapeHtml(playerName || "Current Market")}</strong></div>
+      `;
+      el.scoreDetail.innerHTML = `
+        <article class="data-row">
+          <div class="data-main">Market Pattern<span class="data-sub">${escapeHtml(state.activeCategory)}</span></div>
+          <div class="data-stat"><span>Trades</span><strong>${formatInteger(result.txCount)}</strong></div>
+          <div class="data-stat"><span>Related</span><strong>${formatInteger(result.relatedCount)}</strong></div>
+          <div class="data-stat"><span>Low Price</span><strong>${(result.lowRatio * 100).toFixed(1)}%</strong></div>
+        </article>
+        <article class="data-row">
+          <div class="data-main">Repeat / Density<span class="data-sub">Fixed item quantity and hourly density</span></div>
+          <div class="data-stat"><span>Repeat</span><strong>${(result.repeatRatio * 100).toFixed(1)}%</strong></div>
+          <div class="data-stat"><span>Hourly Max</span><strong>${formatInteger(result.maxHourDensity)}</strong></div>
+          <div class="data-stat"><span>Range</span><strong>0-100</strong></div>
+        </article>
+      `;
+    }
+
+    function renderWarnings(transactions) {
+      const query = el.analyticsPlayer.value.trim();
+      const playerName = query ? resolvePlayerName(query, transactions) : null;
+      const subjectTransactions = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
+
+      if (!subjectTransactions.length) {
+        el.warningList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
+        return;
+      }
+
+      const warnings = [];
+      const latestTime = Math.max(0, ...subjectTransactions.map((tx) => Number(tx.txnTime) || 0));
+      const recentTransactions = latestTime
+        ? subjectTransactions.filter((tx) => Number(tx.txnTime) >= latestTime - 86400)
+        : subjectTransactions;
+      const pairCounts = new Map();
+      recentTransactions.forEach((tx) => {
+        const key = getPairKey(tx);
+        if (!key.includes("::")) return;
+        pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
+      });
+      const topPairCount = Math.max(0, ...pairCounts.values());
+      if (topPairCount >= 10) warnings.push(`⚠️ 24小時內同一組玩家重複交易 ${topPairCount} 次`);
+
+      const repeatCount = maxGroupedCount(subjectTransactions, (tx) => `${tx.itemId}:${tx.itemNum}`);
+      if (repeatCount >= 10) warnings.push(`⚠️ 相同物品與相同數量重複出現 ${repeatCount} 次`);
+
+      const lowCount = subjectTransactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length;
+      if (lowCount >= 10 || lowCount / subjectTransactions.length >= 0.25) warnings.push(`⚠️ 發現 ${lowCount} 筆 0.01 Sigil 附近低價交易`);
+
+      if (playerName) {
+        const relatedCount = buildNetwork(playerName, transactions).length;
+        if (relatedCount >= 20) warnings.push(`⚠️ 同一玩家與 ${relatedCount}+ 帳號有交易紀錄`);
+      } else {
+        const relatedByPlayer = new Map();
+        subjectTransactions.forEach((tx) => {
+          if (isKnownPlayer(tx.sellerName) && isKnownPlayer(tx.buyerName)) {
+            const sellerKey = playerKey(tx.sellerName);
+            const buyerKey = playerKey(tx.buyerName);
+            if (!relatedByPlayer.has(sellerKey)) relatedByPlayer.set(sellerKey, new Set());
+            if (!relatedByPlayer.has(buyerKey)) relatedByPlayer.set(buyerKey, new Set());
+            relatedByPlayer.get(sellerKey).add(buyerKey);
+            relatedByPlayer.get(buyerKey).add(sellerKey);
+          }
+        });
+        const highRelated = [...relatedByPlayer.values()].reduce((max, set) => Math.max(max, set.size), 0);
+        if (highRelated >= 20) warnings.push(`⚠️ 單一玩家與 ${highRelated}+ 帳號有交易紀錄`);
+      }
+
+      const maxHourDensity = maxGroupedCount(subjectTransactions, (tx) => {
+        const time = Number(tx.txnTime);
+        return Number.isFinite(time) && time > 0 ? String(Math.floor(time / 3600)) : "";
+      });
+      if (maxHourDensity >= 12) warnings.push(`⚠️ 短時間交易密度偏高，單小時 ${maxHourDensity} 筆`);
+
+      el.warningList.innerHTML = warnings.length
+        ? warnings.map((warning) => `<div class="warning-item">${escapeHtml(warning)}</div>`).join("")
+        : '<div class="empty">No notable market-pattern notices.</div>';
+    }
+
+    function getLocalDateKey(value) {
+      const timestamp = Number(value);
+      if (!Number.isFinite(timestamp) || timestamp <= 0) return "Unknown";
+      const date = new Date(timestamp * 1000);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function renderDailyIncome(transactions) {
+      const query = el.analyticsPlayer.value.trim();
+      if (!query) {
+        el.dailyIncomeList.innerHTML = '<div class="empty">Enter a player name for daily income.</div>';
+        return;
+      }
+
+      const playerName = resolvePlayerName(query, transactions);
+      const key = playerKey(playerName);
+      const rows = new Map();
+      transactions.forEach((tx) => {
+        if (playerKey(tx.sellerName) !== key) return;
+        const dateKey = getLocalDateKey(tx.txnTime);
+        const row = rows.get(dateKey) || { date: dateKey, income: 0, count: 0 };
+        row.income += Number(tx.totalAmountSigil) || 0;
+        row.count += 1;
+        rows.set(dateKey, row);
+      });
+
+      const sorted = [...rows.values()].sort((a, b) => a.date.localeCompare(b.date));
+      if (!sorted.length) {
+        el.dailyIncomeList.innerHTML = `<div class="empty">${escapeHtml(playerName)} has no loaded seller-income records.</div>`;
+        return;
+      }
+
+      let cumulative = 0;
+      el.dailyIncomeList.innerHTML = sorted.map((row) => {
+        cumulative += row.income;
+        return `
+          <article class="data-row">
+            <div class="data-main">${escapeHtml(row.date)}<span class="data-sub">${escapeHtml(playerName)}</span></div>
+            <div class="data-stat"><span>Income</span><strong>${formatPrice(row.income)}</strong></div>
+            <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
+            <div class="data-stat"><span>Cumulative</span><strong>${formatPrice(cumulative)}</strong></div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderItemConcentration(transactions) {
+      if (!transactions.length) {
+        el.itemConcentrationList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
+        return;
+      }
+
+      const items = new Map();
+      transactions.forEach((tx) => {
+        const key = String(tx.itemId);
+        const item = items.get(key) || {
+          itemId: tx.itemId,
+          itemName: tx.itemName,
+          count: 0,
+          total: 0,
+          sellers: new Map()
+        };
+        const amount = Number(tx.totalAmountSigil) || 0;
+        item.count += 1;
+        item.total += amount;
+        if (isKnownPlayer(tx.sellerName)) {
+          const sellerKey = playerKey(tx.sellerName);
+          const seller = item.sellers.get(sellerKey) || { name: tx.sellerName, total: 0, count: 0 };
+          seller.total += amount;
+          seller.count += 1;
+          item.sellers.set(sellerKey, seller);
+        }
+        items.set(key, item);
+      });
+
+      const rows = [...items.values()]
+        .map((item) => {
+          const topSellers = [...item.sellers.values()].sort((a, b) => b.total - a.total).slice(0, 5);
+          const topTotal = topSellers.reduce((sum, seller) => sum + seller.total, 0);
+          return {
+            ...item,
+            topSellers,
+            topShare: item.total > 0 ? topTotal / item.total : 0
+          };
+        })
+        .sort((a, b) => b.topShare - a.topShare || b.total - a.total)
+        .slice(0, 12);
+
+      if (!rows.length) {
+        el.itemConcentrationList.innerHTML = '<div class="empty">No item concentration records yet.</div>';
+        return;
+      }
+
+      el.itemConcentrationList.innerHTML = rows.map((row) => `
+        <article class="data-row six">
+          <div class="data-main">${escapeHtml(row.itemName)}<span class="data-sub">${row.topSellers.map((seller) => escapeHtml(seller.name)).join(", ") || "No seller records"}</span></div>
+          <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
+          <div class="data-stat"><span>Total</span><strong>${formatPrice(row.total)}</strong></div>
+          <div class="data-stat"><span>Top 5 Share</span><strong>${(row.topShare * 100).toFixed(1)}%</strong></div>
+          <div class="data-stat"><span>Sellers</span><strong>${formatInteger(row.sellers.size)}</strong></div>
+          <div class="data-stat"><span>Top Seller</span><strong>${escapeHtml(row.topSellers[0]?.name || "-")}</strong></div>
+        </article>
+      `).join("");
+    }
+
+    function renderAnalytics() {
+      const transactions = getCategoryTransactions();
+      renderLeaderboard(transactions);
+      renderNetwork(transactions);
+      renderPatternScore(transactions);
+      renderWarnings(transactions);
+      renderDailyIncome(transactions);
+      renderItemConcentration(transactions);
+    }
+
     function render() {
       const categoryItems = getCategoryItems();
       const visible = getVisibleItems();
@@ -836,6 +1471,7 @@
       el.priced.textContent = `${pricedItems.length} / ${categoryItems.length}`;
       el.average.textContent = average ? formatPrice(average) : "-";
       renderTransactionSearch();
+      renderAnalytics();
 
       if (!visible.length) {
         el.grid.innerHTML = `<div class="empty">No matching ${state.activeCategory.toLowerCase()} items.</div>`;
@@ -1041,6 +1677,9 @@
 
     el.search.addEventListener("input", render);
     el.playerSearch.addEventListener("input", render);
+    el.analyticsPlayer.addEventListener("input", render);
+    el.leaderboardLimit.addEventListener("change", render);
+    el.leaderboardSort.addEventListener("change", render);
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
     el.tabs.forEach((tab) => {

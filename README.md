@@ -1,6 +1,6 @@
-# Elf Marketplace Prices
+# Elf Continent Marketplace Analytics Dashboard
 
-Static price dashboard for Elf Continent Marketplace Resources and General items.
+Static analytics dashboard for Elf Continent Marketplace Resources and General items.
 
 ## Features
 
@@ -9,6 +9,7 @@ Static price dashboard for Elf Continent Marketplace Resources and General items
 - Refreshes recent transaction prices every 5 seconds for the selected market tab.
 - Shows latest price, quantity, total amount, buyer player name, seller player name, and update time.
 - Includes item search, sorting, and player-name transaction search.
+- Adds player income ranking, related-account analysis, neutral market-pattern notices, Marketplace Pattern Score, daily Sigil income, and item market concentration.
 
 ## Data Source
 
