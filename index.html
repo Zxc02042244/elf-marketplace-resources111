@@ -223,6 +223,65 @@
       overflow-wrap: anywhere;
     }
 
+    .transaction-panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: rgba(24, 32, 25, 0.86);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .transaction-head {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .transaction-count {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .transaction-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .transaction-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1.15fr) minmax(110px, 0.9fr) minmax(110px, 0.9fr) 76px 82px 92px;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.3);
+      padding: 10px;
+      min-width: 0;
+    }
+
+    .transaction-cell {
+      min-width: 0;
+    }
+
+    .transaction-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .transaction-value {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
@@ -382,6 +441,15 @@
       .summary {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .transaction-head,
+      .transaction-row {
+        grid-template-columns: 1fr;
+      }
+
+      .transaction-count {
+        white-space: normal;
+      }
     }
 
     @media (max-width: 430px) {
@@ -450,6 +518,13 @@
     </section>
 
     <div id="error-area"></div>
+    <section class="transaction-panel" aria-label="Player transaction search">
+      <div class="transaction-head">
+        <input class="field" id="player-search" type="search" placeholder="Search buyer or seller player name" autocomplete="off" />
+        <div class="transaction-count" id="transaction-count">0 transactions</div>
+      </div>
+      <div class="transaction-list" id="transaction-results" aria-live="polite"></div>
+    </section>
     <section class="grid" id="grid" aria-live="polite"></section>
   </main>
 
@@ -589,9 +664,12 @@
       dot: document.getElementById("status-dot"),
       status: document.getElementById("status-text"),
       search: document.getElementById("search"),
+      playerSearch: document.getElementById("player-search"),
       sort: document.getElementById("sort"),
       refresh: document.getElementById("refresh"),
       grid: document.getElementById("grid"),
+      transactionCount: document.getElementById("transaction-count"),
+      transactionResults: document.getElementById("transaction-results"),
       error: document.getElementById("error-area"),
       market: document.getElementById("metric-market"),
       priced: document.getElementById("metric-priced"),
@@ -621,6 +699,17 @@
 
     function formatTime(date) {
       return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+
+    function formatTransactionTime(value) {
+      const timestamp = Number(value);
+      if (!Number.isFinite(timestamp) || timestamp <= 0) return "-";
+      return new Date(timestamp * 1000).toLocaleString([], {
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
     }
 
     function escapeHtml(value) {
@@ -670,6 +759,71 @@
       return `<div class="item-media" aria-hidden="true">${fallback}</div>`;
     }
 
+    function getCategoryTransactions() {
+      return getCategoryItems()
+        .flatMap((item) => state.prices.get(item.id)?.transactions || [])
+        .sort((a, b) => Number(b.txnTime || 0) - Number(a.txnTime || 0));
+    }
+
+    function getMatchingTransactions() {
+      const query = el.playerSearch.value.trim().toLowerCase();
+      if (!query) return [];
+      return getCategoryTransactions()
+        .filter((tx) => {
+          return tx.buyerName.toLowerCase().includes(query) ||
+            tx.sellerName.toLowerCase().includes(query) ||
+            tx.orderUserName.toLowerCase().includes(query) ||
+            tx.traderName.toLowerCase().includes(query);
+        })
+        .slice(0, 80);
+    }
+
+    function renderTransactionSearch() {
+      const query = el.playerSearch.value.trim();
+      if (!query) {
+        el.transactionCount.textContent = "0 transactions";
+        el.transactionResults.innerHTML = '<div class="empty">Enter a player name to search recent transactions.</div>';
+        return;
+      }
+
+      const matches = getMatchingTransactions();
+      el.transactionCount.textContent = `${matches.length} transaction${matches.length === 1 ? "" : "s"}`;
+
+      if (!matches.length) {
+        el.transactionResults.innerHTML = `<div class="empty">No recent transactions found for "${escapeHtml(query)}".</div>`;
+        return;
+      }
+
+      el.transactionResults.innerHTML = matches.map((tx) => `
+        <article class="transaction-row">
+          <div class="transaction-cell">
+            <span class="transaction-label">Item</span>
+            <strong class="transaction-value">${escapeHtml(tx.itemName)} (${tx.itemId})</strong>
+          </div>
+          <div class="transaction-cell">
+            <span class="transaction-label">Seller Player</span>
+            <strong class="transaction-value">${escapeHtml(tx.sellerName)}</strong>
+          </div>
+          <div class="transaction-cell">
+            <span class="transaction-label">Buyer Player</span>
+            <strong class="transaction-value">${escapeHtml(tx.buyerName)}</strong>
+          </div>
+          <div class="transaction-cell">
+            <span class="transaction-label">Price</span>
+            <strong class="transaction-value">${formatPrice(tx.price)}</strong>
+          </div>
+          <div class="transaction-cell">
+            <span class="transaction-label">Quantity</span>
+            <strong class="transaction-value">${formatInteger(tx.itemNum)}</strong>
+          </div>
+          <div class="transaction-cell">
+            <span class="transaction-label">Time</span>
+            <strong class="transaction-value">${formatTransactionTime(tx.txnTime)}</strong>
+          </div>
+        </article>
+      `).join("");
+    }
+
     function render() {
       const categoryItems = getCategoryItems();
       const visible = getVisibleItems();
@@ -681,6 +835,7 @@
       el.market.textContent = state.activeCategory;
       el.priced.textContent = `${pricedItems.length} / ${categoryItems.length}`;
       el.average.textContent = average ? formatPrice(average) : "-";
+      renderTransactionSearch();
 
       if (!visible.length) {
         el.grid.innerHTML = `<div class="empty">No matching ${state.activeCategory.toLowerCase()} items.</div>`;
@@ -756,19 +911,7 @@
       return `Bearer ${data.data.accessToken}`;
     }
 
-    async function fetchItemPrice(item, accessToken) {
-      const url = `${API_BASE}/api/price?itemId=${item.id}&accessToken=${encodeURIComponent(accessToken)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (!res.ok || data.code !== 0) {
-        throw new Error(data.message || `Price request failed (${res.status})`);
-      }
-
-      if (!data.data?.length) {
-        return { price: null, tx: null, updatedAt: Date.now() };
-      }
-
-      const tx = data.data[0];
+    function normalizeTransaction(tx, item) {
       const itemNum = Number(tx.itemNum);
       const totalAmountSigil = Number(tx.totalAmount) / 1e9;
       const price = totalAmountSigil / itemNum;
@@ -785,23 +928,47 @@
       const buyer = orderType === 1 ? trader : orderType === 2 ? orderUser : null;
 
       return {
+        itemId: item.id,
+        itemName: item.name,
+        itemGroup: item.group,
+        category: item.category,
+        itemNum,
         price,
+        orderType,
+        totalAmountSigil,
+        txnId: tx.txnId,
+        txnTime: tx.txnTime,
+        orderUserId: orderUser.id,
+        orderUserName: orderUser.name,
+        traderId: trader.id,
+        traderName: trader.name,
+        sellerId: seller?.id,
+        sellerName: seller?.name || "-",
+        buyerId: buyer?.id,
+        buyerName: buyer?.name || "-"
+      };
+    }
+
+    async function fetchItemPrice(item, accessToken) {
+      const url = `${API_BASE}/api/price?itemId=${item.id}&accessToken=${encodeURIComponent(accessToken)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!res.ok || data.code !== 0) {
+        throw new Error(data.message || `Price request failed (${res.status})`);
+      }
+
+      if (!data.data?.length) {
+        return { price: null, tx: null, transactions: [], updatedAt: Date.now() };
+      }
+
+      const transactions = data.data.map((tx) => normalizeTransaction(tx, item));
+      const latest = transactions[0];
+
+      return {
+        price: latest.price,
         updatedAt: Date.now(),
-        tx: {
-          itemNum,
-          orderType,
-          totalAmountSigil,
-          txnId: tx.txnId,
-          txnTime: tx.txnTime,
-          orderUserId: orderUser.id,
-          orderUserName: orderUser.name,
-          traderId: trader.id,
-          traderName: trader.name,
-          sellerId: seller?.id,
-          sellerName: seller?.name,
-          buyerId: buyer?.id,
-          buyerName: buyer?.name
-        }
+        tx: latest,
+        transactions
       };
     }
 
@@ -833,7 +1000,7 @@
           try {
             state.prices.set(item.id, await fetchItemPrice(item, accessToken));
           } catch (error) {
-            state.prices.set(item.id, { price: null, tx: null, updatedAt: Date.now(), error: error.message });
+            state.prices.set(item.id, { price: null, tx: null, transactions: [], updatedAt: Date.now(), error: error.message });
           }
           render();
           await sleep(REQUEST_DELAY_MS);
@@ -873,6 +1040,7 @@
     }
 
     el.search.addEventListener("input", render);
+    el.playerSearch.addEventListener("input", render);
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
     el.tabs.forEach((tab) => {
