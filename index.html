@@ -3,61 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Elf Marketplace Prices</title>
+  <title>Elf Continent Marketplace Analytics Dashboard</title>
   <style>
     :root {
-      --bg: #101411;
-      --panel: #18211a;
-      --panel-2: #202a22;
-      --line: #344437;
+      --bg: #0c120e;
+      --panel: #172018;
+      --panel-2: #202b21;
+      --line: #314234;
       --text: #eef4eb;
-      --muted: #a8b7a5;
+      --muted: #a9b8a6;
       --accent: #8ecf78;
-      --accent-2: #f0c66d;
+      --gold: #f0c66d;
       --bad: #f06f64;
-      --shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+      --shadow: 0 14px 38px rgba(0, 0, 0, 0.26);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(circle at 16% 0%, rgba(142, 207, 120, 0.16), transparent 34%),
-        radial-gradient(circle at 86% 6%, rgba(240, 198, 109, 0.12), transparent 30%),
-        linear-gradient(180deg, #182018 0%, var(--bg) 44%, #0b100d 100%);
+        radial-gradient(circle at 18% 0%, rgba(142, 207, 120, 0.15), transparent 34%),
+        radial-gradient(circle at 86% 6%, rgba(240, 198, 109, 0.1), transparent 28%),
+        linear-gradient(180deg, #182018 0%, var(--bg) 44%, #080d0a 100%);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       letter-spacing: 0;
     }
 
-    button,
-    input,
-    select {
-      font: inherit;
-    }
+    button, input, select { font: inherit; }
 
     .app {
-      width: min(1200px, calc(100% - 28px));
+      width: min(1240px, calc(100% - 28px));
       margin: 0 auto;
-      padding: 24px 0 36px;
+      padding: 18px 0 36px;
     }
 
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto;
       gap: 16px;
-      padding: 14px 0 18px;
+      align-items: start;
+      padding: 10px 0 14px;
     }
 
     .brand {
       display: flex;
-      align-items: center;
       gap: 12px;
+      align-items: center;
       min-width: 0;
     }
 
@@ -73,11 +67,12 @@
       color: #f7ffe8;
       font-size: 12px;
       font-weight: 900;
+      flex: 0 0 auto;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(22px, 4vw, 36px);
+      font-size: clamp(22px, 4vw, 34px);
       line-height: 1.05;
       letter-spacing: 0;
     }
@@ -88,14 +83,109 @@
       font-size: 13px;
     }
 
-    .status {
+    .language {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
       gap: 8px;
       color: var(--muted);
       font-size: 13px;
       white-space: nowrap;
+    }
+
+    .lang-btn,
+    .tab-btn {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.42);
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 800;
+      min-height: 34px;
+      padding: 0 10px;
+    }
+
+    .lang-btn.active,
+    .tab-btn.active {
+      background: var(--accent);
+      color: #102010;
+      border-color: transparent;
+    }
+
+    .sticky-search {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: auto minmax(220px, 1fr) 180px auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(18, 26, 19, 0.96);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .market-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      min-height: 42px;
+      background: rgba(8, 12, 8, 0.42);
+    }
+
+    .market-tab {
+      min-width: 112px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font-weight: 850;
+      cursor: pointer;
+      padding: 0 12px;
+    }
+
+    .market-tab:last-child { border-right: 0; }
+    .market-tab.active { background: var(--accent); color: #102010; }
+
+    .field {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.42);
+      color: var(--text);
+      outline: none;
+      padding: 0 12px;
+    }
+
+    .field:focus { border-color: var(--accent); }
+    select.field { cursor: pointer; }
+
+    .refresh {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      color: #102010;
+      background: var(--accent);
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 16px;
+    }
+
+    .refresh:disabled { cursor: progress; opacity: 0.66; }
+
+    .status {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
     }
 
     .dot {
@@ -106,108 +196,52 @@
       box-shadow: 0 0 0 4px rgba(142, 207, 120, 0.16);
     }
 
-    .dot.loading {
-      background: var(--accent-2);
-      box-shadow: 0 0 0 4px rgba(240, 198, 109, 0.16);
+    .dot.loading { background: var(--gold); box-shadow: 0 0 0 4px rgba(240, 198, 109, 0.16); }
+    .dot.error { background: var(--bad); box-shadow: 0 0 0 4px rgba(240, 111, 100, 0.16); }
+
+    .section {
+      margin-bottom: 14px;
     }
 
-    .dot.error {
-      background: var(--bad);
-      box-shadow: 0 0 0 4px rgba(240, 111, 100, 0.16);
-    }
-
-    .controls {
-      display: grid;
-      grid-template-columns: auto minmax(180px, 1fr) 180px auto;
-      gap: 10px;
+    .section-head {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      background: rgba(24, 32, 25, 0.88);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 12px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+      gap: 10px;
+      margin: 0 0 10px;
     }
 
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(8, 12, 8, 0.42);
-      overflow: hidden;
+    .section-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 950;
     }
 
-    .tab {
-      min-width: 112px;
-      border: 0;
-      border-right: 1px solid var(--line);
-      background: transparent;
+    .section-note {
       color: var(--muted);
-      font-weight: 800;
-      cursor: pointer;
-      padding: 0 13px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
     }
 
-    .tab:last-child {
-      border-right: 0;
-    }
-
-    .tab.active {
-      background: var(--accent);
-      color: #102010;
-    }
-
-    .field {
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(8, 12, 8, 0.42);
-      color: var(--text);
-      outline: none;
-      padding: 0 12px;
-    }
-
-    .field:focus {
-      border-color: var(--accent);
-    }
-
-    select.field {
-      cursor: pointer;
-    }
-
-    .refresh {
-      min-height: 42px;
-      border: 0;
-      border-radius: 8px;
-      color: #102010;
-      background: var(--accent);
-      font-weight: 850;
-      cursor: pointer;
-      padding: 0 16px;
-    }
-
-    .refresh:disabled {
-      cursor: progress;
-      opacity: 0.66;
-    }
-
-    .summary {
+    .metric-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin: 14px 0;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(24, 32, 25, 0.88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      min-width: 0;
     }
 
     .metric {
-      min-height: 82px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
+      min-height: 86px;
       padding: 14px;
-      background: rgba(24, 32, 25, 0.84);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
     }
 
     .metric-label {
@@ -216,144 +250,133 @@
     }
 
     .metric-value {
-      margin-top: 6px;
-      font-size: 22px;
-      font-weight: 850;
-      line-height: 1.1;
+      margin-top: 7px;
+      font-size: 24px;
+      line-height: 1.05;
+      font-weight: 950;
+      color: var(--text);
       overflow-wrap: anywhere;
     }
 
-    .transaction-panel {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 14px;
-      background: rgba(24, 32, 25, 0.86);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-    }
-
-    .transaction-head {
-      display: grid;
-      grid-template-columns: minmax(180px, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .transaction-count {
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .transaction-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .transaction-row {
-      display: grid;
-      grid-template-columns: minmax(120px, 1.15fr) minmax(110px, 0.9fr) minmax(110px, 0.9fr) 76px 82px 92px;
-      gap: 8px;
-      align-items: center;
-      border: 1px solid rgba(52, 66, 53, 0.82);
-      border-radius: 8px;
-      background: rgba(8, 12, 8, 0.3);
-      padding: 10px;
-      min-width: 0;
-    }
-
-    .transaction-cell {
-      min-width: 0;
-    }
-
-    .transaction-label {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    .transaction-value {
-      display: block;
-      font-size: 13px;
-      font-weight: 800;
-      overflow-wrap: anywhere;
-    }
-
-    .analytics {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .analytics-toolbar,
-    .analytics-panel {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(24, 32, 25, 0.86);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-    }
-
-    .analytics-toolbar {
-      display: grid;
-      grid-template-columns: minmax(180px, 1fr) 150px 190px;
-      gap: 10px;
-      padding: 12px;
-      align-items: center;
-    }
-
-    .analytics-grid {
+    .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
-    .analytics-panel {
+    .panel {
       padding: 14px;
       min-width: 0;
     }
 
-    .analytics-panel.wide {
-      grid-column: 1 / -1;
-    }
+    .wide { grid-column: 1 / -1; }
 
-    .panel-title {
-      margin: 0 0 10px;
-      font-size: 15px;
-      font-weight: 900;
-      color: var(--text);
-    }
-
-    .mini-grid {
+    .compact-list {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 8px;
-      margin-bottom: 10px;
     }
 
-    .mini-metric {
-      border: 1px solid rgba(52, 66, 53, 0.82);
+    .compact-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1.15fr) repeat(3, minmax(74px, 0.68fr));
+      gap: 8px;
+      align-items: center;
+      padding: 9px 10px;
       border-radius: 8px;
-      padding: 10px;
-      background: rgba(8, 12, 8, 0.3);
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      background: rgba(8, 12, 8, 0.28);
       min-width: 0;
     }
 
-    .mini-label {
+    .compact-row.six {
+      grid-template-columns: minmax(130px, 1.1fr) minmax(110px, 0.9fr) minmax(110px, 0.9fr) 82px 70px 90px;
+    }
+
+    .row-main {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .row-sub {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+      margin-top: 3px;
+    }
+
+    .stat { min-width: 0; }
+    .stat span { display: block; color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+    .stat strong { display: block; font-size: 13px; overflow-wrap: anywhere; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 8px;
+      background: rgba(240, 198, 109, 0.13);
+      color: #ffe1a1;
+      border: 1px solid rgba(240, 198, 109, 0.35);
+      font-size: 11px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .search-layout {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .profile {
+      display: grid;
+      grid-template-columns: minmax(180px, 1.2fr) repeat(4, minmax(120px, 0.7fr));
+      gap: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .profile-stat span {
       display: block;
       color: var(--muted);
       font-size: 11px;
       margin-bottom: 4px;
     }
 
-    .mini-value {
+    .profile-stat strong {
       display: block;
       font-size: 18px;
-      font-weight: 900;
+      font-weight: 950;
       overflow-wrap: anywhere;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 10px;
+      scrollbar-width: thin;
+    }
+
+    .tab-btn {
+      flex: 0 0 auto;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
     }
 
     .score-wrap {
@@ -362,7 +385,7 @@
     }
 
     .score-line {
-      height: 12px;
+      height: 14px;
       border-radius: 999px;
       background: rgba(8, 12, 8, 0.48);
       border: 1px solid rgba(52, 66, 53, 0.82);
@@ -370,126 +393,90 @@
     }
 
     .score-fill {
-      width: 0%;
       height: 100%;
+      width: 0%;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--bad));
-      transition: width 180ms ease;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--bad));
+      transition: width 160ms ease;
     }
 
-    .table-list,
-    .warning-list,
-    .network-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .data-row {
-      display: grid;
-      grid-template-columns: minmax(120px, 1.2fr) minmax(80px, 0.75fr) minmax(80px, 0.65fr) minmax(80px, 0.65fr);
-      gap: 8px;
-      align-items: center;
+    .table-shell {
+      overflow-x: auto;
+      border-radius: 8px;
       border: 1px solid rgba(52, 66, 53, 0.82);
-      border-radius: 8px;
-      background: rgba(8, 12, 8, 0.3);
-      padding: 10px;
-      min-width: 0;
+      background: rgba(8, 12, 8, 0.24);
     }
 
-    .data-row.six {
-      grid-template-columns: minmax(120px, 1.2fr) repeat(5, minmax(72px, 0.68fr));
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
     }
 
-    .data-main {
-      min-width: 0;
+    th, td {
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(52, 66, 53, 0.74);
       font-size: 13px;
-      font-weight: 850;
-      overflow-wrap: anywhere;
+      vertical-align: top;
     }
 
-    .data-sub {
-      display: block;
+    th {
       color: var(--muted);
       font-size: 11px;
-      margin-top: 3px;
-      font-weight: 600;
+      font-weight: 900;
     }
 
-    .data-stat {
-      min-width: 0;
+    tr:last-child td { border-bottom: 0; }
+
+    .mobile-transactions {
+      display: none;
     }
 
-    .data-stat span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    .data-stat strong {
-      display: block;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-
-    .warning-item {
-      border: 1px solid rgba(240, 198, 109, 0.45);
-      border-radius: 8px;
+    .tx-card {
       padding: 10px;
-      background: rgba(240, 198, 109, 0.08);
-      color: #ffe2a1;
-      font-size: 13px;
-      font-weight: 800;
+      border-radius: 8px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      background: rgba(8, 12, 8, 0.28);
+    }
+
+    .tx-line {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
       overflow-wrap: anywhere;
     }
 
-    .grid {
+    .item-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(238px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 10px;
     }
 
-    .card {
-      position: relative;
-      min-height: 198px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      background: rgba(24, 32, 25, 0.9);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      backdrop-filter: blur(14px);
+    .item-card {
+      padding: 12px;
+      min-height: 134px;
     }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(142, 207, 120, 0.11), transparent 45%);
-      pointer-events: none;
-    }
-
-    .card-head {
-      position: relative;
+    .item-head {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
       min-width: 0;
     }
 
     .item-media {
-      width: 54px;
-      height: 54px;
+      width: 44px;
+      height: 44px;
       border-radius: 8px;
       border: 1px solid var(--line);
       background: var(--panel-2);
       display: grid;
       place-items: center;
-      color: var(--accent-2);
-      font-size: 18px;
-      font-weight: 900;
-      flex: 0 0 auto;
+      color: var(--gold);
+      font-weight: 950;
       overflow: hidden;
+      flex: 0 0 auto;
     }
 
     .item-img {
@@ -499,146 +486,142 @@
     }
 
     .item-name {
-      font-size: 16px;
-      font-weight: 850;
+      font-size: 14px;
+      font-weight: 950;
       overflow-wrap: anywhere;
     }
 
     .item-meta {
-      margin-top: 3px;
+      margin-top: 2px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
     }
 
-    .price {
-      position: relative;
-      margin-top: 18px;
-      font-size: 28px;
-      line-height: 1;
-      font-weight: 900;
-      color: var(--accent-2);
-      overflow-wrap: anywhere;
-    }
-
-    .price small {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      margin-left: 6px;
-    }
-
-    .details {
-      position: relative;
+    .item-stats {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
-    .detail {
-      border-radius: 8px;
-      background: rgba(8, 12, 8, 0.34);
-      border: 1px solid rgba(52, 66, 53, 0.8);
-      padding: 9px;
-      min-width: 0;
-    }
-
-    .detail span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 3px;
-    }
-
-    .detail strong {
-      display: block;
-      font-size: 13px;
-      overflow-wrap: anywhere;
-    }
-
+    .empty,
     .error-box,
-    .empty {
+    .notice {
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 20px;
-      background: rgba(24, 32, 25, 0.9);
+      padding: 14px;
+      background: rgba(8, 12, 8, 0.28);
       color: var(--muted);
       text-align: center;
+      font-size: 13px;
     }
 
     .error-box {
-      margin-top: 12px;
-      border-color: rgba(240, 111, 100, 0.5);
       color: #ffc4bd;
+      border-color: rgba(240, 111, 100, 0.5);
+      margin-bottom: 12px;
       text-align: left;
     }
 
-    @media (max-width: 900px) {
-      .controls {
+    @media (max-width: 980px) {
+      .sticky-search {
         grid-template-columns: 1fr 1fr;
       }
 
-      .tabs,
-      .field,
-      .refresh {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .status {
-        justify-content: flex-start;
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .analytics-toolbar,
-      .analytics-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .analytics-panel.wide {
-        grid-column: auto;
-      }
-
-      .mini-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .summary {
+      .metric-grid,
+      .dashboard-grid,
+      .search-layout,
+      .profile {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .transaction-head,
-      .transaction-row,
-      .data-row,
-      .data-row.six {
-        grid-template-columns: 1fr;
-      }
-
-      .transaction-count {
-        white-space: normal;
-      }
+      .wide { grid-column: auto; }
     }
 
-    @media (max-width: 430px) {
+    @media (max-width: 680px) {
       .app {
-        width: min(100% - 20px, 1200px);
+        width: min(100% - 18px, 1240px);
+        padding-top: 10px;
       }
 
-      .summary {
+      .topbar {
         grid-template-columns: 1fr;
       }
 
-      .grid {
+      .language {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .sticky-search {
         grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 9px;
+        margin-left: -1px;
+        margin-right: -1px;
+      }
+
+      .market-tabs {
+        width: 100%;
+      }
+
+      .metric-grid,
+      .dashboard-grid,
+      .search-layout,
+      .profile {
+        grid-template-columns: 1fr;
+      }
+
+      .metric {
+        min-height: 74px;
+        padding: 12px;
+      }
+
+      .metric-value {
+        font-size: 26px;
+      }
+
+      .panel,
+      .profile,
+      .item-card {
+        padding: 10px;
+      }
+
+      .section {
+        margin-bottom: 10px;
+      }
+
+      .compact-list {
+        gap: 6px;
+      }
+
+      .compact-row,
+      .compact-row.six {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        padding: 8px;
+      }
+
+      .compact-row .row-main {
+        grid-column: 1 / -1;
+      }
+
+      .table-shell.desktop-transactions {
+        display: none;
+      }
+
+      .mobile-transactions {
+        display: grid;
+        gap: 7px;
+      }
+
+      .item-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .item-stats {
+        gap: 6px;
       }
     }
   </style>
@@ -649,109 +632,115 @@
       <div class="brand">
         <div class="mark" aria-hidden="true">ELF</div>
         <div>
-          <h1>Elf Marketplace Prices</h1>
-          <div class="subtitle">Resources and General recent transaction prices, refreshed every 5 seconds for the selected tab.</div>
+          <h1 data-i18n="appTitle">Elf Continent Marketplace Analytics Dashboard</h1>
+          <div class="subtitle" data-i18n="subtitle">市場交易、玩家收入、關聯帳戶與交易集中度分析</div>
         </div>
       </div>
-      <div class="status" aria-live="polite">
-        <span class="dot loading" id="status-dot"></span>
-        <span id="status-text">Preparing...</span>
+      <div class="language" aria-label="Language">
+        <span data-i18n="language">語言</span>
+        <button class="lang-btn active" type="button" data-lang="zh-TW" data-i18n="traditionalChinese">繁體中文</button>
+        <button class="lang-btn" type="button" data-lang="en" data-i18n="english">English</button>
       </div>
     </header>
 
-    <section class="controls" aria-label="Dashboard controls">
-      <div class="tabs" role="tablist" aria-label="Market category">
-        <button class="tab active" type="button" data-category="Resources" role="tab" aria-selected="true">Resources</button>
-        <button class="tab" type="button" data-category="General" role="tab" aria-selected="false">General</button>
+    <section class="sticky-search" aria-label="Search and filters">
+      <div class="market-tabs" role="tablist" aria-label="Market category">
+        <button class="market-tab active" type="button" data-category="Resources" role="tab" aria-selected="true" data-i18n="resources">Resources</button>
+        <button class="market-tab" type="button" data-category="General" role="tab" aria-selected="false" data-i18n="general">General</button>
       </div>
-      <input class="field" id="search" type="search" placeholder="Search item name, group, or ID" autocomplete="off" />
-      <select class="field" id="sort">
-        <option value="default">Default order</option>
-        <option value="price-desc">Price high to low</option>
-        <option value="price-asc">Price low to high</option>
-        <option value="name">Name A-Z</option>
+      <input class="field" id="global-search" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="搜尋玩家 / 物品 / 交易紀錄" />
+      <select class="field" id="item-sort">
+        <option value="default" data-i18n="defaultOrder">預設排序</option>
+        <option value="price-desc" data-i18n="priceHighToLow">價格由高到低</option>
+        <option value="price-asc" data-i18n="priceLowToHigh">價格由低到高</option>
+        <option value="name" data-i18n="nameAZ">名稱 A-Z</option>
       </select>
-      <button class="refresh" id="refresh" type="button">Refresh</button>
+      <button class="refresh" id="refresh" type="button" data-i18n="refresh">更新</button>
     </section>
 
-    <section class="summary" aria-label="Market summary">
-      <div class="metric">
-        <div class="metric-label">Selected Market</div>
-        <div class="metric-value" id="metric-market">Resources</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Items With Price</div>
-        <div class="metric-value" id="metric-priced">0 / 0</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Average Price</div>
-        <div class="metric-value" id="metric-average">-</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">Next Refresh</div>
-        <div class="metric-value" id="metric-next">-</div>
-      </div>
-    </section>
+    <div class="status" aria-live="polite">
+      <span class="dot loading" id="status-dot"></span>
+      <span id="status-text" data-i18n="preparing">準備中…</span>
+    </div>
 
     <div id="error-area"></div>
-    <section class="transaction-panel" aria-label="Player transaction search">
-      <div class="transaction-head">
-        <input class="field" id="player-search" type="search" placeholder="Search buyer or seller player name" autocomplete="off" />
-        <div class="transaction-count" id="transaction-count">0 transactions</div>
+
+    <section class="section" id="dashboard-section">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="marketOverview">市場總覽</h2>
+        <div class="section-note" id="dashboard-note"></div>
       </div>
-      <div class="transaction-list" id="transaction-results" aria-live="polite"></div>
-    </section>
-
-    <section class="analytics" aria-label="Marketplace analytics dashboard">
-      <div class="analytics-toolbar">
-        <input class="field" id="analytics-player" type="search" placeholder="Analyze player name" autocomplete="off" />
-        <select class="field" id="leaderboard-limit">
-          <option value="10">Top 10</option>
-          <option value="50">Top 50</option>
-        </select>
-        <select class="field" id="leaderboard-sort">
-          <option value="revenue">Sort by total income</option>
-          <option value="count">Sort by trade count</option>
-        </select>
-      </div>
-
-      <div class="analytics-grid">
-        <section class="analytics-panel">
-          <h2 class="panel-title">Player Income Ranking</h2>
-          <div class="table-list" id="leaderboard-list"></div>
-        </section>
-
-        <section class="analytics-panel">
-          <h2 class="panel-title">Related Accounts</h2>
-          <div class="network-list" id="network-list"></div>
-        </section>
-
-        <section class="analytics-panel">
-          <h2 class="panel-title">Marketplace Pattern Score</h2>
-          <div class="score-wrap">
-            <div class="mini-grid" id="score-metrics"></div>
-            <div class="score-line" aria-hidden="true"><div class="score-fill" id="score-fill"></div></div>
-            <div class="table-list" id="score-detail"></div>
-          </div>
-        </section>
-
-        <section class="analytics-panel">
-          <h2 class="panel-title">Market Pattern Notices</h2>
-          <div class="warning-list" id="warning-list"></div>
-        </section>
-
-        <section class="analytics-panel">
-          <h2 class="panel-title">Daily Sigil Income</h2>
-          <div class="table-list" id="daily-income-list"></div>
-        </section>
-
-        <section class="analytics-panel">
-          <h2 class="panel-title">Item Market Concentration</h2>
-          <div class="table-list" id="item-concentration-list"></div>
-        </section>
+      <div class="metric-grid" id="market-metrics"></div>
+      <div class="dashboard-grid">
+        <article class="card panel">
+          <div class="section-head"><h3 class="section-title" data-i18n="top10IncomePlayers">Top 10 收入玩家</h3></div>
+          <div class="compact-list" id="top-income-list"></div>
+        </article>
+        <article class="card panel">
+          <div class="section-head"><h3 class="section-title" data-i18n="top5ConcentratedItems">Top 5 集中商品</h3></div>
+          <div class="compact-list" id="top-concentration-list"></div>
+        </article>
+        <article class="card panel">
+          <div class="section-head"><h3 class="section-title" data-i18n="highPatternScorePlayers">高市場模式分數玩家</h3></div>
+          <div class="compact-list" id="high-score-list"></div>
+        </article>
+        <article class="card panel wide">
+          <div class="section-head"><h3 class="section-title" data-i18n="recent20Transactions">最近 20 筆交易</h3></div>
+          <div id="recent-transactions"></div>
+        </article>
       </div>
     </section>
-    <section class="grid" id="grid" aria-live="polite"></section>
+
+    <section class="section" id="search-section">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="searchResults">搜尋結果</h2>
+        <div class="section-note" id="search-summary"></div>
+      </div>
+      <div class="search-layout">
+        <article class="card panel">
+          <h3 class="section-title" data-i18n="relatedPlayers">相關玩家</h3>
+          <div class="compact-list" id="search-players"></div>
+        </article>
+        <article class="card panel">
+          <h3 class="section-title" data-i18n="relatedItems">相關物品</h3>
+          <div class="compact-list" id="search-items"></div>
+        </article>
+        <article class="card panel">
+          <h3 class="section-title" data-i18n="relatedTransactions">相關交易紀錄</h3>
+          <div class="compact-list" id="search-transactions"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="player-section">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="playerProfile">玩家分析</h2>
+        <div class="section-note" id="player-note"></div>
+      </div>
+      <div class="card profile" id="player-profile"></div>
+      <div class="tabs" id="analysis-tabs" role="tablist">
+        <button class="tab-btn active" type="button" data-tab="overview" data-i18n="overview">總覽</button>
+        <button class="tab-btn" type="button" data-tab="transactions" data-i18n="transactions">交易紀錄</button>
+        <button class="tab-btn" type="button" data-tab="related" data-i18n="relatedAccounts">關聯帳戶</button>
+        <button class="tab-btn" type="button" data-tab="daily" data-i18n="dailyIncome">每日收入</button>
+        <button class="tab-btn" type="button" data-tab="alerts" data-i18n="patternAlerts">市場模式通知</button>
+        <button class="tab-btn" type="button" data-tab="concentration" data-i18n="itemConcentration">商品集中度</button>
+      </div>
+      <div class="tab-panel active" id="tab-overview"></div>
+      <div class="tab-panel" id="tab-transactions"></div>
+      <div class="tab-panel" id="tab-related"></div>
+      <div class="tab-panel" id="tab-daily"></div>
+      <div class="tab-panel" id="tab-alerts"></div>
+      <div class="tab-panel" id="tab-concentration"></div>
+    </section>
+
+    <section class="section" id="items-section">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="itemMarketConcentration">商品市場集中度</h2>
+        <div class="section-note" id="item-note"></div>
+      </div>
+      <div class="item-grid" id="item-grid"></div>
+    </section>
   </main>
 
   <script>
@@ -760,115 +749,21 @@
     const REFRESH_MS = 5 * 1000;
     const REQUEST_DELAY_MS = 120;
 
+    const FALLBACK_I18N = {
+      "zh-TW": {
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度集中", abnormalPattern: "異常模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z"
+      },
+      en: {
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Concentration", abnormalPattern: "Abnormal Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z"
+      }
+    };
+
     const RESOURCES = [
-      { id: 21101, name: "Carrot", group: "Crop" },
-      { id: 21102, name: "Potato", group: "Crop" },
-      { id: 21103, name: "Pumpkin", group: "Crop" },
-      { id: 21104, name: "Broccoli", group: "Crop" },
-      { id: 21105, name: "Tomato", group: "Crop" },
-      { id: 21106, name: "Beet", group: "Crop" },
-      { id: 21107, name: "Wheat", group: "Crop" },
-      { id: 21108, name: "Corn", group: "Crop" },
-      { id: 21109, name: "Chili", group: "Crop" },
-      { id: 21110, name: "Strawberry", group: "Crop" },
-      { id: 21111, name: "Watermelon", group: "Crop" },
-      { id: 21112, name: "Ryegrass", group: "Crop" },
-      { id: 22101, name: "Betel Nut", group: "Fruit" },
-      { id: 22102, name: "Banana", group: "Fruit" },
-      { id: 22103, name: "Dates", group: "Fruit" },
-      { id: 22104, name: "Mango", group: "Fruit" },
-      { id: 22105, name: "Sugar Apple", group: "Fruit" },
-      { id: 22106, name: "Cherry", group: "Fruit" },
-      { id: 22107, name: "Green Plum", group: "Fruit" },
-      { id: 22108, name: "Grape", group: "Fruit" },
-      { id: 22109, name: "Pomegranate", group: "Fruit" },
-      { id: 22110, name: "Coconut", group: "Fruit" },
-      { id: 211, name: "Poplar Wood", group: "Wood" },
-      { id: 212, name: "Birch Wood", group: "Wood" },
-      { id: 213, name: "Pine Wood", group: "Wood" },
-      { id: 214, name: "Oak Wood", group: "Wood" },
-      { id: 221, name: "Stone", group: "Ore" },
-      { id: 222, name: "Copper Ore", group: "Ore" },
-      { id: 223, name: "Iron Ore", group: "Ore" },
-      { id: 224, name: "Mithril Ore", group: "Ore" },
-      { id: 311, name: "Egg", group: "Animal" },
-      { id: 321, name: "Milk", group: "Animal" }
+      { id: 21101, name: "Carrot", group: "Crop" }, { id: 21102, name: "Potato", group: "Crop" }, { id: 21103, name: "Pumpkin", group: "Crop" }, { id: 21104, name: "Broccoli", group: "Crop" }, { id: 21105, name: "Tomato", group: "Crop" }, { id: 21106, name: "Beet", group: "Crop" }, { id: 21107, name: "Wheat", group: "Crop" }, { id: 21108, name: "Corn", group: "Crop" }, { id: 21109, name: "Chili", group: "Crop" }, { id: 21110, name: "Strawberry", group: "Crop" }, { id: 21111, name: "Watermelon", group: "Crop" }, { id: 21112, name: "Ryegrass", group: "Crop" }, { id: 22101, name: "Betel Nut", group: "Fruit" }, { id: 22102, name: "Banana", group: "Fruit" }, { id: 22103, name: "Dates", group: "Fruit" }, { id: 22104, name: "Mango", group: "Fruit" }, { id: 22105, name: "Sugar Apple", group: "Fruit" }, { id: 22106, name: "Cherry", group: "Fruit" }, { id: 22107, name: "Green Plum", group: "Fruit" }, { id: 22108, name: "Grape", group: "Fruit" }, { id: 22109, name: "Pomegranate", group: "Fruit" }, { id: 22110, name: "Coconut", group: "Fruit" }, { id: 211, name: "Poplar Wood", group: "Wood" }, { id: 212, name: "Birch Wood", group: "Wood" }, { id: 213, name: "Pine Wood", group: "Wood" }, { id: 214, name: "Oak Wood", group: "Wood" }, { id: 221, name: "Stone", group: "Ore" }, { id: 222, name: "Copper Ore", group: "Ore" }, { id: 223, name: "Iron Ore", group: "Ore" }, { id: 224, name: "Mithril Ore", group: "Ore" }, { id: 311, name: "Egg", group: "Animal" }, { id: 321, name: "Milk", group: "Animal" }
     ];
 
     const GENERAL = [
-      { id: 15, name: "Gem Gift Card", group: "Gift Card" },
-      { id: 2000, name: "Damaged Treasure Map", group: "Treasure Map" },
-      { id: 2101, name: "Leather Hydration Bag", group: "Relic" },
-      { id: 2102, name: "Turpentine Torch", group: "Relic" },
-      { id: 2103, name: "Skinning Knife", group: "Relic" },
-      { id: 2104, name: "Animal Skin Quiver", group: "Relic" },
-      { id: 2105, name: "Hunting Horn", group: "Relic" },
-      { id: 2106, name: "Brass Lantern", group: "Relic" },
-      { id: 2107, name: "Whetstone", group: "Relic" },
-      { id: 2108, name: "Sealed Coarse Salt Shaker", group: "Relic" },
-      { id: 2109, name: "Flint", group: "Relic" },
-      { id: 2110, name: "Bundle Of Linen Rope", group: "Relic" },
-      { id: 2111, name: "Hand Drawn Area Sketch", group: "Relic" },
-      { id: 2112, name: "Paint Sealed Letter", group: "Relic" },
-      { id: 2113, name: "Dark Camouflage Cloak", group: "Relic" },
-      { id: 2114, name: "Shabby Metal Sign", group: "Relic" },
-      { id: 2115, name: "Bronze Pocket Watch", group: "Relic" },
-      { id: 2116, name: "Complete Antlers", group: "Relic" },
-      { id: 2117, name: "Old Pipe", group: "Relic" },
-      { id: 2118, name: "Portable Wine Bottle", group: "Relic" },
-      { id: 2119, name: "Animal Tooth Necklace", group: "Relic" },
-      { id: 2120, name: "Animal Bone Dice", group: "Relic" },
-      { id: 2201, name: "Bronze Telescope", group: "Relic" },
-      { id: 2202, name: "Forged Seal", group: "Relic" },
-      { id: 2203, name: "Nautical Compass", group: "Relic" },
-      { id: 2204, name: "Crystal Monocle", group: "Relic" },
-      { id: 2205, name: "Portable Balance", group: "Relic" },
-      { id: 2206, name: "Precision Hourglass", group: "Relic" },
-      { id: 2207, name: "Brass Astrolabe", group: "Relic" },
-      { id: 2208, name: "Exquisite Nautical Charts", group: "Relic" },
-      { id: 2209, name: "Seiko Magnifying Glass", group: "Relic" },
-      { id: 2210, name: "Music Box", group: "Relic" },
-      { id: 201001, name: "Blueprint - Rootbud Pin", group: "Blueprint" },
-      { id: 201002, name: "Blueprint - Earthbud Clasp", group: "Blueprint" },
-      { id: 201003, name: "Blueprint - Vine Clip", group: "Blueprint" },
-      { id: 201004, name: "Blueprint - Greenbud Pin", group: "Blueprint" },
-      { id: 201005, name: "Blueprint - Rosy Chain", group: "Blueprint" },
-      { id: 201006, name: "Blueprint - Sweetroot Clasp", group: "Blueprint" },
-      { id: 201007, name: "Blueprint - Grain Pin", group: "Blueprint" },
-      { id: 201008, name: "Blueprint - Sungrain Drop", group: "Blueprint" },
-      { id: 201101, name: "Blueprint - Seedling Pin", group: "Blueprint" },
-      { id: 201102, name: "Blueprint - Fieldbloom Pin", group: "Blueprint" },
-      { id: 201103, name: "Blueprint - Rootbloom Pin", group: "Blueprint" },
-      { id: 201104, name: "Blueprint - Soil Clasp", group: "Blueprint" },
-      { id: 201105, name: "Blueprint - Vinebloom Clip", group: "Blueprint" },
-      { id: 201106, name: "Blueprint - Verdant Pin", group: "Blueprint" },
-      { id: 201107, name: "Blueprint - Rosy Pin", group: "Blueprint" },
-      { id: 201108, name: "Blueprint - Rootleaf Pin", group: "Blueprint" },
-      { id: 201801, name: "Blueprint - Goldgrain Pin", group: "Blueprint" },
-      { id: 201802, name: "Blueprint - Sungrain Charm", group: "Blueprint" },
-      { id: 202001, name: "Blueprint-Budwood Charm", group: "Blueprint" },
-      { id: 202002, name: "Blueprint - Whiteleaf Charm", group: "Blueprint" },
-      { id: 202101, name: "Blueprint - Pebble Charm", group: "Blueprint" },
-      { id: 202401, name: "Blueprint - Vigor Charm", group: "Blueprint" },
-      { id: 202501, name: "Blueprint - Fortune Charm", group: "Blueprint" },
-      { id: 203001, name: "Blueprint - Rootbud Book", group: "Blueprint" },
-      { id: 203002, name: "Blueprint - Earthbud Book", group: "Blueprint" },
-      { id: 203003, name: "Blueprint - Vine Book", group: "Blueprint" },
-      { id: 203004, name: "Blueprint - Greenbud Book", group: "Blueprint" },
-      { id: 203005, name: "Blueprint - Rosy Book", group: "Blueprint" },
-      { id: 203006, name: "Blueprint - Sweetroot Book", group: "Blueprint" },
-      { id: 203007, name: "Blueprint - Grain Book", group: "Blueprint" },
-      { id: 203008, name: "Blueprint - Sungrain Book", group: "Blueprint" },
-      { id: 203101, name: "Blueprint - Seedling Book", group: "Blueprint" },
-      { id: 203102, name: "Blueprint - Field Book", group: "Blueprint" },
-      { id: 203801, name: "Blueprint - Workshop Book", group: "Blueprint" },
-      { id: 203802, name: "Blueprint - Kitchen Book", group: "Blueprint" },
-      { id: 203803, name: "Blueprint - Bakery Book", group: "Blueprint" },
-      { id: 204001, name: "Blueprint - Starbell", group: "Blueprint" },
-      { id: 204002, name: "Blueprint - Field Lamp", group: "Blueprint" },
-      { id: 204003, name: "Blueprint - Grove Lamp", group: "Blueprint" },
-      { id: 204004, name: "Blueprint - Mine Lamp", group: "Blueprint" },
-      { id: 204005, name: "Blueprint - Herd Bell", group: "Blueprint" }
+      { id: 15, name: "Gem Gift Card", group: "Gift Card" }, { id: 2000, name: "Damaged Treasure Map", group: "Treasure Map" }, { id: 2101, name: "Leather Hydration Bag", group: "Relic" }, { id: 2102, name: "Turpentine Torch", group: "Relic" }, { id: 2103, name: "Skinning Knife", group: "Relic" }, { id: 2104, name: "Animal Skin Quiver", group: "Relic" }, { id: 2105, name: "Hunting Horn", group: "Relic" }, { id: 2106, name: "Brass Lantern", group: "Relic" }, { id: 2107, name: "Whetstone", group: "Relic" }, { id: 2108, name: "Sealed Coarse Salt Shaker", group: "Relic" }, { id: 2109, name: "Flint", group: "Relic" }, { id: 2110, name: "Bundle Of Linen Rope", group: "Relic" }, { id: 2111, name: "Hand Drawn Area Sketch", group: "Relic" }, { id: 2112, name: "Paint Sealed Letter", group: "Relic" }, { id: 2113, name: "Dark Camouflage Cloak", group: "Relic" }, { id: 2114, name: "Shabby Metal Sign", group: "Relic" }, { id: 2115, name: "Bronze Pocket Watch", group: "Relic" }, { id: 2116, name: "Complete Antlers", group: "Relic" }, { id: 2117, name: "Old Pipe", group: "Relic" }, { id: 2118, name: "Portable Wine Bottle", group: "Relic" }, { id: 2119, name: "Animal Tooth Necklace", group: "Relic" }, { id: 2120, name: "Animal Bone Dice", group: "Relic" }, { id: 2201, name: "Bronze Telescope", group: "Relic" }, { id: 2202, name: "Forged Seal", group: "Relic" }, { id: 2203, name: "Nautical Compass", group: "Relic" }, { id: 2204, name: "Crystal Monocle", group: "Relic" }, { id: 2205, name: "Portable Balance", group: "Relic" }, { id: 2206, name: "Precision Hourglass", group: "Relic" }, { id: 2207, name: "Brass Astrolabe", group: "Relic" }, { id: 2208, name: "Exquisite Nautical Charts", group: "Relic" }, { id: 2209, name: "Seiko Magnifying Glass", group: "Relic" }, { id: 2210, name: "Music Box", group: "Relic" }, { id: 201001, name: "Blueprint - Rootbud Pin", group: "Blueprint" }, { id: 201002, name: "Blueprint - Earthbud Clasp", group: "Blueprint" }, { id: 201003, name: "Blueprint - Vine Clip", group: "Blueprint" }, { id: 201004, name: "Blueprint - Greenbud Pin", group: "Blueprint" }, { id: 201005, name: "Blueprint - Rosy Chain", group: "Blueprint" }, { id: 201006, name: "Blueprint - Sweetroot Clasp", group: "Blueprint" }, { id: 201007, name: "Blueprint - Grain Pin", group: "Blueprint" }, { id: 201008, name: "Blueprint - Sungrain Drop", group: "Blueprint" }, { id: 201101, name: "Blueprint - Seedling Pin", group: "Blueprint" }, { id: 201102, name: "Blueprint - Fieldbloom Pin", group: "Blueprint" }, { id: 201103, name: "Blueprint - Rootbloom Pin", group: "Blueprint" }, { id: 201104, name: "Blueprint - Soil Clasp", group: "Blueprint" }, { id: 201105, name: "Blueprint - Vinebloom Clip", group: "Blueprint" }, { id: 201106, name: "Blueprint - Verdant Pin", group: "Blueprint" }, { id: 201107, name: "Blueprint - Rosy Pin", group: "Blueprint" }, { id: 201108, name: "Blueprint - Rootleaf Pin", group: "Blueprint" }, { id: 201801, name: "Blueprint - Goldgrain Pin", group: "Blueprint" }, { id: 201802, name: "Blueprint - Sungrain Charm", group: "Blueprint" }, { id: 202001, name: "Blueprint-Budwood Charm", group: "Blueprint" }, { id: 202002, name: "Blueprint - Whiteleaf Charm", group: "Blueprint" }, { id: 202101, name: "Blueprint - Pebble Charm", group: "Blueprint" }, { id: 202401, name: "Blueprint - Vigor Charm", group: "Blueprint" }, { id: 202501, name: "Blueprint - Fortune Charm", group: "Blueprint" }, { id: 203001, name: "Blueprint - Rootbud Book", group: "Blueprint" }, { id: 203002, name: "Blueprint - Earthbud Book", group: "Blueprint" }, { id: 203003, name: "Blueprint - Vine Book", group: "Blueprint" }, { id: 203004, name: "Blueprint - Greenbud Book", group: "Blueprint" }, { id: 203005, name: "Blueprint - Rosy Book", group: "Blueprint" }, { id: 203006, name: "Blueprint - Sweetroot Book", group: "Blueprint" }, { id: 203007, name: "Blueprint - Grain Book", group: "Blueprint" }, { id: 203008, name: "Blueprint - Sungrain Book", group: "Blueprint" }, { id: 203101, name: "Blueprint - Seedling Book", group: "Blueprint" }, { id: 203102, name: "Blueprint - Field Book", group: "Blueprint" }, { id: 203801, name: "Blueprint - Workshop Book", group: "Blueprint" }, { id: 203802, name: "Blueprint - Kitchen Book", group: "Blueprint" }, { id: 203803, name: "Blueprint - Bakery Book", group: "Blueprint" }, { id: 204001, name: "Blueprint - Starbell", group: "Blueprint" }, { id: 204002, name: "Blueprint - Field Lamp", group: "Blueprint" }, { id: 204003, name: "Blueprint - Grove Lamp", group: "Blueprint" }, { id: 204004, name: "Blueprint - Mine Lamp", group: "Blueprint" }, { id: 204005, name: "Blueprint - Herd Bell", group: "Blueprint" }
     ];
 
     const ITEMS = [
@@ -877,7 +772,10 @@
     ];
 
     const state = {
+      lang: localStorage.getItem("elf-market-lang") || "zh-TW",
+      i18n: FALLBACK_I18N["zh-TW"],
       activeCategory: "Resources",
+      activeTab: "overview",
       prices: new Map(),
       loading: false,
       nextRefreshAt: null,
@@ -889,523 +787,109 @@
     const el = {
       dot: document.getElementById("status-dot"),
       status: document.getElementById("status-text"),
-      search: document.getElementById("search"),
-      playerSearch: document.getElementById("player-search"),
-      analyticsPlayer: document.getElementById("analytics-player"),
-      leaderboardLimit: document.getElementById("leaderboard-limit"),
-      leaderboardSort: document.getElementById("leaderboard-sort"),
-      sort: document.getElementById("sort"),
+      search: document.getElementById("global-search"),
+      sort: document.getElementById("item-sort"),
       refresh: document.getElementById("refresh"),
-      grid: document.getElementById("grid"),
-      transactionCount: document.getElementById("transaction-count"),
-      transactionResults: document.getElementById("transaction-results"),
-      leaderboardList: document.getElementById("leaderboard-list"),
-      networkList: document.getElementById("network-list"),
-      scoreMetrics: document.getElementById("score-metrics"),
-      scoreFill: document.getElementById("score-fill"),
-      scoreDetail: document.getElementById("score-detail"),
-      warningList: document.getElementById("warning-list"),
-      dailyIncomeList: document.getElementById("daily-income-list"),
-      itemConcentrationList: document.getElementById("item-concentration-list"),
       error: document.getElementById("error-area"),
-      market: document.getElementById("metric-market"),
-      priced: document.getElementById("metric-priced"),
-      average: document.getElementById("metric-average"),
-      next: document.getElementById("metric-next"),
-      tabs: [...document.querySelectorAll(".tab")]
+      dashboardNote: document.getElementById("dashboard-note"),
+      marketMetrics: document.getElementById("market-metrics"),
+      topIncome: document.getElementById("top-income-list"),
+      topConcentration: document.getElementById("top-concentration-list"),
+      highScore: document.getElementById("high-score-list"),
+      recentTransactions: document.getElementById("recent-transactions"),
+      searchSummary: document.getElementById("search-summary"),
+      searchPlayers: document.getElementById("search-players"),
+      searchItems: document.getElementById("search-items"),
+      searchTransactions: document.getElementById("search-transactions"),
+      playerNote: document.getElementById("player-note"),
+      playerProfile: document.getElementById("player-profile"),
+      itemNote: document.getElementById("item-note"),
+      itemGrid: document.getElementById("item-grid"),
+      marketTabs: [...document.querySelectorAll(".market-tab")],
+      tabButtons: [...document.querySelectorAll(".tab-btn")],
+      langButtons: [...document.querySelectorAll(".lang-btn")]
     };
 
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
+    function t(key) { return state.i18n[key] || FALLBACK_I18N.en[key] || key; }
+    function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
+    function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
+    function formatPrice(value) { if (!Number.isFinite(value) || value <= 0) return "-"; return value >= 1 ? value.toFixed(4) : value.toFixed(6); }
+    function formatInteger(value) { if (!Number.isFinite(value)) return "-"; return new Intl.NumberFormat("en-US").format(value); }
+    function formatTime(value) { const ts = Number(value); if (!Number.isFinite(ts) || ts <= 0) return "-"; return new Date(ts * 1000).toLocaleString(state.lang === "zh-TW" ? "zh-TW" : "en-US", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }); }
+    function playerKey(name) { return String(name || "").trim().toLowerCase(); }
+    function isKnownPlayer(name) { const value = String(name || "").trim(); return value && value !== "-"; }
 
     function setStatus(kind, text) {
       el.dot.className = "dot" + (kind === "loading" ? " loading" : kind === "error" ? " error" : "");
       el.status.textContent = text;
     }
 
-    function formatPrice(value) {
-      if (!Number.isFinite(value) || value <= 0) return "-";
-      return value >= 1 ? value.toFixed(4) : value.toFixed(6);
-    }
-
-    function formatInteger(value) {
-      if (!Number.isFinite(value)) return "-";
-      return new Intl.NumberFormat("en-US").format(value);
-    }
-
-    function formatTime(date) {
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    }
-
-    function formatTransactionTime(value) {
-      const timestamp = Number(value);
-      if (!Number.isFinite(timestamp) || timestamp <= 0) return "-";
-      return new Date(timestamp * 1000).toLocaleString([], {
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function getCategoryItems() {
-      return ITEMS.filter((item) => item.category === state.activeCategory);
-    }
-
-    function getVisibleItems() {
-      const query = el.search.value.trim().toLowerCase();
-      let items = getCategoryItems().filter((item) => {
-        if (!query) return true;
-        return item.name.toLowerCase().includes(query) ||
-          item.group.toLowerCase().includes(query) ||
-          String(item.id).includes(query);
-      });
-
-      const sort = el.sort.value;
-      items = [...items].sort((a, b) => {
-        const pa = state.prices.get(a.id)?.price;
-        const pb = state.prices.get(b.id)?.price;
-        if (sort === "name") return a.name.localeCompare(b.name);
-        if (sort === "price-asc") return (pa ?? Number.POSITIVE_INFINITY) - (pb ?? Number.POSITIVE_INFINITY);
-        if (sort === "price-desc") return (pb ?? Number.NEGATIVE_INFINITY) - (pa ?? Number.NEGATIVE_INFINITY);
-        return a.order - b.order;
-      });
-
-      return items;
-    }
-
-    function renderItemMedia(item) {
-      const fallback = escapeHtml(item.name.slice(0, 1).toUpperCase());
-      if (item.category === "Resources") {
-        return `
-          <div class="item-media">
-            <img class="item-img" src="${IMG_BASE}${item.id}.png" alt="${escapeHtml(item.name)}" onerror="this.replaceWith(document.createTextNode('${fallback}'))" />
-          </div>
-        `;
+    async function loadLanguage(lang) {
+      const selected = lang === "en" ? "en" : "zh-TW";
+      try {
+        const res = await fetch(`languages/${selected}.json`, { cache: "no-cache" });
+        if (res.ok) state.i18n = { ...FALLBACK_I18N[selected], ...(await res.json()) };
+        else state.i18n = FALLBACK_I18N[selected];
+      } catch {
+        state.i18n = FALLBACK_I18N[selected];
       }
-      return `<div class="item-media" aria-hidden="true">${fallback}</div>`;
+      state.lang = selected;
+      localStorage.setItem("elf-market-lang", selected);
+      document.documentElement.lang = selected;
+      applyI18n();
+      render();
     }
 
-    function getCategoryTransactions() {
-      return getCategoryItems()
-        .flatMap((item) => state.prices.get(item.id)?.transactions || [])
-        .sort((a, b) => Number(b.txnTime || 0) - Number(a.txnTime || 0));
+    function applyI18n() {
+      document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => { node.placeholder = t(node.dataset.i18nPlaceholder); });
+      el.langButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.lang === state.lang));
+      setStatus(state.loading ? "loading" : "ok", state.loading ? t("loading") : `${t("updated")} ${new Date().toLocaleTimeString()}`);
     }
 
-    function getMatchingTransactions() {
-      const query = el.playerSearch.value.trim().toLowerCase();
-      if (!query) return [];
-      return getCategoryTransactions()
-        .filter((tx) => {
-          return tx.buyerName.toLowerCase().includes(query) ||
-            tx.sellerName.toLowerCase().includes(query) ||
-            tx.orderUserName.toLowerCase().includes(query) ||
-            tx.traderName.toLowerCase().includes(query);
-        })
-        .slice(0, 80);
-    }
-
-    function renderTransactionSearch() {
-      const query = el.playerSearch.value.trim();
-      if (!query) {
-        el.transactionCount.textContent = "0 transactions";
-        el.transactionResults.innerHTML = '<div class="empty">Enter a player name to search recent transactions.</div>';
-        return;
-      }
-
-      const matches = getMatchingTransactions();
-      el.transactionCount.textContent = `${matches.length} transaction${matches.length === 1 ? "" : "s"}`;
-
-      if (!matches.length) {
-        el.transactionResults.innerHTML = `<div class="empty">No recent transactions found for "${escapeHtml(query)}".</div>`;
-        return;
-      }
-
-      el.transactionResults.innerHTML = matches.map((tx) => `
-        <article class="transaction-row">
-          <div class="transaction-cell">
-            <span class="transaction-label">Item</span>
-            <strong class="transaction-value">${escapeHtml(tx.itemName)} (${tx.itemId})</strong>
-          </div>
-          <div class="transaction-cell">
-            <span class="transaction-label">Seller Player</span>
-            <strong class="transaction-value">${escapeHtml(tx.sellerName)}</strong>
-          </div>
-          <div class="transaction-cell">
-            <span class="transaction-label">Buyer Player</span>
-            <strong class="transaction-value">${escapeHtml(tx.buyerName)}</strong>
-          </div>
-          <div class="transaction-cell">
-            <span class="transaction-label">Price</span>
-            <strong class="transaction-value">${formatPrice(tx.price)}</strong>
-          </div>
-          <div class="transaction-cell">
-            <span class="transaction-label">Quantity</span>
-            <strong class="transaction-value">${formatInteger(tx.itemNum)}</strong>
-          </div>
-          <div class="transaction-cell">
-            <span class="transaction-label">Time</span>
-            <strong class="transaction-value">${formatTransactionTime(tx.txnTime)}</strong>
-          </div>
-        </article>
-      `).join("");
-    }
-
-    function playerKey(name) {
-      return String(name || "").trim().toLowerCase();
-    }
-
-    function isKnownPlayer(name) {
-      const value = String(name || "").trim();
-      return value && value !== "-";
-    }
-
+    function getCategoryItems() { return ITEMS.filter((item) => item.category === state.activeCategory); }
+    function getCategoryTransactions() { return getCategoryItems().flatMap((item) => state.prices.get(item.id)?.transactions || []).sort((a, b) => Number(b.txnTime || 0) - Number(a.txnTime || 0)); }
     function getAllPlayerNames(transactions) {
       const names = new Map();
-      transactions.forEach((tx) => {
-        [tx.sellerName, tx.buyerName, tx.orderUserName, tx.traderName].forEach((name) => {
-          if (isKnownPlayer(name) && !names.has(playerKey(name))) {
-            names.set(playerKey(name), name);
-          }
-        });
-      });
+      transactions.forEach((tx) => [tx.sellerName, tx.buyerName, tx.orderUserName, tx.traderName].forEach((name) => {
+        if (isKnownPlayer(name) && !names.has(playerKey(name))) names.set(playerKey(name), name);
+      }));
       return names;
     }
-
     function resolvePlayerName(query, transactions) {
       const value = query.trim();
       if (!value) return null;
-      const key = playerKey(value);
       const names = getAllPlayerNames(transactions);
-      if (names.has(key)) return names.get(key);
-      const partial = [...names.entries()].find(([nameKey]) => nameKey.includes(key));
-      return partial?.[1] || value;
+      if (names.has(playerKey(value))) return names.get(playerKey(value));
+      return [...names.entries()].find(([key]) => key.includes(playerKey(value)))?.[1] || null;
     }
-
     function getPlayerTransactions(playerName, transactions) {
       const key = playerKey(playerName);
       if (!key) return [];
       return transactions.filter((tx) => playerKey(tx.sellerName) === key || playerKey(tx.buyerName) === key);
     }
 
-    function renderLeaderboard(transactions) {
-      if (!transactions.length) {
-        el.leaderboardList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
-        return;
-      }
-
+    function sellerStats(transactions) {
       const stats = new Map();
       transactions.forEach((tx) => {
         if (!isKnownPlayer(tx.sellerName)) return;
         const key = playerKey(tx.sellerName);
-        const row = stats.get(key) || {
-          name: tx.sellerName,
-          revenue: 0,
-          tradeCount: 0,
-          buyers: new Set()
-        };
-        row.revenue += Number(tx.totalAmountSigil) || 0;
-        row.tradeCount += 1;
+        const row = stats.get(key) || { name: tx.sellerName, income: 0, count: 0, buyers: new Set(), lastSeen: 0, lowCount: 0 };
+        row.income += Number(tx.totalAmountSigil) || 0;
+        row.count += 1;
+        row.lastSeen = Math.max(row.lastSeen, Number(tx.txnTime) || 0);
+        if (Number(tx.price) > 0 && Number(tx.price) <= 0.011) row.lowCount += 1;
         if (isKnownPlayer(tx.buyerName)) row.buyers.add(playerKey(tx.buyerName));
         stats.set(key, row);
       });
-
-      const limit = Number(el.leaderboardLimit.value);
-      const sort = el.leaderboardSort.value;
-      const rows = [...stats.values()]
-        .sort((a, b) => sort === "count" ? b.tradeCount - a.tradeCount || b.revenue - a.revenue : b.revenue - a.revenue || b.tradeCount - a.tradeCount)
-        .slice(0, limit);
-
-      if (!rows.length) {
-        el.leaderboardList.innerHTML = '<div class="empty">No seller income records yet.</div>';
-        return;
-      }
-
-      el.leaderboardList.innerHTML = rows.map((row, index) => `
-        <article class="data-row">
-          <div class="data-main">#${index + 1} ${escapeHtml(row.name)}<span class="data-sub">${row.buyers.size} related buyers</span></div>
-          <div class="data-stat"><span>Total Income</span><strong>${formatPrice(row.revenue)}</strong></div>
-          <div class="data-stat"><span>Trade Count</span><strong>${formatInteger(row.tradeCount)}</strong></div>
-          <div class="data-stat"><span>Avg Income</span><strong>${formatPrice(row.revenue / row.tradeCount)}</strong></div>
-        </article>
-      `).join("");
+      return [...stats.values()];
     }
 
-    function buildNetwork(playerName, transactions) {
-      const rows = new Map();
-      const key = playerKey(playerName);
-      getPlayerTransactions(playerName, transactions).forEach((tx) => {
-        const isSeller = playerKey(tx.sellerName) === key;
-        const counterpartyName = isSeller ? tx.buyerName : tx.sellerName;
-        if (!isKnownPlayer(counterpartyName) || playerKey(counterpartyName) === key) return;
-        const counterpartyKey = playerKey(counterpartyName);
-        const row = rows.get(counterpartyKey) || {
-          name: counterpartyName,
-          count: 0,
-          total: 0,
-          items: new Set(),
-          lastTxnTime: 0
-        };
-        row.count += 1;
-        row.total += Number(tx.totalAmountSigil) || 0;
-        row.items.add(tx.itemName);
-        row.lastTxnTime = Math.max(row.lastTxnTime, Number(tx.txnTime) || 0);
-        rows.set(counterpartyKey, row);
-      });
-      return [...rows.values()].sort((a, b) => b.count - a.count || b.total - a.total);
-    }
-
-    function renderNetwork(transactions) {
-      const query = el.analyticsPlayer.value.trim();
-      if (!query) {
-        el.networkList.innerHTML = '<div class="empty">Enter a player name for related accounts.</div>';
-        return;
-      }
-
-      const playerName = resolvePlayerName(query, transactions);
-      const rows = buildNetwork(playerName, transactions);
-      if (!rows.length) {
-        el.networkList.innerHTML = `<div class="empty">${escapeHtml(playerName)} has no loaded related-account records.</div>`;
-        return;
-      }
-
-      el.networkList.innerHTML = `
-        <article class="data-row">
-          <div class="data-main">${escapeHtml(playerName)}<span class="data-sub">Main account</span></div>
-          <div class="data-stat"><span>Related</span><strong>${formatInteger(rows.length)}</strong></div>
-          <div class="data-stat"><span>Trades</span><strong>${formatInteger(rows.reduce((sum, row) => sum + row.count, 0))}</strong></div>
-          <div class="data-stat"><span>Total</span><strong>${formatPrice(rows.reduce((sum, row) => sum + row.total, 0))}</strong></div>
-        </article>
-        ${rows.slice(0, 30).map((row) => `
-          <article class="data-row">
-            <div class="data-main">${escapeHtml(row.name)}<span class="data-sub">${[...row.items].slice(0, 3).map(escapeHtml).join(", ")}</span></div>
-            <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
-            <div class="data-stat"><span>Total Amount</span><strong>${formatPrice(row.total)}</strong></div>
-            <div class="data-stat"><span>Last Seen</span><strong>${formatTransactionTime(row.lastTxnTime)}</strong></div>
-          </article>
-        `).join("")}
-      `;
-    }
-
-    function getPairKey(tx) {
-      return [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
-    }
-
-    function maxGroupedCount(transactions, getKey) {
-      const counts = new Map();
-      transactions.forEach((tx) => {
-        const key = getKey(tx);
-        if (!key) return;
-        counts.set(key, (counts.get(key) || 0) + 1);
-      });
-      return Math.max(0, ...counts.values());
-    }
-
-    function getScoreLevel(score) {
-      if (score <= 30) return "正常";
-      if (score <= 60) return "值得觀察";
-      if (score <= 80) return "高度集中";
-      return "異常模式";
-    }
-
-    function computePatternScore(transactions, playerName) {
-      const subjectTransactions = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
-      const txCount = subjectTransactions.length;
-      if (!txCount) {
-        return { score: 0, level: "正常", txCount: 0, relatedCount: 0, lowRatio: 0, repeatRatio: 0, maxHourDensity: 0 };
-      }
-
-      const relatedCount = playerName
-        ? buildNetwork(playerName, transactions).length
-        : getAllPlayerNames(subjectTransactions).size;
-      const lowCount = subjectTransactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length;
-      const lowRatio = lowCount / txCount;
-      const maxRepeat = maxGroupedCount(subjectTransactions, (tx) => `${tx.itemId}:${tx.itemNum}`);
-      const repeatRatio = maxRepeat / txCount;
-      const maxHourDensity = maxGroupedCount(subjectTransactions, (tx) => {
-        const time = Number(tx.txnTime);
-        return Number.isFinite(time) && time > 0 ? String(Math.floor(time / 3600)) : "";
-      });
-
-      const tradeFactor = Math.min(25, txCount * 0.7);
-      const accountFactor = Math.min(20, playerName ? relatedCount * 2.5 : relatedCount * 0.35);
-      const lowFactor = Math.min(20, lowRatio * 40);
-      const repeatFactor = Math.min(20, repeatRatio * 28);
-      const densityFactor = Math.min(15, maxHourDensity * 1.4);
-      const score = Math.round(Math.min(100, tradeFactor + accountFactor + lowFactor + repeatFactor + densityFactor));
-
-      return {
-        score,
-        level: getScoreLevel(score),
-        txCount,
-        relatedCount,
-        lowRatio,
-        repeatRatio,
-        maxHourDensity
-      };
-    }
-
-    function renderPatternScore(transactions) {
-      const query = el.analyticsPlayer.value.trim();
-      const playerName = query ? resolvePlayerName(query, transactions) : null;
-      const result = computePatternScore(transactions, playerName);
-      el.scoreFill.style.width = `${result.score}%`;
-      el.scoreMetrics.innerHTML = `
-        <div class="mini-metric"><span class="mini-label">Score</span><strong class="mini-value">${result.score}</strong></div>
-        <div class="mini-metric"><span class="mini-label">Level</span><strong class="mini-value">${escapeHtml(result.level)}</strong></div>
-        <div class="mini-metric"><span class="mini-label">Subject</span><strong class="mini-value">${escapeHtml(playerName || "Current Market")}</strong></div>
-      `;
-      el.scoreDetail.innerHTML = `
-        <article class="data-row">
-          <div class="data-main">Market Pattern<span class="data-sub">${escapeHtml(state.activeCategory)}</span></div>
-          <div class="data-stat"><span>Trades</span><strong>${formatInteger(result.txCount)}</strong></div>
-          <div class="data-stat"><span>Related</span><strong>${formatInteger(result.relatedCount)}</strong></div>
-          <div class="data-stat"><span>Low Price</span><strong>${(result.lowRatio * 100).toFixed(1)}%</strong></div>
-        </article>
-        <article class="data-row">
-          <div class="data-main">Repeat / Density<span class="data-sub">Fixed item quantity and hourly density</span></div>
-          <div class="data-stat"><span>Repeat</span><strong>${(result.repeatRatio * 100).toFixed(1)}%</strong></div>
-          <div class="data-stat"><span>Hourly Max</span><strong>${formatInteger(result.maxHourDensity)}</strong></div>
-          <div class="data-stat"><span>Range</span><strong>0-100</strong></div>
-        </article>
-      `;
-    }
-
-    function renderWarnings(transactions) {
-      const query = el.analyticsPlayer.value.trim();
-      const playerName = query ? resolvePlayerName(query, transactions) : null;
-      const subjectTransactions = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
-
-      if (!subjectTransactions.length) {
-        el.warningList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
-        return;
-      }
-
-      const warnings = [];
-      const latestTime = Math.max(0, ...subjectTransactions.map((tx) => Number(tx.txnTime) || 0));
-      const recentTransactions = latestTime
-        ? subjectTransactions.filter((tx) => Number(tx.txnTime) >= latestTime - 86400)
-        : subjectTransactions;
-      const pairCounts = new Map();
-      recentTransactions.forEach((tx) => {
-        const key = getPairKey(tx);
-        if (!key.includes("::")) return;
-        pairCounts.set(key, (pairCounts.get(key) || 0) + 1);
-      });
-      const topPairCount = Math.max(0, ...pairCounts.values());
-      if (topPairCount >= 10) warnings.push(`⚠️ 24小時內同一組玩家重複交易 ${topPairCount} 次`);
-
-      const repeatCount = maxGroupedCount(subjectTransactions, (tx) => `${tx.itemId}:${tx.itemNum}`);
-      if (repeatCount >= 10) warnings.push(`⚠️ 相同物品與相同數量重複出現 ${repeatCount} 次`);
-
-      const lowCount = subjectTransactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length;
-      if (lowCount >= 10 || lowCount / subjectTransactions.length >= 0.25) warnings.push(`⚠️ 發現 ${lowCount} 筆 0.01 Sigil 附近低價交易`);
-
-      if (playerName) {
-        const relatedCount = buildNetwork(playerName, transactions).length;
-        if (relatedCount >= 20) warnings.push(`⚠️ 同一玩家與 ${relatedCount}+ 帳號有交易紀錄`);
-      } else {
-        const relatedByPlayer = new Map();
-        subjectTransactions.forEach((tx) => {
-          if (isKnownPlayer(tx.sellerName) && isKnownPlayer(tx.buyerName)) {
-            const sellerKey = playerKey(tx.sellerName);
-            const buyerKey = playerKey(tx.buyerName);
-            if (!relatedByPlayer.has(sellerKey)) relatedByPlayer.set(sellerKey, new Set());
-            if (!relatedByPlayer.has(buyerKey)) relatedByPlayer.set(buyerKey, new Set());
-            relatedByPlayer.get(sellerKey).add(buyerKey);
-            relatedByPlayer.get(buyerKey).add(sellerKey);
-          }
-        });
-        const highRelated = [...relatedByPlayer.values()].reduce((max, set) => Math.max(max, set.size), 0);
-        if (highRelated >= 20) warnings.push(`⚠️ 單一玩家與 ${highRelated}+ 帳號有交易紀錄`);
-      }
-
-      const maxHourDensity = maxGroupedCount(subjectTransactions, (tx) => {
-        const time = Number(tx.txnTime);
-        return Number.isFinite(time) && time > 0 ? String(Math.floor(time / 3600)) : "";
-      });
-      if (maxHourDensity >= 12) warnings.push(`⚠️ 短時間交易密度偏高，單小時 ${maxHourDensity} 筆`);
-
-      el.warningList.innerHTML = warnings.length
-        ? warnings.map((warning) => `<div class="warning-item">${escapeHtml(warning)}</div>`).join("")
-        : '<div class="empty">No notable market-pattern notices.</div>';
-    }
-
-    function getLocalDateKey(value) {
-      const timestamp = Number(value);
-      if (!Number.isFinite(timestamp) || timestamp <= 0) return "Unknown";
-      const date = new Date(timestamp * 1000);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-
-    function renderDailyIncome(transactions) {
-      const query = el.analyticsPlayer.value.trim();
-      if (!query) {
-        el.dailyIncomeList.innerHTML = '<div class="empty">Enter a player name for daily income.</div>';
-        return;
-      }
-
-      const playerName = resolvePlayerName(query, transactions);
-      const key = playerKey(playerName);
-      const rows = new Map();
-      transactions.forEach((tx) => {
-        if (playerKey(tx.sellerName) !== key) return;
-        const dateKey = getLocalDateKey(tx.txnTime);
-        const row = rows.get(dateKey) || { date: dateKey, income: 0, count: 0 };
-        row.income += Number(tx.totalAmountSigil) || 0;
-        row.count += 1;
-        rows.set(dateKey, row);
-      });
-
-      const sorted = [...rows.values()].sort((a, b) => a.date.localeCompare(b.date));
-      if (!sorted.length) {
-        el.dailyIncomeList.innerHTML = `<div class="empty">${escapeHtml(playerName)} has no loaded seller-income records.</div>`;
-        return;
-      }
-
-      let cumulative = 0;
-      el.dailyIncomeList.innerHTML = sorted.map((row) => {
-        cumulative += row.income;
-        return `
-          <article class="data-row">
-            <div class="data-main">${escapeHtml(row.date)}<span class="data-sub">${escapeHtml(playerName)}</span></div>
-            <div class="data-stat"><span>Income</span><strong>${formatPrice(row.income)}</strong></div>
-            <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
-            <div class="data-stat"><span>Cumulative</span><strong>${formatPrice(cumulative)}</strong></div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    function renderItemConcentration(transactions) {
-      if (!transactions.length) {
-        el.itemConcentrationList.innerHTML = '<div class="empty">Waiting for loaded transactions.</div>';
-        return;
-      }
-
+    function itemStats(transactions) {
       const items = new Map();
       transactions.forEach((tx) => {
         const key = String(tx.itemId);
-        const item = items.get(key) || {
-          itemId: tx.itemId,
-          itemName: tx.itemName,
-          count: 0,
-          total: 0,
-          sellers: new Map()
-        };
+        const item = items.get(key) || { itemId: tx.itemId, itemName: tx.itemName, count: 0, total: 0, sellers: new Map() };
         const amount = Number(tx.totalAmountSigil) || 0;
         item.count += 1;
         item.total += amount;
@@ -1418,132 +902,236 @@
         }
         items.set(key, item);
       });
-
-      const rows = [...items.values()]
-        .map((item) => {
-          const topSellers = [...item.sellers.values()].sort((a, b) => b.total - a.total).slice(0, 5);
-          const topTotal = topSellers.reduce((sum, seller) => sum + seller.total, 0);
-          return {
-            ...item,
-            topSellers,
-            topShare: item.total > 0 ? topTotal / item.total : 0
-          };
-        })
-        .sort((a, b) => b.topShare - a.topShare || b.total - a.total)
-        .slice(0, 12);
-
-      if (!rows.length) {
-        el.itemConcentrationList.innerHTML = '<div class="empty">No item concentration records yet.</div>';
-        return;
-      }
-
-      el.itemConcentrationList.innerHTML = rows.map((row) => `
-        <article class="data-row six">
-          <div class="data-main">${escapeHtml(row.itemName)}<span class="data-sub">${row.topSellers.map((seller) => escapeHtml(seller.name)).join(", ") || "No seller records"}</span></div>
-          <div class="data-stat"><span>Trades</span><strong>${formatInteger(row.count)}</strong></div>
-          <div class="data-stat"><span>Total</span><strong>${formatPrice(row.total)}</strong></div>
-          <div class="data-stat"><span>Top 5 Share</span><strong>${(row.topShare * 100).toFixed(1)}%</strong></div>
-          <div class="data-stat"><span>Sellers</span><strong>${formatInteger(row.sellers.size)}</strong></div>
-          <div class="data-stat"><span>Top Seller</span><strong>${escapeHtml(row.topSellers[0]?.name || "-")}</strong></div>
-        </article>
-      `).join("");
+      return [...items.values()].map((item) => {
+        const topSellers = [...item.sellers.values()].sort((a, b) => b.total - a.total).slice(0, 5);
+        const topTotal = topSellers.reduce((sum, seller) => sum + seller.total, 0);
+        return { ...item, topSellers, topShare: item.total > 0 ? topTotal / item.total : 0 };
+      });
     }
 
-    function renderAnalytics() {
-      const transactions = getCategoryTransactions();
-      renderLeaderboard(transactions);
-      renderNetwork(transactions);
-      renderPatternScore(transactions);
-      renderWarnings(transactions);
-      renderDailyIncome(transactions);
-      renderItemConcentration(transactions);
+    function buildNetwork(playerName, transactions) {
+      const rows = new Map();
+      const key = playerKey(playerName);
+      getPlayerTransactions(playerName, transactions).forEach((tx) => {
+        const isSeller = playerKey(tx.sellerName) === key;
+        const counterpartyName = isSeller ? tx.buyerName : tx.sellerName;
+        if (!isKnownPlayer(counterpartyName) || playerKey(counterpartyName) === key) return;
+        const rowKey = playerKey(counterpartyName);
+        const row = rows.get(rowKey) || { name: counterpartyName, count: 0, total: 0, items: new Map(), lastSeen: 0, lowCount: 0 };
+        row.count += 1;
+        row.total += Number(tx.totalAmountSigil) || 0;
+        row.lastSeen = Math.max(row.lastSeen, Number(tx.txnTime) || 0);
+        if (Number(tx.price) > 0 && Number(tx.price) <= 0.011) row.lowCount += 1;
+        row.items.set(tx.itemName, (row.items.get(tx.itemName) || 0) + 1);
+        rows.set(rowKey, row);
+      });
+      return [...rows.values()];
+    }
+
+    function maxGroupedCount(transactions, getKey) {
+      const counts = new Map();
+      transactions.forEach((tx) => {
+        const key = getKey(tx);
+        if (key) counts.set(key, (counts.get(key) || 0) + 1);
+      });
+      return Math.max(0, ...counts.values());
+    }
+
+    function getScoreLevel(score) {
+      if (score <= 30) return t("normalPattern");
+      if (score <= 60) return t("watchlist");
+      if (score <= 80) return t("highConcentration");
+      return t("abnormalPattern");
+    }
+
+    function computePatternScore(transactions, playerName) {
+      const subject = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
+      const txCount = subject.length;
+      if (!txCount) return { score: 0, txCount: 0, relatedCount: 0, lowRatio: 0, repeatRatio: 0, maxHourDensity: 0, sameCounterpart: 0 };
+      const relatedCount = playerName ? buildNetwork(playerName, transactions).length : getAllPlayerNames(subject).size;
+      const lowRatio = subject.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length / txCount;
+      const repeatRatio = maxGroupedCount(subject, (tx) => `${tx.itemId}:${tx.itemNum}`) / txCount;
+      const maxHourDensity = maxGroupedCount(subject, (tx) => Number(tx.txnTime) > 0 ? String(Math.floor(Number(tx.txnTime) / 3600)) : "");
+      const sameCounterpart = playerName ? Math.max(0, ...buildNetwork(playerName, transactions).map((row) => row.count)) : maxGroupedCount(subject, (tx) => [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::"));
+      const score = Math.round(Math.min(100, Math.min(24, txCount * 0.65) + Math.min(20, relatedCount * (playerName ? 2.4 : 0.35)) + Math.min(20, lowRatio * 40) + Math.min(18, repeatRatio * 28) + Math.min(10, maxHourDensity * 1.2) + Math.min(8, sameCounterpart * 0.8)));
+      return { score, txCount, relatedCount, lowRatio, repeatRatio, maxHourDensity, sameCounterpart };
+    }
+
+    function metricCard(label, value) {
+      return `<article class="card metric"><div class="metric-label">${escapeHtml(label)}</div><div class="metric-value">${escapeHtml(value)}</div></article>`;
+    }
+
+    function compactRow(main, sub, stats, tag = "") {
+      return `<article class="compact-row">
+        <div class="row-main">${main}<span class="row-sub">${sub || ""}</span></div>
+        ${stats.map((stat) => `<div class="stat"><span>${escapeHtml(stat.label)}</span><strong>${escapeHtml(stat.value)}</strong></div>`).join("")}
+        ${tag ? `<div class="stat"><span></span><strong><span class="tag">${escapeHtml(tag)}</span></strong></div>` : ""}
+      </article>`;
+    }
+
+    function renderTransactionTable(transactions, limit = 20) {
+      const rows = transactions.slice(0, limit);
+      if (!rows.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
+      const desktop = `<div class="table-shell desktop-transactions"><table><thead><tr><th>${t("item")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("price")}</th><th>${t("quantity")}</th><th>${t("time")}</th></tr></thead><tbody>${rows.map((tx) => `<tr><td>${escapeHtml(tx.itemName)}</td><td>${escapeHtml(tx.sellerName)}</td><td>${escapeHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatTime(tx.txnTime)}</td></tr>`).join("")}</tbody></table></div>`;
+      const mobile = `<div class="mobile-transactions">${rows.map((tx) => `<article class="tx-card"><strong>${escapeHtml(tx.itemName)}</strong><div class="tx-line">${escapeHtml(tx.sellerName)} → ${escapeHtml(tx.buyerName)}</div><div class="tx-line">${t("price")} ${formatPrice(tx.price)} / ${t("quantity")} ${formatInteger(tx.itemNum)} / ${formatTime(tx.txnTime)}</div></article>`).join("")}</div>`;
+      return desktop + mobile;
+    }
+
+    function renderDashboard(transactions) {
+      const sellers = new Set(transactions.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
+      const buyers = new Set(transactions.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+      const totalVolume = transactions.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0);
+      el.dashboardNote.textContent = `${t("currentMarket")}: ${state.activeCategory}`;
+      el.marketMetrics.innerHTML = [
+        metricCard(t("totalTransactions"), formatInteger(transactions.length)),
+        metricCard(t("totalVolume"), formatPrice(totalVolume)),
+        metricCard(t("activeSellers"), formatInteger(sellers.size)),
+        metricCard(t("activeBuyers"), formatInteger(buyers.size))
+      ].join("");
+
+      const sellersSorted = sellerStats(transactions).sort((a, b) => b.income - a.income).slice(0, 10);
+      el.topIncome.innerHTML = sellersSorted.length ? sellersSorted.map((row, index) => compactRow(`#${index + 1} ${escapeHtml(row.name)}`, `${t("relatedBuyers")}: ${row.buyers.size}`, [{ label: t("totalIncome"), value: formatPrice(row.income) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("averageIncome"), value: formatPrice(row.income / row.count) }])).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
+
+      const concentrated = itemStats(transactions).sort((a, b) => b.topShare - a.topShare || b.total - a.total).slice(0, 5);
+      el.topConcentration.innerHTML = concentrated.length ? concentrated.map((row) => compactRow(escapeHtml(row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTradesShort"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
+
+      const highScores = sellerStats(transactions).map((row) => ({ ...row, pattern: computePatternScore(transactions, row.name) })).filter((row) => row.pattern.score >= 61).sort((a, b) => b.pattern.score - a.pattern.score).slice(0, 10);
+      el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(escapeHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }, { label: t("relatedAccountCount"), value: formatInteger(row.pattern.relatedCount) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.recentTransactions.innerHTML = renderTransactionTable(transactions, 20);
+    }
+
+    function renderSearch(transactions) {
+      const query = el.search.value.trim().toLowerCase();
+      if (!query) {
+        el.searchSummary.textContent = t("enterSearch");
+        el.searchPlayers.innerHTML = `<div class="empty">${t("enterSearch")}</div>`;
+        el.searchItems.innerHTML = `<div class="empty">${t("enterSearch")}</div>`;
+        el.searchTransactions.innerHTML = `<div class="empty">${t("enterSearch")}</div>`;
+        return;
+      }
+      const players = [...getAllPlayerNames(transactions).values()].filter((name) => name.toLowerCase().includes(query)).slice(0, 12);
+      const items = getCategoryItems().filter((item) => item.name.toLowerCase().includes(query) || item.group.toLowerCase().includes(query) || String(item.id).includes(query)).slice(0, 12);
+      const txs = transactions.filter((tx) => tx.sellerName.toLowerCase().includes(query) || tx.buyerName.toLowerCase().includes(query) || tx.itemName.toLowerCase().includes(query) || String(tx.itemId).includes(query) || String(tx.txnId).includes(query)).slice(0, 20);
+      el.searchSummary.textContent = `${t("resultCount")}: ${players.length + items.length + txs.length}`;
+      el.searchPlayers.innerHTML = players.length ? players.map((name) => compactRow(escapeHtml(name), "", [{ label: t("tradeCount"), value: formatInteger(getPlayerTransactions(name, transactions).length) }, { label: t("totalIncome"), value: formatPrice(sellerStats(transactions).find((row) => playerKey(row.name) === playerKey(name))?.income || 0) }, { label: t("patternScore"), value: String(computePatternScore(transactions, name).score) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.searchItems.innerHTML = items.length ? items.map((item) => compactRow(escapeHtml(item.name), `${item.category} / ${item.group} - ID ${item.id}`, [{ label: t("price"), value: formatPrice(state.prices.get(item.id)?.price) }, { label: t("tradeCount"), value: formatInteger(state.prices.get(item.id)?.transactions?.length || 0) }, { label: t("lastSeen"), value: formatTime(state.prices.get(item.id)?.tx?.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.searchTransactions.innerHTML = txs.length ? txs.slice(0, 8).map((tx) => compactRow(escapeHtml(tx.itemName), `${escapeHtml(tx.sellerName)} → ${escapeHtml(tx.buyerName)}`, [{ label: t("price"), value: formatPrice(tx.price) }, { label: t("quantity"), value: formatInteger(tx.itemNum) }, { label: t("time"), value: formatTime(tx.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+    }
+
+    function renderPlayer(transactions) {
+      const playerName = resolvePlayerName(el.search.value.trim(), transactions);
+      if (!playerName) {
+        el.playerNote.textContent = t("enterPlayerForProfile");
+        el.playerProfile.innerHTML = `<div class="notice">${t("enterPlayerForProfile")}</div>`;
+        document.querySelectorAll(".tab-panel").forEach((panel) => { panel.innerHTML = ""; });
+        return;
+      }
+      const playerTx = getPlayerTransactions(playerName, transactions);
+      const soldTx = playerTx.filter((tx) => playerKey(tx.sellerName) === playerKey(playerName));
+      const income = soldTx.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0);
+      const network = buildNetwork(playerName, transactions);
+      const lowCount = playerTx.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length;
+      const lastSeen = Math.max(0, ...playerTx.map((tx) => Number(tx.txnTime) || 0));
+      const pattern = computePatternScore(transactions, playerName);
+      el.playerNote.textContent = playerName;
+      el.playerProfile.innerHTML = `
+        <div><span class="metric-label">${t("playerName")}</span><div class="profile-name">${escapeHtml(playerName)}</div></div>
+        <div class="profile-stat"><span>${t("totalIncome")}</span><strong>${formatPrice(income)}</strong></div>
+        <div class="profile-stat"><span>${t("tradeCount")}</span><strong>${formatInteger(playerTx.length)}</strong></div>
+        <div class="profile-stat"><span>${t("relatedAccounts")}</span><strong>${formatInteger(network.length)}</strong></div>
+        <div class="profile-stat"><span>${t("patternScore")}</span><strong>${pattern.score}</strong></div>
+        <div class="profile-stat"><span>${t("averageIncome")}</span><strong>${formatPrice(soldTx.length ? income / soldTx.length : 0)}</strong></div>
+        <div class="profile-stat"><span>${t("lowPriceTransferCount")}</span><strong>${formatInteger(lowCount)}</strong></div>
+        <div class="profile-stat"><span>${t("lastSeen")}</span><strong>${formatTime(lastSeen)}</strong></div>
+      `;
+      renderPlayerTabs(playerName, transactions, playerTx, network, pattern);
+    }
+
+    function renderPlayerTabs(playerName, transactions, playerTx, network, pattern) {
+      const reasons = [
+        [t("relatedAccountsCount"), formatInteger(pattern.relatedCount)],
+        [t("lowPriceTransferRatio"), `${(pattern.lowRatio * 100).toFixed(1)}%`],
+        [t("repeatedItemQuantityRatio"), `${(pattern.repeatRatio * 100).toFixed(1)}%`],
+        [t("hourlyTradeDensity"), formatInteger(pattern.maxHourDensity)],
+        [t("sameCounterpartFrequency"), formatInteger(pattern.sameCounterpart)]
+      ];
+      document.getElementById("tab-overview").innerHTML = `<article class="card panel"><h3 class="section-title">${t("marketplacePatternScore")}</h3><div class="score-wrap"><div class="metric-value">${pattern.score} <span class="tag">${getScoreLevel(pattern.score)}</span></div><div class="score-line"><div class="score-fill" style="width:${pattern.score}%"></div></div><div class="compact-list">${reasons.map(([label, value]) => compactRow(escapeHtml(label), "", [{ label: t("currentMarket"), value: state.activeCategory }, { label: t("patternScore"), value }, { label: t("playerName"), value: playerName }])).join("")}</div></div></article>`;
+      document.getElementById("tab-transactions").innerHTML = renderTransactionTable(playerTx, 80);
+
+      const sort = document.getElementById("related-sort")?.value || "total";
+      const sortedNetwork = [...network].sort((a, b) => sort === "count" ? b.count - a.count : sort === "last" ? b.lastSeen - a.lastSeen : b.total - a.total);
+      document.getElementById("tab-related").innerHTML = `<div class="section-head"><select class="field" id="related-sort"><option value="total" ${sort === "total" ? "selected" : ""}>${t("sortByTotalAmount")}</option><option value="count" ${sort === "count" ? "selected" : ""}>${t("sortByTradeCount")}</option><option value="last" ${sort === "last" ? "selected" : ""}>${t("sortByLastSeen")}</option></select></div><div class="compact-list">${sortedNetwork.length ? sortedNetwork.slice(0, 50).map((row) => {
+        const mainItems = [...row.items.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name).join(", ");
+        return compactRow(escapeHtml(row.name), `${t("mainItems")}: ${escapeHtml(mainItems || "-")}`, [{ label: t("totalAmount"), value: formatPrice(row.total) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("lastSeen"), value: formatTime(row.lastSeen) }], row.lowCount ? t("hasLowPrice") : t("noLowPrice"));
+      }).join("") : `<div class="empty">${t("noDataFound")}</div>`}</div>`;
+      document.getElementById("related-sort")?.addEventListener("change", () => renderPlayerTabs(playerName, transactions, playerTx, network, pattern));
+
+      const daily = new Map();
+      playerTx.filter((tx) => playerKey(tx.sellerName) === playerKey(playerName)).forEach((tx) => {
+        const date = new Date(Number(tx.txnTime) * 1000).toLocaleDateString("en-CA");
+        const row = daily.get(date) || { date, income: 0, count: 0 };
+        row.income += Number(tx.totalAmountSigil) || 0;
+        row.count += 1;
+        daily.set(date, row);
+      });
+      let cumulative = 0;
+      document.getElementById("tab-daily").innerHTML = `<div class="compact-list">${[...daily.values()].sort((a, b) => a.date.localeCompare(b.date)).map((row) => { cumulative += row.income; return compactRow(escapeHtml(row.date), "", [{ label: t("income"), value: formatPrice(row.income) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("cumulativeIncome"), value: formatPrice(cumulative) }]); }).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
+
+      const notices = buildPatternNotices(playerName, transactions, playerTx, network, pattern);
+      document.getElementById("tab-alerts").innerHTML = `<div class="compact-list">${notices.length ? notices.map((notice) => `<div class="notice">${escapeHtml(notice)}</div>`).join("") : `<div class="empty">${t("noNotices")}</div>`}</div>`;
+      document.getElementById("tab-concentration").innerHTML = `<div class="compact-list">${renderItemConcentrationRows(itemStats(transactions).slice(0, 20))}</div>`;
+    }
+
+    function buildPatternNotices(playerName, transactions, playerTx, network, pattern) {
+      const notices = [];
+      if (pattern.sameCounterpart >= 10) notices.push(`${t("sameCounterpartFrequency")}: ${pattern.sameCounterpart}`);
+      if (pattern.lowRatio >= 0.25) notices.push(`${t("lowPriceTransferRatio")}: ${(pattern.lowRatio * 100).toFixed(1)}%`);
+      if (pattern.repeatRatio >= 0.25) notices.push(`${t("repeatedItemQuantityRatio")}: ${(pattern.repeatRatio * 100).toFixed(1)}%`);
+      if (pattern.relatedCount >= 20) notices.push(`${t("relatedAccountsCount")}: ${pattern.relatedCount}`);
+      if (pattern.maxHourDensity >= 12) notices.push(`${t("hourlyTradeDensity")}: ${pattern.maxHourDensity}`);
+      return notices;
+    }
+
+    function renderItemConcentrationRows(rows) {
+      return rows.sort((a, b) => b.topShare - a.topShare || b.total - a.total).map((row) => compactRow(escapeHtml(row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTrades"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
+    }
+
+    function renderItems(transactions) {
+      const query = el.search.value.trim().toLowerCase();
+      const categoryItems = getCategoryItems().filter((item) => {
+        if (!query) return true;
+        return item.name.toLowerCase().includes(query) || item.group.toLowerCase().includes(query) || String(item.id).includes(query);
+      });
+      const sort = el.sort.value;
+      const sorted = [...categoryItems].sort((a, b) => {
+        const pa = state.prices.get(a.id)?.price;
+        const pb = state.prices.get(b.id)?.price;
+        if (sort === "name") return a.name.localeCompare(b.name);
+        if (sort === "price-asc") return (pa ?? Number.POSITIVE_INFINITY) - (pb ?? Number.POSITIVE_INFINITY);
+        if (sort === "price-desc") return (pb ?? Number.NEGATIVE_INFINITY) - (pa ?? Number.NEGATIVE_INFINITY);
+        return a.order - b.order;
+      });
+      el.itemNote.textContent = `${state.activeCategory} / ${sorted.length}`;
+      el.itemGrid.innerHTML = sorted.map((item) => {
+        const row = state.prices.get(item.id);
+        const tx = row?.tx;
+        const media = item.category === "Resources" ? `<img class="item-img" src="${IMG_BASE}${item.id}.png" alt="${escapeHtml(item.name)}" onerror="this.replaceWith(document.createTextNode('${escapeHtml(item.name.slice(0, 1).toUpperCase())}'))" />` : escapeHtml(item.name.slice(0, 1).toUpperCase());
+        return `<article class="card item-card"><div class="item-head"><div class="item-media">${media}</div><div><div class="item-name">${escapeHtml(item.name)}</div><div class="item-meta">${escapeHtml(item.group)} - ID ${item.id}</div></div></div><div class="item-stats"><div class="stat"><span>${t("price")}</span><strong>${formatPrice(row?.price)}</strong></div><div class="stat"><span>${t("tradeCount")}</span><strong>${formatInteger(row?.transactions?.length || 0)}</strong></div><div class="stat"><span>${t("seller")}</span><strong>${escapeHtml(tx?.sellerName || "-")}</strong></div><div class="stat"><span>${t("buyer")}</span><strong>${escapeHtml(tx?.buyerName || "-")}</strong></div></div></article>`;
+      }).join("") || `<div class="empty">${t("noDataFound")}</div>`;
     }
 
     function render() {
-      const categoryItems = getCategoryItems();
-      const visible = getVisibleItems();
-      const pricedItems = categoryItems
-        .map((item) => state.prices.get(item.id))
-        .filter((row) => Number.isFinite(row?.price));
-      const average = pricedItems.length ? pricedItems.reduce((sum, row) => sum + row.price, 0) / pricedItems.length : null;
-
-      el.market.textContent = state.activeCategory;
-      el.priced.textContent = `${pricedItems.length} / ${categoryItems.length}`;
-      el.average.textContent = average ? formatPrice(average) : "-";
-      renderTransactionSearch();
-      renderAnalytics();
-
-      if (!visible.length) {
-        el.grid.innerHTML = `<div class="empty">No matching ${state.activeCategory.toLowerCase()} items.</div>`;
-        return;
-      }
-
-      el.grid.innerHTML = visible.map((item) => {
-        const row = state.prices.get(item.id);
-        const price = row?.price;
-        const tx = row?.tx;
-        const updated = row?.updatedAt ? formatTime(new Date(row.updatedAt)) : "-";
-        const sellerName = tx?.sellerName || "-";
-        const buyerName = tx?.buyerName || "-";
-
-        return `
-          <article class="card">
-            <div class="card-head">
-              ${renderItemMedia(item)}
-              <div>
-                <div class="item-name">${escapeHtml(item.name)}</div>
-                <div class="item-meta">${escapeHtml(item.category)} / ${escapeHtml(item.group)} - ID ${item.id}</div>
-              </div>
-            </div>
-            <div class="price">${formatPrice(price)}<small>Sigil</small></div>
-            <div class="details">
-              <div class="detail">
-                <span>Last Quantity</span>
-                <strong>${formatInteger(tx?.itemNum)}</strong>
-              </div>
-              <div class="detail">
-                <span>Total Amount</span>
-                <strong>${formatPrice(tx?.totalAmountSigil)}</strong>
-              </div>
-              <div class="detail">
-                <span>Seller Player</span>
-                <strong>${escapeHtml(sellerName)}</strong>
-              </div>
-              <div class="detail">
-                <span>Buyer Player</span>
-                <strong>${escapeHtml(buyerName)}</strong>
-              </div>
-              <div class="detail">
-                <span>Order Type</span>
-                <strong>${tx?.orderType === 1 ? "Ask" : tx?.orderType === 2 ? "Bid" : "-"}</strong>
-              </div>
-              <div class="detail">
-                <span>Updated</span>
-                <strong>${updated}</strong>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    function updateCountdown() {
-      if (!state.nextRefreshAt) {
-        el.next.textContent = "-";
-        return;
-      }
-      const remaining = Math.max(0, state.nextRefreshAt - Date.now());
-      const minutes = Math.floor(remaining / 60000);
-      const seconds = Math.floor((remaining % 60000) / 1000);
-      el.next.textContent = `${minutes}:${String(seconds).padStart(2, "0")}`;
+      const transactions = getCategoryTransactions();
+      renderDashboard(transactions);
+      renderSearch(transactions);
+      renderPlayer(transactions);
+      renderItems(transactions);
     }
 
     async function getAccessToken() {
       const res = await fetch(`${API_BASE}/api/refresh`, { method: "POST" });
       const data = await res.json();
-      if (!res.ok || data.code !== 0) {
-        throw new Error(data.message || `Token refresh failed (${res.status})`);
-      }
+      if (!res.ok || data.code !== 0) throw new Error(data.message || `Token refresh failed (${res.status})`);
       return `Bearer ${data.data.accessToken}`;
     }
 
@@ -1552,87 +1140,43 @@
       const totalAmountSigil = Number(tx.totalAmount) / 1e9;
       const price = totalAmountSigil / itemNum;
       const orderType = Number(tx.orderType);
-      const orderUser = {
-        id: tx.orderUserId,
-        name: tx.orderUserName || "-"
-      };
-      const trader = {
-        id: tx.traderId,
-        name: tx.traderName || "-"
-      };
+      const orderUser = { id: tx.orderUserId, name: tx.orderUserName || "-" };
+      const trader = { id: tx.traderId, name: tx.traderName || "-" };
       const seller = orderType === 1 ? orderUser : orderType === 2 ? trader : null;
       const buyer = orderType === 1 ? trader : orderType === 2 ? orderUser : null;
-
-      return {
-        itemId: item.id,
-        itemName: item.name,
-        itemGroup: item.group,
-        category: item.category,
-        itemNum,
-        price,
-        orderType,
-        totalAmountSigil,
-        txnId: tx.txnId,
-        txnTime: tx.txnTime,
-        orderUserId: orderUser.id,
-        orderUserName: orderUser.name,
-        traderId: trader.id,
-        traderName: trader.name,
-        sellerId: seller?.id,
-        sellerName: seller?.name || "-",
-        buyerId: buyer?.id,
-        buyerName: buyer?.name || "-"
-      };
+      return { itemId: item.id, itemName: item.name, itemGroup: item.group, category: item.category, itemNum, price, orderType, totalAmountSigil, txnId: tx.txnId, txnTime: tx.txnTime, orderUserId: orderUser.id, orderUserName: orderUser.name, traderId: trader.id, traderName: trader.name, sellerId: seller?.id, sellerName: seller?.name || "-", buyerId: buyer?.id, buyerName: buyer?.name || "-" };
     }
 
     async function fetchItemPrice(item, accessToken) {
       const url = `${API_BASE}/api/price?itemId=${item.id}&accessToken=${encodeURIComponent(accessToken)}`;
       const res = await fetch(url);
       const data = await res.json();
-      if (!res.ok || data.code !== 0) {
-        throw new Error(data.message || `Price request failed (${res.status})`);
-      }
-
-      if (!data.data?.length) {
-        return { price: null, tx: null, transactions: [], updatedAt: Date.now() };
-      }
-
+      if (!res.ok || data.code !== 0) throw new Error(data.message || `Price request failed (${res.status})`);
+      if (!data.data?.length) return { price: null, tx: null, transactions: [], updatedAt: Date.now() };
       const transactions = data.data.map((tx) => normalizeTransaction(tx, item));
-      const latest = transactions[0];
-
-      return {
-        price: latest.price,
-        updatedAt: Date.now(),
-        tx: latest,
-        transactions
-      };
+      return { price: transactions[0].price, tx: transactions[0], transactions, updatedAt: Date.now() };
     }
 
     function scheduleNextRefresh() {
       clearTimeout(state.refreshTimer);
       state.nextRefreshAt = Date.now() + REFRESH_MS;
       state.refreshTimer = setTimeout(() => refreshPrices(), REFRESH_MS);
-      updateCountdown();
     }
 
     async function refreshPrices() {
       if (state.loading) return;
       const runId = ++state.refreshRunId;
-      const category = state.activeCategory;
       const items = getCategoryItems();
-
       state.loading = true;
       el.refresh.disabled = true;
       el.error.innerHTML = "";
-      setStatus("loading", `Refreshing ${category} token...`);
-
+      setStatus("loading", t("refreshingToken"));
       try {
         const accessToken = await getAccessToken();
-
         for (let index = 0; index < items.length; index += 1) {
           if (runId !== state.refreshRunId) return;
           const item = items[index];
-          setStatus("loading", `Loading ${item.name} (${index + 1}/${items.length})`);
+          setStatus("loading", `${t("loadingItem")} ${item.name} (${index + 1}/${items.length})`);
           try {
             state.prices.set(item.id, await fetchItemPrice(item, accessToken));
           } catch (error) {
@@ -1641,10 +1185,9 @@
           render();
           await sleep(REQUEST_DELAY_MS);
         }
-
-        setStatus("ok", `${category} updated ${formatTime(new Date())}`);
+        setStatus("ok", `${t("updated")} ${new Date().toLocaleTimeString()}`);
       } catch (error) {
-        setStatus("error", "Update failed");
+        setStatus("error", t("updateFailed"));
         el.error.innerHTML = `<div class="error-box">${escapeHtml(error.message)}</div>`;
       } finally {
         if (runId === state.refreshRunId) {
@@ -1661,34 +1204,28 @@
       state.refreshRunId += 1;
       state.loading = false;
       el.refresh.disabled = false;
-      el.error.innerHTML = "";
       clearTimeout(state.refreshTimer);
-      state.nextRefreshAt = null;
-
-      el.tabs.forEach((tab) => {
+      el.marketTabs.forEach((tab) => {
         const active = tab.dataset.category === category;
         tab.classList.toggle("active", active);
         tab.setAttribute("aria-selected", String(active));
       });
-
       render();
       refreshPrices();
     }
 
+    el.marketTabs.forEach((tab) => tab.addEventListener("click", () => switchCategory(tab.dataset.category)));
+    el.tabButtons.forEach((button) => button.addEventListener("click", () => {
+      state.activeTab = button.dataset.tab;
+      el.tabButtons.forEach((tab) => tab.classList.toggle("active", tab === button));
+      document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
+    }));
+    el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
     el.search.addEventListener("input", render);
-    el.playerSearch.addEventListener("input", render);
-    el.analyticsPlayer.addEventListener("input", render);
-    el.leaderboardLimit.addEventListener("change", render);
-    el.leaderboardSort.addEventListener("change", render);
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
-    el.tabs.forEach((tab) => {
-      tab.addEventListener("click", () => switchCategory(tab.dataset.category));
-    });
 
-    state.countdownTimer = setInterval(updateCountdown, 1000);
-    render();
-    refreshPrices();
+    loadLanguage(state.lang).then(() => refreshPrices());
   </script>
 </body>
 </html>
