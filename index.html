@@ -750,13 +750,29 @@
     const TRACKER_IMG_BASE = "https://elfmarkettracker.com/images/";
     const REFRESH_MS = 5 * 60 * 1000;
     const REQUEST_DELAY_MS = 120;
+    const MPS_CONFIG = {
+      lowPriceThreshold: 0.01,
+      scoreWeights: {
+        relatedAccounts: 20,
+        lowPriceTransfer: 25,
+        repeatedItemQuantity: 20,
+        counterpartyConcentration: 20,
+        hourlyDensity: 15
+      },
+      levels: [
+        { min: 0, max: 30, key: "normalPattern" },
+        { min: 31, max: 60, key: "watchlist" },
+        { min: 61, max: 80, key: "highConcentration" },
+        { min: 81, max: 100, key: "structuredTradingPattern" }
+      ]
+    };
 
     const FALLBACK_I18N = {
       "zh-TW": {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度集中", abnormalPattern: "異常模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度集中", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
       },
       en: {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Concentration", abnormalPattern: "Abnormal Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Concentration", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
       }
     };
 
@@ -948,24 +964,158 @@
       return Math.max(0, ...counts.values());
     }
 
+    function scoreByThresholds(value, thresholds) {
+      return thresholds.find((row) => row.test(value))?.score || 0;
+    }
+
     function getScoreLevel(score) {
-      if (score <= 30) return t("normalPattern");
-      if (score <= 60) return t("watchlist");
-      if (score <= 80) return t("highConcentration");
-      return t("abnormalPattern");
+      const level = MPS_CONFIG.levels.find((row) => score >= row.min && score <= row.max) || MPS_CONFIG.levels[0];
+      return t(level.key);
+    }
+
+    function getCounterpartyName(tx, playerName) {
+      const key = playerKey(playerName);
+      if (playerKey(tx.sellerName) === key) return tx.buyerName;
+      if (playerKey(tx.buyerName) === key) return tx.sellerName;
+      return "";
+    }
+
+    function calculateRelatedAccountsScore(playerTransactions, playerName) {
+      const related = new Set();
+      playerTransactions.forEach((tx) => {
+        const name = getCounterpartyName(tx, playerName);
+        if (isKnownPlayer(name)) related.add(playerKey(name));
+      });
+      const count = related.size;
+      const score = scoreByThresholds(count, [
+        { test: (value) => value >= 31, score: 20 },
+        { test: (value) => value >= 21, score: 15 },
+        { test: (value) => value >= 11, score: 10 },
+        { test: (value) => value >= 6, score: 5 }
+      ]);
+      return { score, count };
+    }
+
+    function calculateLowPriceTransferScore(playerTransactions) {
+      const total = playerTransactions.length;
+      const lowPriceTradeCount = playerTransactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold).length;
+      const ratio = total ? lowPriceTradeCount / total : 0;
+      const score = scoreByThresholds(ratio, [
+        { test: (value) => value >= 0.5, score: 25 },
+        { test: (value) => value >= 0.3, score: 20 },
+        { test: (value) => value >= 0.2, score: 15 },
+        { test: (value) => value >= 0.1, score: 10 },
+        { test: (value) => value > 0, score: 5 }
+      ]);
+      return { score, lowPriceTradeCount, ratio };
+    }
+
+    function calculateRepeatedItemQuantityScore(playerTransactions) {
+      const counts = new Map();
+      playerTransactions.forEach((tx) => {
+        const key = `${tx.itemName || tx.itemId}::${tx.itemNum}`;
+        const row = counts.get(key) || { itemName: tx.itemName || "-", quantity: tx.itemNum, count: 0 };
+        row.count += 1;
+        counts.set(key, row);
+      });
+      const mostRepeatedPattern = [...counts.values()].sort((a, b) => b.count - a.count)[0] || { itemName: "-", quantity: "-", count: 0 };
+      const ratio = playerTransactions.length ? mostRepeatedPattern.count / playerTransactions.length : 0;
+      const score = scoreByThresholds(ratio, [
+        { test: (value) => value >= 0.8, score: 20 },
+        { test: (value) => value >= 0.6, score: 15 },
+        { test: (value) => value >= 0.4, score: 10 },
+        { test: (value) => value >= 0.2, score: 5 }
+      ]);
+      return { score, ratio, mostRepeatedPattern: { ...mostRepeatedPattern, ratio } };
+    }
+
+    function calculateCounterpartyConcentrationScore(playerTransactions, playerName) {
+      const counts = new Map();
+      playerTransactions.forEach((tx) => {
+        const name = getCounterpartyName(tx, playerName);
+        if (!isKnownPlayer(name)) return;
+        const key = playerKey(name);
+        counts.set(key, (counts.get(key) || 0) + 1);
+      });
+      const top5Count = [...counts.values()].sort((a, b) => b - a).slice(0, 5).reduce((sum, count) => sum + count, 0);
+      const ratio = playerTransactions.length ? top5Count / playerTransactions.length : 0;
+      const score = scoreByThresholds(ratio, [
+        { test: (value) => value >= 0.9, score: 20 },
+        { test: (value) => value >= 0.8, score: 15 },
+        { test: (value) => value >= 0.6, score: 10 },
+        { test: (value) => value >= 0.4, score: 5 }
+      ]);
+      return { score, ratio, top5Count, sameCounterpart: Math.max(0, ...counts.values()) };
+    }
+
+    function calculateHourlyTradingDensityScore(playerTransactions) {
+      const times = playerTransactions.map((tx) => Number(tx.txnTime)).filter((time) => Number.isFinite(time) && time > 0).sort((a, b) => a - b);
+      let hourlyMax = 0;
+      let left = 0;
+      for (let right = 0; right < times.length; right += 1) {
+        while (times[right] - times[left] > 3600) left += 1;
+        hourlyMax = Math.max(hourlyMax, right - left + 1);
+      }
+      const score = scoreByThresholds(hourlyMax, [
+        { test: (value) => value >= 21, score: 15 },
+        { test: (value) => value >= 11, score: 10 },
+        { test: (value) => value >= 6, score: 5 }
+      ]);
+      return { score, hourlyMax };
+    }
+
+    function calculateMarketplacePatternScore(transactions, playerName) {
+      const playerTransactions = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
+      const totalTrades = playerTransactions.length;
+      if (!totalTrades) {
+        return { playerName, totalScore: 0, score: 0, level: getScoreLevel(0), totalTrades: 0, txCount: 0, relatedAccountsCount: 0, relatedCount: 0, lowPriceTradeCount: 0, lowPriceRatio: 0, lowRatio: 0, mostRepeatedPattern: null, repeatedItemQuantityRatio: 0, repeatRatio: 0, top5CounterpartyShare: 0, hourlyMax: 0, maxHourDensity: 0, sameCounterpart: 0, breakdown: { relatedAccounts: 0, lowPriceTransfer: 0, repeatedItemQuantity: 0, counterpartyConcentration: 0, hourlyDensity: 0 }, reasons: [] };
+      }
+
+      const related = playerName ? calculateRelatedAccountsScore(playerTransactions, playerName) : { score: 0, count: getAllPlayerNames(playerTransactions).size };
+      const lowPrice = calculateLowPriceTransferScore(playerTransactions);
+      const repeated = calculateRepeatedItemQuantityScore(playerTransactions);
+      const counterparty = playerName ? calculateCounterpartyConcentrationScore(playerTransactions, playerName) : { score: 0, ratio: 0, top5Count: 0, sameCounterpart: 0 };
+      const hourly = calculateHourlyTradingDensityScore(playerTransactions);
+      const breakdown = {
+        relatedAccounts: related.score,
+        lowPriceTransfer: lowPrice.score,
+        repeatedItemQuantity: repeated.score,
+        counterpartyConcentration: counterparty.score,
+        hourlyDensity: hourly.score
+      };
+      const totalScore = Math.min(100, Object.values(breakdown).reduce((sum, value) => sum + value, 0));
+      const reasons = [];
+      if (related.score >= 10) reasons.push(t("reasonHighRelatedAccounts"));
+      if (lowPrice.score >= 10) reasons.push(t("reasonLowPriceTransfers"));
+      if (repeated.score >= 10) reasons.push(t("reasonRepeatedPattern"));
+      if (counterparty.score >= 10) reasons.push(t("reasonCounterpartyConcentration"));
+      if (hourly.score >= 10) reasons.push(t("reasonHourlyDensity"));
+      return {
+        playerName,
+        totalScore,
+        score: totalScore,
+        level: getScoreLevel(totalScore),
+        totalTrades,
+        txCount: totalTrades,
+        relatedAccountsCount: related.count,
+        relatedCount: related.count,
+        lowPriceTradeCount: lowPrice.lowPriceTradeCount,
+        lowPriceRatio: lowPrice.ratio,
+        lowRatio: lowPrice.ratio,
+        mostRepeatedPattern: repeated.mostRepeatedPattern,
+        repeatedItemQuantityRatio: repeated.ratio,
+        repeatRatio: repeated.ratio,
+        top5CounterpartyShare: counterparty.ratio,
+        hourlyMax: hourly.hourlyMax,
+        maxHourDensity: hourly.hourlyMax,
+        sameCounterpart: counterparty.sameCounterpart,
+        breakdown,
+        reasons
+      };
     }
 
     function computePatternScore(transactions, playerName) {
-      const subject = playerName ? getPlayerTransactions(playerName, transactions) : transactions;
-      const txCount = subject.length;
-      if (!txCount) return { score: 0, txCount: 0, relatedCount: 0, lowRatio: 0, repeatRatio: 0, maxHourDensity: 0, sameCounterpart: 0 };
-      const relatedCount = playerName ? buildNetwork(playerName, transactions).length : getAllPlayerNames(subject).size;
-      const lowRatio = subject.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= 0.011).length / txCount;
-      const repeatRatio = maxGroupedCount(subject, (tx) => `${tx.itemId}:${tx.itemNum}`) / txCount;
-      const maxHourDensity = maxGroupedCount(subject, (tx) => Number(tx.txnTime) > 0 ? String(Math.floor(Number(tx.txnTime) / 3600)) : "");
-      const sameCounterpart = playerName ? Math.max(0, ...buildNetwork(playerName, transactions).map((row) => row.count)) : maxGroupedCount(subject, (tx) => [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::"));
-      const score = Math.round(Math.min(100, Math.min(24, txCount * 0.65) + Math.min(20, relatedCount * (playerName ? 2.4 : 0.35)) + Math.min(20, lowRatio * 40) + Math.min(18, repeatRatio * 28) + Math.min(10, maxHourDensity * 1.2) + Math.min(8, sameCounterpart * 0.8)));
-      return { score, txCount, relatedCount, lowRatio, repeatRatio, maxHourDensity, sameCounterpart };
+      return calculateMarketplacePatternScore(transactions, playerName);
     }
 
     function metricCard(label, value) {
@@ -1050,7 +1200,8 @@
         <div class="profile-stat"><span>${t("totalIncome")}</span><strong>${formatPrice(income)}</strong></div>
         <div class="profile-stat"><span>${t("tradeCount")}</span><strong>${formatInteger(playerTx.length)}</strong></div>
         <div class="profile-stat"><span>${t("relatedAccounts")}</span><strong>${formatInteger(network.length)}</strong></div>
-        <div class="profile-stat"><span>${t("patternScore")}</span><strong>${pattern.score}</strong></div>
+        <div class="profile-stat"><span>${t("patternScore")}</span><strong>${pattern.score} / 100</strong></div>
+        <div class="profile-stat"><span>${t("level")}</span><strong>${escapeHtml(pattern.level)}</strong></div>
         <div class="profile-stat"><span>${t("averageIncome")}</span><strong>${formatPrice(soldTx.length ? income / soldTx.length : 0)}</strong></div>
         <div class="profile-stat"><span>${t("lowPriceTransferCount")}</span><strong>${formatInteger(lowCount)}</strong></div>
         <div class="profile-stat"><span>${t("lastSeen")}</span><strong>${formatTime(lastSeen)}</strong></div>
@@ -1059,14 +1210,26 @@
     }
 
     function renderPlayerTabs(playerName, transactions, playerTx, network, pattern) {
+      const repeated = pattern.mostRepeatedPattern;
+      const repeatedText = repeated && repeated.count
+        ? `${repeated.itemName} x${formatInteger(repeated.quantity)}, ${formatInteger(repeated.count)} (${(repeated.ratio * 100).toFixed(1)}%)`
+        : t("noRepeatedPattern");
       const reasons = [
-        [t("relatedAccountsCount"), formatInteger(pattern.relatedCount)],
-        [t("lowPriceTransferRatio"), `${(pattern.lowRatio * 100).toFixed(1)}%`],
-        [t("repeatedItemQuantityRatio"), `${(pattern.repeatRatio * 100).toFixed(1)}%`],
-        [t("hourlyTradeDensity"), formatInteger(pattern.maxHourDensity)],
-        [t("sameCounterpartFrequency"), formatInteger(pattern.sameCounterpart)]
+        [t("level"), pattern.level],
+        [t("relatedAccountsCount"), formatInteger(pattern.relatedAccountsCount)],
+        [t("lowPriceTransferRatio"), `${(pattern.lowPriceRatio * 100).toFixed(1)}%`],
+        [t("mostRepeatedPattern"), repeatedText],
+        [t("top5CounterpartyShare"), `${(pattern.top5CounterpartyShare * 100).toFixed(1)}%`],
+        [t("hourlyMax"), `${formatInteger(pattern.hourlyMax)} ${t("tradesPerHour")}`]
       ];
-      document.getElementById("tab-overview").innerHTML = `<article class="card panel"><h3 class="section-title">${t("marketplacePatternScore")}</h3><div class="score-wrap"><div class="metric-value">${pattern.score} <span class="tag">${getScoreLevel(pattern.score)}</span></div><div class="score-line"><div class="score-fill" style="width:${pattern.score}%"></div></div><div class="compact-list">${reasons.map(([label, value]) => compactRow(escapeHtml(label), "", [{ label: t("currentMarket"), value: state.activeCategory }, { label: t("patternScore"), value }, { label: t("playerName"), value: playerName }])).join("")}</div></div></article>`;
+      const breakdownRows = [
+        [t("relatedAccountsScore"), pattern.breakdown.relatedAccounts, MPS_CONFIG.scoreWeights.relatedAccounts],
+        [t("lowPriceTransferScore"), pattern.breakdown.lowPriceTransfer, MPS_CONFIG.scoreWeights.lowPriceTransfer],
+        [t("repeatedItemQuantityScore"), pattern.breakdown.repeatedItemQuantity, MPS_CONFIG.scoreWeights.repeatedItemQuantity],
+        [t("counterpartyConcentrationScore"), pattern.breakdown.counterpartyConcentration, MPS_CONFIG.scoreWeights.counterpartyConcentration],
+        [t("hourlyTradingDensityScore"), pattern.breakdown.hourlyDensity, MPS_CONFIG.scoreWeights.hourlyDensity]
+      ];
+      document.getElementById("tab-overview").innerHTML = `<article class="card panel"><h3 class="section-title">${t("marketplacePatternScore")}</h3><div class="score-wrap"><div class="metric-value">${pattern.score} / 100 <span class="tag">${escapeHtml(pattern.level)}</span></div><div class="score-line"><div class="score-fill" style="width:${pattern.score}%"></div></div><div class="compact-list">${reasons.map(([label, value]) => compactRow(escapeHtml(label), "", [{ label: t("currentMarket"), value: state.activeCategory }, { label: t("value"), value: String(value) }, { label: t("playerName"), value: playerName }])).join("")}</div><h3 class="section-title">${t("mpsBreakdown")}</h3><div class="compact-list">${breakdownRows.map(([label, value, max]) => compactRow(escapeHtml(label), "", [{ label: t("score"), value: `${value} / ${max}` }, { label: t("patternScore"), value: `${pattern.score} / 100` }, { label: t("level"), value: pattern.level }])).join("")}</div></div></article>`;
       document.getElementById("tab-transactions").innerHTML = renderTransactionTable(playerTx, 80);
 
       const sort = document.getElementById("related-sort")?.value || "total";
@@ -1094,13 +1257,14 @@
     }
 
     function buildPatternNotices(playerName, transactions, playerTx, network, pattern) {
-      const notices = [];
+      const notices = [...pattern.reasons];
       if (pattern.sameCounterpart >= 10) notices.push(`${t("sameCounterpartFrequency")}: ${pattern.sameCounterpart}`);
-      if (pattern.lowRatio >= 0.25) notices.push(`${t("lowPriceTransferRatio")}: ${(pattern.lowRatio * 100).toFixed(1)}%`);
-      if (pattern.repeatRatio >= 0.25) notices.push(`${t("repeatedItemQuantityRatio")}: ${(pattern.repeatRatio * 100).toFixed(1)}%`);
-      if (pattern.relatedCount >= 20) notices.push(`${t("relatedAccountsCount")}: ${pattern.relatedCount}`);
-      if (pattern.maxHourDensity >= 12) notices.push(`${t("hourlyTradeDensity")}: ${pattern.maxHourDensity}`);
-      return notices;
+      if (pattern.lowPriceRatio >= 0.25) notices.push(`${t("lowPriceTransferRatio")}: ${(pattern.lowPriceRatio * 100).toFixed(1)}%`);
+      if (pattern.repeatedItemQuantityRatio >= 0.25) notices.push(`${t("repeatedItemQuantityRatio")}: ${(pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%`);
+      if (pattern.relatedAccountsCount >= 20) notices.push(`${t("relatedAccountsCount")}: ${pattern.relatedAccountsCount}`);
+      if (pattern.hourlyMax >= 12) notices.push(`${t("hourlyMax")}: ${pattern.hourlyMax}`);
+      if (pattern.top5CounterpartyShare >= 0.8) notices.push(`${t("top5CounterpartyShare")}: ${(pattern.top5CounterpartyShare * 100).toFixed(1)}%`);
+      return [...new Set(notices)];
     }
 
     function renderItemConcentrationRows(rows) {
