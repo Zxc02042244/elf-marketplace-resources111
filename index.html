@@ -38,7 +38,13 @@
       width: min(1240px, calc(100% - 28px));
       margin: 0 auto;
       padding: 18px 0 36px;
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      gap: 14px;
     }
+
+    .topbar { grid-column: 1 / -1; }
+    .app > :not(.topbar):not(.sidebar) { grid-column: 2; }
 
     .topbar {
       display: grid;
@@ -83,6 +89,13 @@
       font-size: 13px;
     }
 
+    .creator {
+      margin-top: 4px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
     .language {
       display: flex;
       align-items: center;
@@ -90,6 +103,62 @@
       color: var(--muted);
       font-size: 13px;
       white-space: nowrap;
+    }
+
+    .sidebar {
+      grid-column: 1;
+      grid-row: 2 / span 20;
+      position: sticky;
+      top: 14px;
+      align-self: start;
+      min-height: calc(100vh - 32px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(27, 45, 29, 0.96), rgba(9, 15, 11, 0.94));
+      box-shadow: var(--shadow);
+    }
+
+    .side-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-weight: 950;
+    }
+
+    .side-nav {
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+
+    .side-link {
+      min-height: 38px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 10px;
+      cursor: pointer;
+      font-weight: 850;
+    }
+
+    .side-link:hover,
+    .side-link.active {
+      background: rgba(142, 207, 120, 0.16);
+      border-color: rgba(142, 207, 120, 0.28);
+      color: var(--text);
+    }
+
+    .side-note {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
     }
 
     .lang-btn,
@@ -225,7 +294,7 @@
 
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 12px;
     }
@@ -286,6 +355,56 @@
       border: 1px solid rgba(52, 66, 53, 0.82);
       background: rgba(8, 12, 8, 0.28);
       min-width: 0;
+    }
+
+    .compact-row.clickable,
+    .player-link {
+      cursor: pointer;
+    }
+
+    .player-link,
+    .item-link {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font: inherit;
+      font-weight: 950;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .player-link:hover,
+    .item-link:hover { color: var(--gold); }
+
+    .entity {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      vertical-align: middle;
+    }
+
+    .item-thumb {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 1px solid rgba(240, 198, 109, 0.24);
+      background: rgba(240, 198, 109, 0.1);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 950;
+      overflow: hidden;
+    }
+
+    .item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .compact-row.six {
@@ -447,6 +566,71 @@
       overflow-wrap: anywhere;
     }
 
+    .tx-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 950;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mini-bars {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-bar {
+      display: grid;
+      grid-template-columns: minmax(90px, 0.85fr) minmax(110px, 1fr) 74px;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .mini-bar-track {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(8, 12, 8, 0.48);
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      overflow: hidden;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+
+    .network-tree {
+      display: grid;
+      gap: 7px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      background: rgba(8, 12, 8, 0.24);
+      margin-bottom: 10px;
+    }
+
+    .network-root {
+      color: var(--gold);
+      font-weight: 950;
+    }
+
+    .network-node {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      padding-left: 16px;
+    }
+
     .item-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -524,6 +708,40 @@
     }
 
     @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .app > :not(.topbar):not(.sidebar),
+      .topbar,
+      .sidebar {
+        grid-column: 1;
+      }
+
+      .sidebar {
+        position: static;
+        min-height: 0;
+        grid-row: auto;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+        align-items: center;
+      }
+
+      .side-nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 8px;
+      }
+
+      .side-link {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      .side-note {
+        grid-column: 1 / -1;
+      }
+
       .sticky-search {
         grid-template-columns: 1fr 1fr;
       }
@@ -531,6 +749,7 @@
       .metric-grid,
       .dashboard-grid,
       .search-layout,
+      .analytics-grid,
       .profile {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -542,6 +761,7 @@
       .app {
         width: min(100% - 18px, 1240px);
         padding-top: 10px;
+        gap: 10px;
       }
 
       .topbar {
@@ -551,6 +771,19 @@
       .language {
         justify-content: flex-start;
         flex-wrap: wrap;
+      }
+
+      .sidebar {
+        padding: 9px;
+        gap: 8px;
+      }
+
+      .side-brand {
+        display: none;
+      }
+
+      .side-note {
+        display: none;
       }
 
       .sticky-search {
@@ -568,6 +801,7 @@
       .metric-grid,
       .dashboard-grid,
       .search-layout,
+      .analytics-grid,
       .profile {
         grid-template-columns: 1fr;
       }
@@ -634,6 +868,7 @@
         <div>
           <h1 data-i18n="appTitle">Elf Continent Marketplace Analytics Dashboard</h1>
           <div class="subtitle" data-i18n="subtitle">市場交易、玩家收入、關聯帳戶與交易集中度分析</div>
+          <div class="creator" data-i18n="creatorCredit">製作人：潮州人TW</div>
         </div>
       </div>
       <div class="language" aria-label="Language">
@@ -642,6 +877,19 @@
         <button class="lang-btn" type="button" data-lang="en" data-i18n="english">English</button>
       </div>
     </header>
+
+    <aside class="sidebar" aria-label="Dashboard navigation">
+      <div class="side-brand"><span class="mark" aria-hidden="true">ELF</span><span>Marketplace</span></div>
+      <nav class="side-nav">
+        <button class="side-link active" type="button" data-jump="#dashboard-section">市場總覽</button>
+        <button class="side-link" type="button" data-jump="#player-section">玩家分析</button>
+        <button class="side-link" type="button" data-jump="#recent-transactions">交易紀錄</button>
+        <button class="side-link" type="button" data-jump="#search-section">搜尋結果</button>
+        <button class="side-link" type="button" data-jump="#item-profile-section">商品分析</button>
+        <button class="side-link" type="button" data-jump="#items-section">商品價格</button>
+      </nav>
+      <div class="side-note">製作人：潮州人TW<br>資料來源：目前市場分頁<br>自動更新：每 5 分鐘</div>
+    </aside>
 
     <section class="sticky-search" aria-label="Search and filters">
       <div class="market-tabs" role="tablist" aria-label="Market category">
@@ -735,6 +983,15 @@
       <div class="tab-panel" id="tab-concentration"></div>
     </section>
 
+    <section class="section" id="item-profile-section">
+      <div class="section-head">
+        <h2 class="section-title" data-i18n="itemProfile">商品分析</h2>
+        <div class="section-note" id="item-profile-note"></div>
+      </div>
+      <div class="card profile" id="item-profile"></div>
+      <div class="analytics-grid" id="item-analytics"></div>
+    </section>
+
     <section class="section" id="items-section">
       <div class="section-head">
         <h2 class="section-title" data-i18n="itemMarketConcentration">商品市場集中度</h2>
@@ -797,6 +1054,7 @@
       ...GENERAL.map((item, order) => ({ ...item, category: "General", order })),
       ...OUTFITS.map((item, order) => ({ ...item, category: "Pi Elf Outfit", order }))
     ];
+    const ITEM_BY_ID = new Map(ITEMS.map((item) => [String(item.id), item]));
 
     const state = {
       lang: localStorage.getItem("elf-market-lang") || "zh-TW",
@@ -830,6 +1088,9 @@
       searchTransactions: document.getElementById("search-transactions"),
       playerNote: document.getElementById("player-note"),
       playerProfile: document.getElementById("player-profile"),
+      itemProfileNote: document.getElementById("item-profile-note"),
+      itemProfile: document.getElementById("item-profile"),
+      itemAnalytics: document.getElementById("item-analytics"),
       itemNote: document.getElementById("item-note"),
       itemGrid: document.getElementById("item-grid"),
       marketTabs: [...document.querySelectorAll(".market-tab")],
@@ -864,6 +1125,7 @@
       localStorage.setItem("elf-market-lang", selected);
       document.documentElement.lang = selected;
       applyI18n();
+      applyRouteFromUrl();
       render();
     }
 
@@ -894,6 +1156,30 @@
       const key = playerKey(playerName);
       if (!key) return [];
       return transactions.filter((tx) => playerKey(tx.sellerName) === key || playerKey(tx.buyerName) === key);
+    }
+
+    function resolveItem(query, transactions) {
+      const value = String(query || "").trim();
+      if (!value) return null;
+      const key = value.toLowerCase();
+      const candidates = [...getCategoryItems(), ...transactions.map((tx) => ITEM_BY_ID.get(String(tx.itemId))).filter(Boolean)];
+      const unique = new Map(candidates.map((item) => [String(item.id), item]));
+      return [...unique.values()].find((item) => String(item.id) === value || item.name.toLowerCase() === key)
+        || [...unique.values()].find((item) => item.name.toLowerCase().includes(key) || item.group.toLowerCase().includes(key))
+        || null;
+    }
+
+    function getItemTransactions(item, transactions) {
+      if (!item) return [];
+      return transactions.filter((tx) => String(tx.itemId) === String(item.id));
+    }
+
+    function applyRouteFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const player = params.get("player");
+      const item = params.get("item");
+      if (player) el.search.value = player;
+      else if (item) el.search.value = item;
     }
 
     function sellerStats(transactions) {
@@ -1118,6 +1404,54 @@
       return calculateMarketplacePatternScore(transactions, playerName);
     }
 
+    function itemThumbHtml(itemId, itemName) {
+      const item = ITEM_BY_ID.get(String(itemId)) || { id: itemId, name: itemName || "-", category: "General" };
+      const fallbackText = escapeHtml(String(item.name || itemName || "?").slice(0, 1).toUpperCase());
+      return `<span class="item-thumb"><img src="${getItemImageSrc(item)}" alt="${escapeHtml(item.name || itemName || "")}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${fallbackText}'))" /></span>`;
+    }
+
+    function itemLabelHtml(itemId, itemName) {
+      return `<span class="entity">${itemThumbHtml(itemId, itemName)}<span>${escapeHtml(itemName || "-")}</span></span>`;
+    }
+
+    function itemButtonHtml(itemId, itemName) {
+      return `<button class="item-link" type="button" data-item="${escapeHtml(String(itemId || itemName || ""))}">${itemLabelHtml(itemId, itemName)}</button>`;
+    }
+
+    function playerButtonHtml(playerName) {
+      if (!isKnownPlayer(playerName)) return escapeHtml(playerName || "-");
+      return `<button class="player-link" type="button" data-player="${escapeHtml(playerName)}">${escapeHtml(playerName)}</button>`;
+    }
+
+    function updateRoute(params) {
+      const next = new URL(window.location.href);
+      if (params.player) next.searchParams.set("player", params.player);
+      else next.searchParams.delete("player");
+      if (params.item) next.searchParams.set("item", params.item);
+      else next.searchParams.delete("item");
+      window.history.replaceState({}, "", next);
+    }
+
+    function selectPlayer(playerName) {
+      if (!isKnownPlayer(playerName)) return;
+      el.search.value = playerName;
+      updateRoute({ player: playerName });
+      state.activeTab = "overview";
+      el.tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === state.activeTab));
+      document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
+      render();
+      document.getElementById("player-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function selectItem(itemIdOrName) {
+      const item = resolveItem(String(itemIdOrName || ""), getCategoryTransactions());
+      if (!item) return;
+      el.search.value = item.name;
+      updateRoute({ item: item.name });
+      render();
+      document.getElementById("item-profile-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     function metricCard(label, value) {
       return `<article class="card metric"><div class="metric-label">${escapeHtml(label)}</div><div class="metric-value">${escapeHtml(value)}</div></article>`;
     }
@@ -1133,31 +1467,35 @@
     function renderTransactionTable(transactions, limit = 20) {
       const rows = transactions.slice(0, limit);
       if (!rows.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
-      const desktop = `<div class="table-shell desktop-transactions"><table><thead><tr><th>${t("item")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("price")}</th><th>${t("quantity")}</th><th>${t("time")}</th></tr></thead><tbody>${rows.map((tx) => `<tr><td>${escapeHtml(tx.itemName)}</td><td>${escapeHtml(tx.sellerName)}</td><td>${escapeHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatTime(tx.txnTime)}</td></tr>`).join("")}</tbody></table></div>`;
-      const mobile = `<div class="mobile-transactions">${rows.map((tx) => `<article class="tx-card"><strong>${escapeHtml(tx.itemName)}</strong><div class="tx-line">${escapeHtml(tx.sellerName)} → ${escapeHtml(tx.buyerName)}</div><div class="tx-line">${t("price")} ${formatPrice(tx.price)} / ${t("quantity")} ${formatInteger(tx.itemNum)} / ${formatTime(tx.txnTime)}</div></article>`).join("")}</div>`;
+      const desktop = `<div class="table-shell desktop-transactions"><table><thead><tr><th>${t("item")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("price")}</th><th>${t("quantity")}</th><th>${t("time")}</th></tr></thead><tbody>${rows.map((tx) => `<tr><td>${itemButtonHtml(tx.itemId, tx.itemName)}</td><td>${playerButtonHtml(tx.sellerName)}</td><td>${playerButtonHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatTime(tx.txnTime)}</td></tr>`).join("")}</tbody></table></div>`;
+      const mobile = `<div class="mobile-transactions">${rows.map((tx) => `<article class="tx-card"><div class="tx-top">${itemButtonHtml(tx.itemId, tx.itemName)}</div><div class="tx-line">${playerButtonHtml(tx.sellerName)} → ${playerButtonHtml(tx.buyerName)}</div><div class="tx-line">${t("price")} ${formatPrice(tx.price)} / ${t("quantity")} ${formatInteger(tx.itemNum)} / ${formatTime(tx.txnTime)}</div></article>`).join("")}</div>`;
       return desktop + mobile;
     }
 
     function renderDashboard(transactions) {
       const sellers = new Set(transactions.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
       const buyers = new Set(transactions.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+      const activePlayers = new Set([...sellers, ...buyers]);
       const totalVolume = transactions.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0);
+      const lastUpdated = Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0));
       el.dashboardNote.textContent = `${t("currentMarket")}: ${state.activeCategory}`;
       el.marketMetrics.innerHTML = [
         metricCard(t("totalTransactions"), formatInteger(transactions.length)),
         metricCard(t("totalVolume"), formatPrice(totalVolume)),
-        metricCard(t("activeSellers"), formatInteger(sellers.size)),
-        metricCard(t("activeBuyers"), formatInteger(buyers.size))
+        metricCard(t("totalSellers"), formatInteger(sellers.size)),
+        metricCard(t("totalBuyers"), formatInteger(buyers.size)),
+        metricCard(t("activePlayers"), formatInteger(activePlayers.size)),
+        metricCard(t("lastUpdated"), formatTime(lastUpdated))
       ].join("");
 
       const sellersSorted = sellerStats(transactions).sort((a, b) => b.income - a.income).slice(0, 10);
-      el.topIncome.innerHTML = sellersSorted.length ? sellersSorted.map((row, index) => compactRow(`#${index + 1} ${escapeHtml(row.name)}`, `${t("relatedBuyers")}: ${row.buyers.size}`, [{ label: t("totalIncome"), value: formatPrice(row.income) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("averageIncome"), value: formatPrice(row.income / row.count) }])).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
+      el.topIncome.innerHTML = sellersSorted.length ? sellersSorted.map((row, index) => compactRow(`#${index + 1} ${playerButtonHtml(row.name)}`, `${t("relatedBuyers")}: ${row.buyers.size}`, [{ label: t("totalIncome"), value: formatPrice(row.income) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("averageIncome"), value: formatPrice(row.income / row.count) }])).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
 
       const concentrated = itemStats(transactions).sort((a, b) => b.topShare - a.topShare || b.total - a.total).slice(0, 5);
-      el.topConcentration.innerHTML = concentrated.length ? concentrated.map((row) => compactRow(escapeHtml(row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTradesShort"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
+      el.topConcentration.innerHTML = concentrated.length ? concentrated.map((row) => compactRow(itemButtonHtml(row.itemId, row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTradesShort"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
 
       const highScores = sellerStats(transactions).map((row) => ({ ...row, pattern: computePatternScore(transactions, row.name) })).filter((row) => row.pattern.score >= 61).sort((a, b) => b.pattern.score - a.pattern.score).slice(0, 10);
-      el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(escapeHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }, { label: t("relatedAccountCount"), value: formatInteger(row.pattern.relatedCount) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(playerButtonHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }, { label: t("relatedAccountCount"), value: formatInteger(row.pattern.relatedCount) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
       el.recentTransactions.innerHTML = renderTransactionTable(transactions, 20);
     }
 
@@ -1174,9 +1512,9 @@
       const items = getCategoryItems().filter((item) => item.name.toLowerCase().includes(query) || item.group.toLowerCase().includes(query) || String(item.id).includes(query)).slice(0, 12);
       const txs = transactions.filter((tx) => tx.sellerName.toLowerCase().includes(query) || tx.buyerName.toLowerCase().includes(query) || tx.itemName.toLowerCase().includes(query) || String(tx.itemId).includes(query) || String(tx.txnId).includes(query)).slice(0, 20);
       el.searchSummary.textContent = `${t("resultCount")}: ${players.length + items.length + txs.length}`;
-      el.searchPlayers.innerHTML = players.length ? players.map((name) => compactRow(escapeHtml(name), "", [{ label: t("tradeCount"), value: formatInteger(getPlayerTransactions(name, transactions).length) }, { label: t("totalIncome"), value: formatPrice(sellerStats(transactions).find((row) => playerKey(row.name) === playerKey(name))?.income || 0) }, { label: t("patternScore"), value: String(computePatternScore(transactions, name).score) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
-      el.searchItems.innerHTML = items.length ? items.map((item) => compactRow(escapeHtml(item.name), `${item.category} / ${item.group} - ID ${item.id}`, [{ label: t("price"), value: formatPrice(state.prices.get(item.id)?.price) }, { label: t("tradeCount"), value: formatInteger(state.prices.get(item.id)?.transactions?.length || 0) }, { label: t("lastSeen"), value: formatTime(state.prices.get(item.id)?.tx?.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
-      el.searchTransactions.innerHTML = txs.length ? txs.slice(0, 8).map((tx) => compactRow(escapeHtml(tx.itemName), `${escapeHtml(tx.sellerName)} → ${escapeHtml(tx.buyerName)}`, [{ label: t("price"), value: formatPrice(tx.price) }, { label: t("quantity"), value: formatInteger(tx.itemNum) }, { label: t("time"), value: formatTime(tx.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.searchPlayers.innerHTML = players.length ? players.map((name) => compactRow(playerButtonHtml(name), "", [{ label: t("tradeCount"), value: formatInteger(getPlayerTransactions(name, transactions).length) }, { label: t("totalIncome"), value: formatPrice(sellerStats(transactions).find((row) => playerKey(row.name) === playerKey(name))?.income || 0) }, { label: t("patternScore"), value: String(computePatternScore(transactions, name).score) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.searchItems.innerHTML = items.length ? items.map((item) => compactRow(itemButtonHtml(item.id, item.name), `${item.category} / ${item.group} - ID ${item.id}`, [{ label: t("price"), value: formatPrice(state.prices.get(item.id)?.price) }, { label: t("tradeCount"), value: formatInteger(state.prices.get(item.id)?.transactions?.length || 0) }, { label: t("lastSeen"), value: formatTime(state.prices.get(item.id)?.tx?.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.searchTransactions.innerHTML = txs.length ? txs.slice(0, 8).map((tx) => compactRow(itemButtonHtml(tx.itemId, tx.itemName), `${playerButtonHtml(tx.sellerName)} → ${playerButtonHtml(tx.buyerName)}`, [{ label: t("price"), value: formatPrice(tx.price) }, { label: t("quantity"), value: formatInteger(tx.itemNum) }, { label: t("time"), value: formatTime(tx.txnTime) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
     }
 
     function renderPlayer(transactions) {
@@ -1234,9 +1572,10 @@
 
       const sort = document.getElementById("related-sort")?.value || "total";
       const sortedNetwork = [...network].sort((a, b) => sort === "count" ? b.count - a.count : sort === "last" ? b.lastSeen - a.lastSeen : b.total - a.total);
-      document.getElementById("tab-related").innerHTML = `<div class="section-head"><select class="field" id="related-sort"><option value="total" ${sort === "total" ? "selected" : ""}>${t("sortByTotalAmount")}</option><option value="count" ${sort === "count" ? "selected" : ""}>${t("sortByTradeCount")}</option><option value="last" ${sort === "last" ? "selected" : ""}>${t("sortByLastSeen")}</option></select></div><div class="compact-list">${sortedNetwork.length ? sortedNetwork.slice(0, 50).map((row) => {
+      const networkGraph = `<div class="network-tree"><div class="network-root">${escapeHtml(playerName)}</div>${sortedNetwork.slice(0, 10).map((row) => `<div class="network-node"><span>↳ ${playerButtonHtml(row.name)}</span><strong>${formatInteger(row.count)} / ${formatPrice(row.total)}</strong></div>`).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
+      document.getElementById("tab-related").innerHTML = `${networkGraph}<div class="section-head"><select class="field" id="related-sort"><option value="total" ${sort === "total" ? "selected" : ""}>${t("sortByTotalAmount")}</option><option value="count" ${sort === "count" ? "selected" : ""}>${t("sortByTradeCount")}</option><option value="last" ${sort === "last" ? "selected" : ""}>${t("sortByLastSeen")}</option></select></div><div class="compact-list">${sortedNetwork.length ? sortedNetwork.slice(0, 50).map((row) => {
         const mainItems = [...row.items.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name).join(", ");
-        return compactRow(escapeHtml(row.name), `${t("mainItems")}: ${escapeHtml(mainItems || "-")}`, [{ label: t("totalAmount"), value: formatPrice(row.total) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("lastSeen"), value: formatTime(row.lastSeen) }], row.lowCount ? t("hasLowPrice") : t("noLowPrice"));
+        return compactRow(playerButtonHtml(row.name), `${t("mainItems")}: ${escapeHtml(mainItems || "-")}`, [{ label: t("totalAmount"), value: formatPrice(row.total) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("lastSeen"), value: formatTime(row.lastSeen) }], row.lowCount ? t("hasLowPrice") : t("noLowPrice"));
       }).join("") : `<div class="empty">${t("noDataFound")}</div>`}</div>`;
       document.getElementById("related-sort")?.addEventListener("change", () => renderPlayerTabs(playerName, transactions, playerTx, network, pattern));
 
@@ -1267,8 +1606,118 @@
       return [...new Set(notices)];
     }
 
+    function playerTradeStats(transactions, fieldName, amountField) {
+      const rows = new Map();
+      transactions.forEach((tx) => {
+        const name = tx[fieldName];
+        if (!isKnownPlayer(name)) return;
+        const key = playerKey(name);
+        const row = rows.get(key) || { name, quantity: 0, total: 0, count: 0, lastSeen: 0 };
+        row.quantity += Number(tx.itemNum) || 0;
+        row.total += Number(tx[amountField]) || Number(tx.totalAmountSigil) || 0;
+        row.count += 1;
+        row.lastSeen = Math.max(row.lastSeen, Number(tx.txnTime) || 0);
+        rows.set(key, row);
+      });
+      return [...rows.values()].sort((a, b) => b.total - a.total || b.quantity - a.quantity);
+    }
+
+    function dailyItemStats(transactions) {
+      const rows = new Map();
+      transactions.forEach((tx) => {
+        const date = new Date(Number(tx.txnTime) * 1000).toLocaleDateString("en-CA");
+        const row = rows.get(date) || { date, quantity: 0, count: 0, volume: 0, high: 0, low: Number.POSITIVE_INFINITY, sellers: new Set(), buyers: new Set() };
+        const price = Number(tx.price) || 0;
+        row.quantity += Number(tx.itemNum) || 0;
+        row.count += 1;
+        row.volume += Number(tx.totalAmountSigil) || 0;
+        row.high = Math.max(row.high, price);
+        if (price > 0) row.low = Math.min(row.low, price);
+        if (isKnownPlayer(tx.sellerName)) row.sellers.add(playerKey(tx.sellerName));
+        if (isKnownPlayer(tx.buyerName)) row.buyers.add(playerKey(tx.buyerName));
+        rows.set(date, row);
+      });
+      return [...rows.values()].sort((a, b) => a.date.localeCompare(b.date));
+    }
+
+    function renderMiniBars(rows, getLabel, getValue, formatValue) {
+      const max = Math.max(0, ...rows.map(getValue));
+      return `<div class="mini-bars">${rows.map((row) => {
+        const value = getValue(row);
+        const width = max ? Math.max(4, (value / max) * 100) : 0;
+        return `<div class="mini-bar"><strong>${escapeHtml(getLabel(row))}</strong><div class="mini-bar-track"><div class="mini-bar-fill" style="width:${width}%"></div></div><span>${escapeHtml(formatValue(value, row))}</span></div>`;
+      }).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
+    }
+
+    function concentrationLevel(share) {
+      if (share >= 0.9) return t("extremeConcentration");
+      if (share >= 0.7) return t("highConcentration");
+      if (share >= 0.5) return t("mediumConcentration");
+      return t("normalPattern");
+    }
+
+    function renderItemProfile(transactions) {
+      const routeItem = new URLSearchParams(window.location.search).get("item");
+      const query = routeItem || el.search.value.trim();
+      const item = resolveItem(query, transactions);
+      if (!item) {
+        el.itemProfileNote.textContent = t("enterSearch");
+        el.itemProfile.innerHTML = `<div class="notice">${t("enterSearch")}</div>`;
+        el.itemAnalytics.innerHTML = "";
+        return;
+      }
+
+      const itemTx = getItemTransactions(item, transactions).sort((a, b) => Number(b.txnTime || 0) - Number(a.txnTime || 0));
+      const totalQty = itemTx.reduce((sum, tx) => sum + (Number(tx.itemNum) || 0), 0);
+      const totalRevenue = itemTx.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0);
+      const prices = itemTx.map((tx) => Number(tx.price) || 0).filter((price) => price > 0);
+      const sellers = new Set(itemTx.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
+      const buyers = new Set(itemTx.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+      const firstSeen = Math.min(...itemTx.map((tx) => Number(tx.txnTime) || Number.POSITIVE_INFINITY));
+      const lastSeen = Math.max(0, ...itemTx.map((tx) => Number(tx.txnTime) || 0));
+      const activeDays = Number.isFinite(firstSeen) && lastSeen ? Math.max(1, Math.ceil((lastSeen - firstSeen) / 86400) + 1) : 0;
+      const sellerRows = playerTradeStats(itemTx, "sellerName", "totalAmountSigil");
+      const buyerRows = playerTradeStats(itemTx, "buyerName", "totalAmountSigil");
+      const dailyRows = dailyItemStats(itemTx);
+      const topSellerRevenue = sellerRows[0]?.total || 0;
+      const top3SellerRevenue = sellerRows.slice(0, 3).reduce((sum, row) => sum + row.total, 0);
+      const top5SellerRevenue = sellerRows.slice(0, 5).reduce((sum, row) => sum + row.total, 0);
+      const lowRows = itemTx.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold);
+      const commonQty = [...lowRows.reduce((map, tx) => map.set(tx.itemNum, (map.get(tx.itemNum) || 0) + 1), new Map()).entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
+
+      el.itemProfileNote.textContent = `${item.name} / ID ${item.id}`;
+      el.itemProfile.innerHTML = `
+        <div><span class="metric-label">${t("item")}</span><div class="profile-name">${itemLabelHtml(item.id, item.name)}</div></div>
+        <div class="profile-stat"><span>${t("totalSoldQuantity")}</span><strong>${formatInteger(totalQty)}</strong></div>
+        <div class="profile-stat"><span>${t("totalRevenue")}</span><strong>${formatPrice(totalRevenue)}</strong></div>
+        <div class="profile-stat"><span>${t("totalTrades")}</span><strong>${formatInteger(itemTx.length)}</strong></div>
+        <div class="profile-stat"><span>${t("averagePrice")}</span><strong>${formatPrice(prices.length ? prices.reduce((sum, price) => sum + price, 0) / prices.length : 0)}</strong></div>
+        <div class="profile-stat"><span>${t("lastPrice")}</span><strong>${formatPrice(itemTx[0]?.price)}</strong></div>
+        <div class="profile-stat"><span>${t("activeSellers")}</span><strong>${formatInteger(sellers.size)}</strong></div>
+        <div class="profile-stat"><span>${t("activeBuyers")}</span><strong>${formatInteger(buyers.size)}</strong></div>
+      `;
+
+      el.itemAnalytics.innerHTML = `
+        <article class="card panel"><h3 class="section-title">${t("lifetimeStatistics")}</h3><div class="compact-list">
+          ${compactRow(t("priceTrends"), "", [{ label: t("highestPrice"), value: formatPrice(Math.max(0, ...prices)) }, { label: t("lowestPrice"), value: formatPrice(Math.min(...prices)) }, { label: t("lastPrice"), value: formatPrice(itemTx[0]?.price) }])}
+          ${compactRow(t("firstSeen"), "", [{ label: t("firstTrade"), value: formatTime(Number.isFinite(firstSeen) ? firstSeen : 0) }, { label: t("lastTrade"), value: formatTime(lastSeen) }, { label: t("activeDays"), value: formatInteger(activeDays) }])}
+          ${compactRow(t("quantityTrends"), "", [{ label: t("averageQuantityPerDay"), value: formatPrice(activeDays ? totalQty / activeDays : 0) }, { label: t("averageVolumePerDay"), value: formatPrice(activeDays ? totalRevenue / activeDays : 0) }, { label: t("tradeCount"), value: formatInteger(itemTx.length) }])}
+        </div></article>
+        <article class="card panel"><h3 class="section-title">${t("marketConcentration")}</h3><div class="compact-list">
+          ${compactRow(t("top1SellerShare"), concentrationLevel(totalRevenue ? topSellerRevenue / totalRevenue : 0), [{ label: t("marketShare"), value: `${((totalRevenue ? topSellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("sellerCount"), value: formatInteger(sellerRows.length) }, { label: t("buyerCount"), value: formatInteger(buyerRows.length) }])}
+          ${compactRow(t("top3SellerShare"), "", [{ label: t("marketShare"), value: `${((totalRevenue ? top3SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("top5Share"), value: `${((totalRevenue ? top5SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("topSeller"), value: sellerRows[0]?.name || "-" }])}
+        </div></article>
+        <article class="card panel"><h3 class="section-title">${t("dailySales")}</h3>${renderMiniBars(dailyRows.slice(-10), (row) => row.date, (row) => row.volume, (value, row) => `${formatPrice(value)} / ${formatInteger(row.quantity)}`)}</article>
+        <article class="card panel"><h3 class="section-title">${t("priceTrends")}</h3>${renderMiniBars(dailyRows.slice(-10), (row) => row.date, (row) => row.count ? row.volume / row.count : 0, (value) => formatPrice(value))}</article>
+        <article class="card panel"><h3 class="section-title">${t("topSellers")}</h3><div class="compact-list">${sellerRows.slice(0, 8).map((row) => compactRow(playerButtonHtml(row.name), "", [{ label: t("soldQuantity"), value: formatInteger(row.quantity) }, { label: t("totalRevenue"), value: formatPrice(row.total) }, { label: t("marketShare"), value: `${((totalRevenue ? row.total / totalRevenue : 0) * 100).toFixed(1)}%` }])).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div></article>
+        <article class="card panel"><h3 class="section-title">${t("topBuyers")}</h3><div class="compact-list">${buyerRows.slice(0, 8).map((row) => compactRow(playerButtonHtml(row.name), "", [{ label: t("boughtQuantity"), value: formatInteger(row.quantity) }, { label: t("spending"), value: formatPrice(row.total) }, { label: t("marketShare"), value: `${((totalRevenue ? row.total / totalRevenue : 0) * 100).toFixed(1)}%` }])).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div></article>
+        <article class="card panel"><h3 class="section-title">${t("lowPriceTransfers")}</h3><div class="compact-list">${compactRow(t("lowPriceTransfer"), "", [{ label: t("tradeCount"), value: formatInteger(lowRows.length) }, { label: t("lowPriceTransferRatio"), value: `${((itemTx.length ? lowRows.length / itemTx.length : 0) * 100).toFixed(1)}%` }, { label: t("mostCommonQuantity"), value: String(commonQty) }])}</div></article>
+        <article class="card panel"><h3 class="section-title">${t("transactions")}</h3>${renderTransactionTable(itemTx, 20)}</article>
+      `;
+    }
+
     function renderItemConcentrationRows(rows) {
-      return rows.sort((a, b) => b.topShare - a.topShare || b.total - a.total).map((row) => compactRow(escapeHtml(row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTrades"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
+      return rows.sort((a, b) => b.topShare - a.topShare || b.total - a.total).map((row) => compactRow(itemButtonHtml(row.itemId, row.itemName), `${t("topSeller")}: ${playerButtonHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTrades"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
     }
 
     function getItemImageSrc(item) {
@@ -1306,6 +1755,7 @@
       renderDashboard(transactions);
       renderSearch(transactions);
       renderPlayer(transactions);
+      renderItemProfile(transactions);
       renderItems(transactions);
     }
 
@@ -1402,10 +1852,21 @@
       document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
     }));
     el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
+    document.querySelectorAll(".side-link").forEach((button) => button.addEventListener("click", () => {
+      document.querySelectorAll(".side-link").forEach((link) => link.classList.toggle("active", link === button));
+      document.querySelector(button.dataset.jump)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }));
+    document.addEventListener("click", (event) => {
+      const playerButton = event.target.closest("[data-player]");
+      if (playerButton) selectPlayer(playerButton.dataset.player);
+      const itemButton = event.target.closest("[data-item]");
+      if (itemButton) selectItem(itemButton.dataset.item);
+    });
     el.search.addEventListener("input", render);
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
 
+    applyRouteFromUrl();
     loadLanguage(state.lang).then(() => refreshPrices());
   </script>
 </body>
