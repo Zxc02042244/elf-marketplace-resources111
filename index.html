@@ -4,6 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Elf Continent Marketplace Analytics Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/vis-network@9.1.9/styles/vis-network.min.css" />
+  <script src="https://unpkg.com/vis-network@9.1.9/dist/vis-network.min.js"></script>
   <style>
     :root {
       --bg: #0c120e;
@@ -327,6 +329,48 @@
       overflow-wrap: anywhere;
     }
 
+    .executive-summary {
+      margin-bottom: 10px;
+    }
+
+    .executive-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .summary-tile {
+      min-height: 104px;
+      padding: 12px;
+      border: 1px solid rgba(142, 207, 120, 0.2);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.24);
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .summary-value {
+      color: var(--text);
+      font-size: 22px;
+      font-weight: 950;
+      line-height: 1.08;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-meta {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
     .dashboard-grid {
       display: grid;
       grid-template-columns: minmax(360px, 1.2fr) minmax(330px, 1fr) minmax(260px, 0.78fr);
@@ -635,6 +679,209 @@
       padding-left: 16px;
     }
 
+    .intel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .health-score {
+      display: grid;
+      gap: 10px;
+    }
+
+    .health-ring {
+      width: 118px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--accent) calc(var(--score) * 1%), rgba(8, 12, 8, 0.48) 0);
+      border: 1px solid rgba(142, 207, 120, 0.26);
+      box-shadow: inset 0 0 0 12px rgba(8, 12, 8, 0.62);
+      color: var(--text);
+      font-weight: 950;
+      text-align: center;
+    }
+
+    .health-ring strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .health-ring span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      margin-top: 3px;
+    }
+
+    .alert-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .alert-row {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(240, 198, 109, 0.22);
+      background: rgba(240, 198, 109, 0.08);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .alert-row.severity-5 {
+      border-color: rgba(255, 92, 92, 0.42);
+      background: rgba(255, 92, 92, 0.12);
+    }
+
+    .alert-row.severity-4 {
+      border-color: rgba(240, 198, 109, 0.42);
+      background: rgba(240, 198, 109, 0.12);
+    }
+
+    .alert-row.severity-3 {
+      border-color: rgba(142, 207, 120, 0.34);
+      background: rgba(142, 207, 120, 0.1);
+    }
+
+    .alert-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-weight: 850;
+    }
+
+    .alert-detail {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .price-chart {
+      min-height: 150px;
+      display: grid;
+      grid-template-columns: repeat(var(--bars, 1), minmax(18px, 1fr));
+      align-items: end;
+      gap: 7px;
+      padding: 10px 4px 0;
+    }
+
+    .price-bar {
+      min-height: 6px;
+      border-radius: 7px 7px 2px 2px;
+      background: linear-gradient(180deg, var(--gold), var(--accent));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .bubble-map {
+      min-height: 250px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      background: radial-gradient(circle at 50% 35%, rgba(142, 207, 120, 0.1), rgba(8, 12, 8, 0.28) 64%);
+    }
+
+    .bubble {
+      width: var(--size);
+      height: var(--size);
+      min-width: 46px;
+      min-height: 46px;
+      max-width: 132px;
+      max-height: 132px;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      border-radius: 50%;
+      background: rgba(142, 207, 120, 0.13);
+      border: 1px solid rgba(142, 207, 120, 0.38);
+      color: var(--text);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      overflow: hidden;
+    }
+
+    .bubble.gold {
+      background: rgba(240, 198, 109, 0.15);
+      border-color: rgba(240, 198, 109, 0.42);
+    }
+
+    .network-map {
+      position: relative;
+      min-height: 280px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      background: radial-gradient(circle at center, rgba(240, 198, 109, 0.12), rgba(8, 12, 8, 0.3) 68%);
+      overflow: hidden;
+    }
+
+    #network-graph {
+      width: 100%;
+      height: clamp(440px, 58vh, 660px);
+      min-height: 440px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      background: radial-gradient(circle at center, rgba(240, 198, 109, 0.12), rgba(8, 12, 8, 0.3) 68%);
+      overflow: hidden;
+    }
+
+    .network-limit-note {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .network-fallback {
+      margin-top: 10px;
+    }
+
+    .network-center,
+    .network-orbit {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .network-center {
+      width: 132px;
+      padding: 12px;
+      background: rgba(240, 198, 109, 0.16);
+      border: 1px solid rgba(240, 198, 109, 0.45);
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .network-orbit {
+      width: var(--size);
+      height: var(--size);
+      min-width: 54px;
+      min-height: 54px;
+      display: grid;
+      place-items: center;
+      padding: 7px;
+      background: rgba(142, 207, 120, 0.14);
+      border: 1px solid rgba(142, 207, 120, 0.36);
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 850;
+    }
+
     .item-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -754,6 +1001,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .executive-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .metric-grid,
       .search-layout,
       .analytics-grid,
@@ -806,9 +1057,11 @@
       }
 
       .metric-grid,
+      .executive-grid,
       .dashboard-grid,
       .search-layout,
       .analytics-grid,
+      .intel-grid,
       .profile {
         grid-template-columns: 1fr;
       }
@@ -926,6 +1179,10 @@
         <h2 class="section-title" data-i18n="marketOverview">市場總覽</h2>
         <div class="section-note" id="dashboard-note"></div>
       </div>
+      <article class="card panel executive-summary">
+        <div class="section-head"><h3 class="section-title" data-i18n="executiveSummary">Executive Summary</h3></div>
+        <div class="executive-grid" id="executive-summary"></div>
+      </article>
       <div class="metric-grid" id="market-metrics"></div>
       <div class="dashboard-grid">
         <article class="card panel">
@@ -939,6 +1196,22 @@
         <article class="card panel">
           <div class="section-head"><h3 class="section-title" data-i18n="highPatternScorePlayers">高市場模式分數玩家</h3></div>
           <div class="compact-list" id="high-score-list"></div>
+        </article>
+        <article class="card panel">
+          <div class="section-head"><h3 class="section-title" data-i18n="marketHealthScore">Market Health Score</h3></div>
+          <div id="market-health"></div>
+        </article>
+        <article class="card panel">
+          <div class="section-head"><h3 class="section-title" data-i18n="marketAlerts">Market Alerts</h3></div>
+          <div id="market-alerts"></div>
+        </article>
+        <article class="card panel wide">
+          <div class="section-head"><h3 class="section-title" data-i18n="priceHistory">Price History</h3></div>
+          <div id="price-history"></div>
+        </article>
+        <article class="card panel wide">
+          <div class="section-head"><h3 class="section-title" data-i18n="bubbleMaps">BubbleMaps</h3></div>
+          <div id="bubble-map"></div>
         </article>
         <article class="card panel wide">
           <div class="section-head"><h3 class="section-title" data-i18n="recent20Transactions">最近 20 筆交易</h3></div>
@@ -1014,6 +1287,8 @@
     const TRACKER_IMG_BASE = "https://elfmarkettracker.com/images/";
     const REFRESH_MS = 5 * 60 * 1000;
     const REQUEST_DELAY_MS = 120;
+    const SNAPSHOT_STORAGE_KEY = "marketSnapshots";
+    const SNAPSHOT_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
     const MPS_CONFIG = {
       lowPriceThreshold: 0.01,
       scoreWeights: {
@@ -1033,10 +1308,10 @@
 
     const FALLBACK_I18N = {
       "zh-TW": {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度集中", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", marketHealthScore: "市場健康分數", executiveSummary: "重點摘要", highestMpsPlayer: "最高 MPS 玩家", mostConcentratedItem: "最集中商品", largestSeller: "最大賣方", mostActiveBuyer: "最活躍買方", marketAlerts: "市場通知", priceHistory: "價格歷史", priceTrend: "價格趨勢", marketSnapshots: "市場快照", movingAverage: "移動平均", priceRange: "價格區間", priceChange: "價格變化", sevenDayMA: "7日均價", thirtyDayMA: "30日均價", ath: "歷史最高", atl: "歷史最低", change24h: "24小時變化", change7d: "7日變化", change30d: "30日變化", snapshotCount: "快照數", bubbleMaps: "泡泡圖", networkGraph: "交易網路圖", showingTop50RelatedAccounts: "顯示前 50 個關聯帳戶", marketIntelligence: "市場情報", healthHealthy: "健康", healthStable: "穩定", healthWatch: "觀察", healthRisk: "風險", healthWatchlist: "值得觀察", healthConcentrated: "高度集中", concentration: "集中度", distribution: "分布", activity: "活躍度", risk: "風險", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度商品集中", extremeMarketConcentration: "極高市場集中", priceSpikeDetected: "偵測到價格急升", frequentLowPriceTransfers: "頻繁低價轉移", topSellerShare: "最高賣家佔比", currentPrice: "目前價格", severity: "嚴重度", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
       },
       en: {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Concentration", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", marketHealthScore: "Market Health Score", executiveSummary: "Executive Summary", highestMpsPlayer: "Highest MPS Player", mostConcentratedItem: "Most Concentrated Item", largestSeller: "Largest Seller", mostActiveBuyer: "Most Active Buyer", marketAlerts: "Market Alerts", priceHistory: "Price History", priceTrend: "Price Trend", marketSnapshots: "Market Snapshots", movingAverage: "Moving Average", priceRange: "Price Range", priceChange: "Price Change", sevenDayMA: "7D MA", thirtyDayMA: "30D MA", ath: "ATH", atl: "ATL", change24h: "24h Change", change7d: "7d Change", change30d: "30d Change", snapshotCount: "Snapshot Count", bubbleMaps: "BubbleMaps", networkGraph: "Network Graph", showingTop50RelatedAccounts: "Showing top 50 related accounts", marketIntelligence: "Market Intelligence", healthHealthy: "Healthy", healthStable: "Stable", healthWatch: "Watch", healthRisk: "Risk", healthWatchlist: "Watchlist", healthConcentrated: "High Concentration", concentration: "Concentration", distribution: "Distribution", activity: "Activity", risk: "Risk", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Item Concentration", extremeMarketConcentration: "Extreme Market Concentration", priceSpikeDetected: "Price Spike Detected", frequentLowPriceTransfers: "Frequent Low-price Transfers", topSellerShare: "Top Seller Share", currentPrice: "Current Price", severity: "Severity", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
       }
     };
 
@@ -1053,7 +1328,13 @@
       { id: 305005, name: "Tiger Head", group: "Pi Elf Outfit" },
       { id: 305012, name: "Genesis Pioneer", group: "Pi Elf Outfit" },
       { id: 305042, name: "Cosmic Sovereign", group: "Pi Elf Outfit" },
-      { id: 305049, name: "Take My Pi", group: "Pi Elf Outfit" }
+      { id: 305049, name: "Take My Pi", group: "Pi Elf Outfit" },
+      { id: 305016, name: "Pumpkin Whisper", group: "Genesis Journey II" },
+      { id: 305007, name: "Tomato Darling", group: "Genesis Journey II" },
+      { id: 305047, name: "Tree Guardian", group: "Genesis Journey II" },
+      { id: 305006, name: "Amber Miner", group: "Genesis Journey II" },
+      { id: 305015, name: "Prairie Wanderer", group: "Genesis Journey II" },
+      { id: 305009, name: "Cloud Chef", group: "Genesis Journey II" }
     ];
 
     const ITEMS = [
@@ -1069,11 +1350,14 @@
       activeCategory: "Resources",
       activeTab: "overview",
       prices: new Map(),
+      marketSnapshots: [],
       loading: false,
       nextRefreshAt: null,
       refreshTimer: null,
       countdownTimer: null,
-      refreshRunId: 0
+      refreshRunId: 0,
+      networkGraphData: null,
+      networkGraphInstance: null
     };
 
     const el = {
@@ -1084,10 +1368,15 @@
       refresh: document.getElementById("refresh"),
       error: document.getElementById("error-area"),
       dashboardNote: document.getElementById("dashboard-note"),
+      executiveSummary: document.getElementById("executive-summary"),
       marketMetrics: document.getElementById("market-metrics"),
       topIncome: document.getElementById("top-income-list"),
       topConcentration: document.getElementById("top-concentration-list"),
       highScore: document.getElementById("high-score-list"),
+      marketHealth: document.getElementById("market-health"),
+      marketAlerts: document.getElementById("market-alerts"),
+      priceHistory: document.getElementById("price-history"),
+      bubbleMap: document.getElementById("bubble-map"),
       recentTransactions: document.getElementById("recent-transactions"),
       searchSummary: document.getElementById("search-summary"),
       searchPlayers: document.getElementById("search-players"),
@@ -1113,6 +1402,77 @@
     function formatTime(value) { const ts = Number(value); if (!Number.isFinite(ts) || ts <= 0) return "-"; return new Date(ts * 1000).toLocaleString(state.lang === "zh-TW" ? "zh-TW" : "en-US", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }); }
     function playerKey(name) { return String(name || "").trim().toLowerCase(); }
     function isKnownPlayer(name) { const value = String(name || "").trim(); return value && value !== "-"; }
+
+    function loadMarketSnapshots() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(SNAPSHOT_STORAGE_KEY) || "[]");
+        state.marketSnapshots = Array.isArray(parsed) ? parsed.filter((row) => Number(row.timestamp) > 0 && Number(row.price) > 0) : [];
+      } catch {
+        state.marketSnapshots = [];
+      }
+    }
+
+    function saveMarketSnapshots() {
+      localStorage.setItem(SNAPSHOT_STORAGE_KEY, JSON.stringify(state.marketSnapshots));
+    }
+
+    function recordMarketSnapshot(item, price) {
+      const numericPrice = Number(price);
+      if (!item || !Number.isFinite(numericPrice) || numericPrice <= 0) return;
+      const timestamp = Date.now();
+      const cutoff = timestamp - SNAPSHOT_RETENTION_MS;
+      const itemId = String(item.id);
+      const latest = state.marketSnapshots.filter((row) => String(row.itemId) === itemId).sort((a, b) => Number(b.timestamp) - Number(a.timestamp))[0];
+      if (latest && timestamp - Number(latest.timestamp) < 60 * 1000 && Number(latest.price) === numericPrice) return;
+      state.marketSnapshots = state.marketSnapshots
+        .filter((row) => Number(row.timestamp) >= cutoff)
+        .concat([{ timestamp, itemId: item.id, itemName: item.name, price: numericPrice }]);
+      saveMarketSnapshots();
+    }
+
+    function getItemSnapshots(item) {
+      if (!item) return [];
+      return state.marketSnapshots
+        .filter((row) => String(row.itemId) === String(item.id) && Number(row.price) > 0)
+        .sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+    }
+
+    function averageSnapshotPrice(rows) {
+      return rows.length ? rows.reduce((sum, row) => sum + Number(row.price), 0) / rows.length : 0;
+    }
+
+    function formatChange(current, reference) {
+      if (!Number.isFinite(current) || !Number.isFinite(reference) || current <= 0 || reference <= 0) return "-";
+      const change = ((current - reference) / reference) * 100;
+      return `${change >= 0 ? "+" : ""}${change.toFixed(1)}%`;
+    }
+
+    function referenceSnapshotPrice(rows, timestamp) {
+      const before = rows.filter((row) => Number(row.timestamp) <= timestamp).sort((a, b) => Number(b.timestamp) - Number(a.timestamp))[0];
+      if (before) return Number(before.price);
+      return Number(rows[0]?.price) || 0;
+    }
+
+    function calculatePriceTrend(item, currentPrice) {
+      const rows = getItemSnapshots(item);
+      const now = Date.now();
+      const day = 24 * 60 * 60 * 1000;
+      const current = Number(currentPrice) || Number(rows[rows.length - 1]?.price) || 0;
+      const recent7d = rows.filter((row) => Number(row.timestamp) >= now - 7 * day);
+      const recent30d = rows.filter((row) => Number(row.timestamp) >= now - 30 * day);
+      const prices = rows.map((row) => Number(row.price)).filter((price) => price > 0);
+      return {
+        rows,
+        current,
+        ma7: averageSnapshotPrice(recent7d),
+        ma30: averageSnapshotPrice(recent30d),
+        ath: prices.length ? Math.max(...prices) : 0,
+        atl: prices.length ? Math.min(...prices) : 0,
+        change24h: formatChange(current, referenceSnapshotPrice(rows, now - day)),
+        change7d: formatChange(current, referenceSnapshotPrice(rows, now - 7 * day)),
+        change30d: formatChange(current, referenceSnapshotPrice(rows, now - 30 * day))
+      };
+    }
 
     function setStatus(kind, text) {
       el.dot.className = "dot" + (kind === "loading" ? " loading" : kind === "error" ? " error" : "");
@@ -1169,7 +1529,7 @@
       const value = String(query || "").trim();
       if (!value) return null;
       const key = value.toLowerCase();
-      const candidates = [...getCategoryItems(), ...transactions.map((tx) => ITEM_BY_ID.get(String(tx.itemId))).filter(Boolean)];
+      const candidates = [...ITEMS, ...transactions.map((tx) => ITEM_BY_ID.get(String(tx.itemId))).filter(Boolean)];
       const unique = new Map(candidates.map((item) => [String(item.id), item]));
       return [...unique.values()].find((item) => String(item.id) === value || item.name.toLowerCase() === key)
         || [...unique.values()].find((item) => item.name.toLowerCase().includes(key) || item.group.toLowerCase().includes(key))
@@ -1223,9 +1583,11 @@
         items.set(key, item);
       });
       return [...items.values()].map((item) => {
-        const topSellers = [...item.sellers.values()].sort((a, b) => b.total - a.total).slice(0, 5);
+        const sortedSellers = [...item.sellers.values()].sort((a, b) => b.total - a.total);
+        const topSellers = sortedSellers.slice(0, 5);
         const topTotal = topSellers.reduce((sum, seller) => sum + seller.total, 0);
-        return { ...item, topSellers, topShare: item.total > 0 ? topTotal / item.total : 0 };
+        const topSellerTotal = sortedSellers[0]?.total || 0;
+        return { ...item, topSellers, topShare: item.total > 0 ? topTotal / item.total : 0, topSellerShare: item.total > 0 ? topSellerTotal / item.total : 0 };
       });
     }
 
@@ -1450,9 +1812,14 @@
       document.getElementById("player-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
+    function openPlayerProfile(playerName) {
+      selectPlayer(playerName);
+    }
+
     function selectItem(itemIdOrName) {
       const item = resolveItem(String(itemIdOrName || ""), getCategoryTransactions());
       if (!item) return;
+      if (state.activeCategory !== item.category) switchCategory(item.category);
       el.search.value = item.name;
       updateRoute({ item: item.name });
       render();
@@ -1461,6 +1828,14 @@
 
     function metricCard(label, value) {
       return `<article class="card metric"><div class="metric-label">${escapeHtml(label)}</div><div class="metric-value">${escapeHtml(value)}</div></article>`;
+    }
+
+    function summaryTile(label, value, meta = "") {
+      return `<div class="summary-tile">
+        <div class="summary-label">${escapeHtml(label)}</div>
+        <div class="summary-value">${value}</div>
+        <div class="summary-meta">${meta || ""}</div>
+      </div>`;
     }
 
     function compactRow(main, sub, stats, tag = "", className = "") {
@@ -1479,13 +1854,290 @@
       return desktop + mobile;
     }
 
+    function calculateMarketHealth(transactions) {
+      if (!transactions.length) return { score: 0, level: t("waitingForTransactions"), concentration: 0, distribution: 0, activity: 0, risk: 0 };
+      const clampScore = (value) => Math.max(0, Math.min(100, Math.round(value)));
+      const sellers = new Set(transactions.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
+      const buyers = new Set(transactions.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+      const activePlayers = new Set([...sellers, ...buyers]);
+      const lowRatio = transactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold).length / transactions.length;
+      const concentrationRows = itemStats(transactions).sort((a, b) => b.total - a.total).slice(0, 10);
+      const avgTopSellerShare = concentrationRows.length ? concentrationRows.reduce((sum, row) => sum + (row.topSellerShare || 0), 0) / concentrationRows.length : 0;
+      const concentration = clampScore((1 - avgTopSellerShare) * 100);
+      const sellerBuyerBalance = sellers.size && buyers.size ? Math.min(sellers.size, buyers.size) / Math.max(sellers.size, buyers.size) : 0;
+      const activePlayerTarget = Math.max(12, Math.sqrt(transactions.length) * 4);
+      const activePlayerSpread = Math.min(1, activePlayers.size / activePlayerTarget);
+      const distribution = clampScore((activePlayerSpread * 0.55 + sellerBuyerBalance * 0.45) * 100);
+      const hourlyMax = calculateHourlyTradingDensityScore(transactions).hourlyMax;
+      const tradeCountScore = Math.min(1, transactions.length / 100);
+      const densityScore = Math.max(0, 1 - Math.max(0, hourlyMax - 10) / 30);
+      const activity = clampScore((tradeCountScore * 0.7 + densityScore * 0.3) * 100);
+      const highPatternCount = sellerStats(transactions).filter((row) => computePatternScore(transactions, row.name).score >= 80).length;
+      const risk = clampScore(100 - (lowRatio * 70) - Math.min(30, highPatternCount * 6));
+      const score = clampScore((concentration * 0.3) + (distribution * 0.25) + (activity * 0.25) + (risk * 0.2));
+      const level = score >= 80 ? t("healthHealthy") : score >= 60 ? t("healthStable") : score >= 40 ? t("healthWatch") : t("healthRisk");
+      return { score, level, concentration, distribution, activity, risk, lowRatio, avgTopSellerShare, highPatternCount, hourlyMax };
+    }
+
+    function buildMarketAlerts(transactions) {
+      if (!transactions.length) return [{ message: t("waitingForTransactions"), severity: 0, detail: "" }];
+      const alerts = [];
+      const addAlert = (message, severity, detail = "", sortValue = 0) => alerts.push({ message, severity, detail, sortValue });
+      const lowPriceCount = transactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold).length;
+      const lowRatio = transactions.length ? lowPriceCount / transactions.length : 0;
+
+      sellerStats(transactions)
+        .map((row) => ({ name: row.name, pattern: computePatternScore(transactions, row.name) }))
+        .filter((row) => row.pattern.score >= 80)
+        .forEach((row) => {
+          addAlert(
+            t("structuredTradingPattern"),
+            5,
+            `${t("playerName")}: ${row.name} · MPS ${row.pattern.score} · ${t("tradeCount")}: ${formatInteger(row.pattern.txCount)}`,
+            row.pattern.score
+          );
+        });
+
+      itemStats(transactions).forEach((row) => {
+        const share = row.topSellerShare || 0;
+        const topSeller = row.topSellers[0]?.name || "-";
+        const detail = `${t("item")}: ${row.itemName} · ${t("topSeller")}: ${topSeller} · ${t("topSellerShare")}: ${(share * 100).toFixed(1)}%`;
+        if (share >= 0.9) addAlert(t("extremeMarketConcentration"), 5, detail, share);
+        if (share >= 0.7) addAlert(t("highConcentration"), 4, detail, share);
+      });
+
+      const priceRows = new Map();
+      transactions.forEach((tx) => {
+        const price = Number(tx.price) || 0;
+        if (price <= 0) return;
+        const key = String(tx.itemId || tx.itemName);
+        const row = priceRows.get(key) || { itemId: tx.itemId, itemName: tx.itemName, trades: [] };
+        row.trades.push({ price, time: Number(tx.txnTime) || 0 });
+        priceRows.set(key, row);
+      });
+      priceRows.forEach((row) => {
+        const sorted = row.trades.sort((a, b) => b.time - a.time);
+        const current = sorted[0]?.price || 0;
+        const baseline = sorted.slice(1).map((trade) => trade.price).filter((price) => price > 0);
+        const average = baseline.length ? baseline.reduce((sum, price) => sum + price, 0) / baseline.length : 0;
+        if (average > 0 && current >= average * 2) {
+          addAlert(
+            t("priceSpikeDetected"),
+            4,
+            `${t("item")}: ${row.itemName} · ${t("currentPrice")}: ${formatPrice(current)} · ${t("averagePrice")}: ${formatPrice(average)}`,
+            current / average
+          );
+        }
+      });
+
+      if (lowRatio >= 0.3) {
+        addAlert(
+          t("frequentLowPriceTransfers"),
+          3,
+          `${t("lowPriceTransferRatio")}: ${(lowRatio * 100).toFixed(1)}% · ${t("tradeCount")}: ${formatInteger(lowPriceCount)}`,
+          lowRatio
+        );
+      }
+
+      return alerts
+        .sort((a, b) => b.severity - a.severity || b.sortValue - a.sortValue || a.message.localeCompare(b.message))
+        .slice(0, 18);
+    }
+
+    function renderMarketAlerts(alerts) {
+      if (!alerts.length) return `<div class="empty">${t("noNotices")}</div>`;
+      return `<div class="alert-list">${alerts.map((alert) => `
+        <div class="alert-row severity-${alert.severity}">
+          <div class="alert-title"><span>${escapeHtml(alert.message)}</span><span class="tag">${t("severity")} ${escapeHtml(String(alert.severity))}</span></div>
+          ${alert.detail ? `<div class="alert-detail">${escapeHtml(alert.detail)}</div>` : ""}
+        </div>
+      `).join("")}</div>`;
+    }
+
+    function renderPriceHistory(transactions) {
+      const rows = dailyItemStats(transactions).slice(-14);
+      if (!rows.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
+      const maxVolume = Math.max(0, ...rows.map((row) => row.volume));
+      const chart = `<div class="price-chart" style="--bars:${rows.length}">${rows.map((row) => {
+        const height = maxVolume ? Math.max(8, (row.volume / maxVolume) * 138) : 8;
+        return `<div class="price-bar" title="${escapeHtml(row.date)} ${formatPrice(row.volume)}" style="height:${height}px"></div>`;
+      }).join("")}</div>`;
+      const list = `<div class="compact-list">${rows.slice(-5).reverse().map((row) => compactRow(escapeHtml(row.date), "", [{ label: t("totalVolume"), value: formatPrice(row.volume) }, { label: t("totalTrades"), value: formatInteger(row.count) }, { label: t("averagePrice"), value: formatPrice(row.count ? row.volume / row.count : 0) }])).join("")}</div>`;
+      return chart + list;
+    }
+
+    function renderBubbleMap(rows, options = {}) {
+      if (!rows.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
+      const max = Math.max(0, ...rows.map((row) => row.value));
+      return `<div class="bubble-map">${rows.map((row, index) => {
+        const size = max ? Math.round(46 + (row.value / max) * 86) : 46;
+        const className = index % 2 ? "bubble gold" : "bubble";
+        return `<div class="${className}" style="--size:${size}px" title="${escapeHtml(row.label)} ${formatPrice(row.value)}">${row.html || escapeHtml(row.label)}<span class="row-sub">${escapeHtml(options.format ? options.format(row.value, row) : formatPrice(row.value))}</span></div>`;
+      }).join("")}</div>`;
+    }
+
+    function renderMarketBubbleMap(transactions) {
+      const sellerRows = sellerStats(transactions).sort((a, b) => b.income - a.income).slice(0, 8).map((row) => ({ label: row.name, value: row.income, html: playerButtonHtml(row.name) }));
+      const itemRows = itemStats(transactions).sort((a, b) => b.total - a.total).slice(0, 7).map((row) => ({ label: row.itemName, value: row.total, html: itemButtonHtml(row.itemId, row.itemName) }));
+      return renderBubbleMap([...sellerRows, ...itemRows]);
+    }
+
+    function networkMainItems(row) {
+      return [...(row.items || new Map()).entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([name]) => name).join(", ");
+    }
+
+    function renderNetworkFallback(playerName, rows) {
+      const fallbackRows = rows.slice(0, 12);
+      if (!fallbackRows.length) return `<div class="empty">${t("noDataFound")}</div>`;
+      const max = Math.max(1, ...fallbackRows.map((row) => row.total));
+      return `<div class="network-map network-fallback"><div class="network-center" style="--x:50%;--y:50%">${escapeHtml(playerName)}<span class="row-sub">${t("networkGraph")}</span></div>${fallbackRows.map((row, index) => {
+        const angle = ((Math.PI * 2) / fallbackRows.length) * index - Math.PI / 2;
+        const x = 50 + Math.cos(angle) * 36;
+        const y = 50 + Math.sin(angle) * 36;
+        const size = Math.round(54 + (row.total / max) * 54);
+        return `<div class="network-orbit" style="--x:${x}%;--y:${y}%;--size:${size}px">${playerButtonHtml(row.name)}<span class="row-sub">${formatInteger(row.count)} / ${formatPrice(row.total)}</span></div>`;
+      }).join("")}</div>`;
+    }
+
+    function renderVisNetworkGraph(playerName, network) {
+      const rows = [...network].slice(0, 50);
+      if (!rows.length) return `<div class="empty">${t("noDataFound")}</div>`;
+      const limitNote = network.length > 50 ? `<div class="network-limit-note">${t("showingTop50RelatedAccounts")}</div>` : "";
+      return `${limitNote}<div id="network-graph" aria-label="${escapeHtml(t("networkGraph"))}"></div>${renderNetworkFallback(playerName, rows)}`;
+    }
+
+    function mountVisNetworkGraph(playerName, network) {
+      const container = document.getElementById("network-graph");
+      if (!container || !window.vis?.Network || !window.vis?.DataSet) return;
+      const rows = [...network].slice(0, 50);
+      if (!rows.length) return;
+      const centerId = `center:${playerKey(playerName)}`;
+      const maxCount = Math.max(1, ...rows.map((row) => Number(row.count) || 0));
+      const maxTotal = Math.max(1, ...rows.map((row) => Number(row.total) || 0));
+      const accountSize = (row) => {
+        const countPart = (Number(row.count) || 0) / maxCount;
+        const totalPart = (Number(row.total) || 0) / maxTotal;
+        return Math.round(17 + Math.min(1, countPart * 0.7 + totalPart * 0.3) * 22);
+      };
+      container.closest(".tab-panel")?.querySelectorAll(".network-fallback").forEach((node) => node.setAttribute("hidden", ""));
+      const nodes = new vis.DataSet([
+        {
+          id: centerId,
+          label: playerName,
+          size: 36,
+          title: `${t("playerName")}: ${playerName}\n${t("relatedAccounts")}: ${formatInteger(rows.length)}`,
+          color: { background: "#f0c66d", border: "#ffe1a1", highlight: { background: "#ffe1a1", border: "#f0c66d" } },
+          font: { color: "#102010", size: 17, face: "Inter, sans-serif", bold: true },
+          borderWidth: 2
+        },
+        ...rows.map((row) => {
+          const mainItems = networkMainItems(row) || "-";
+          return {
+            id: `player:${playerKey(row.name)}`,
+            label: row.name,
+            size: accountSize(row),
+            title: `${t("playerName")}: ${row.name}\n${t("tradeCount")}: ${formatInteger(row.count)}\n${t("totalAmount")}: ${formatPrice(row.total)} Sigil\n${t("lastSeen")}: ${formatTime(row.lastSeen)}\n${t("mainItems")}: ${mainItems}`,
+            color: { background: "rgba(142, 207, 120, 0.92)", border: "#8ecf78", highlight: { background: "#f0c66d", border: "#ffe1a1" } },
+            font: { color: "#eef4eb", size: 13, face: "Inter, sans-serif" },
+            borderWidth: row.lowCount ? 2 : 1
+          };
+        })
+      ]);
+      const edges = new vis.DataSet(rows.map((row) => {
+        const count = Number(row.count) || 0;
+        return {
+          from: centerId,
+          to: `player:${playerKey(row.name)}`,
+          width: Math.max(1, Math.min(9, 1 + (count / maxCount) * 8)),
+          label: `${formatInteger(count)} ${t("totalTradesShort")} / ${formatPrice(row.total)} Sigil`,
+          title: `${t("tradeCount")}: ${formatInteger(count)}\n${t("totalAmount")}: ${formatPrice(row.total)} Sigil`,
+          color: { color: "rgba(142, 207, 120, 0.45)", highlight: "#f0c66d" },
+          smooth: { type: "continuous" },
+          font: { color: "#a9b8a6", size: 10, align: "middle", strokeWidth: 3, strokeColor: "rgba(8, 12, 8, 0.92)" }
+        };
+      }));
+      state.networkGraphInstance?.destroy();
+      state.networkGraphInstance = new vis.Network(container, { nodes, edges }, {
+        autoResize: true,
+        layout: { improvedLayout: true },
+        nodes: {
+          shape: "dot",
+          font: { color: "#eef4eb", face: "Inter, sans-serif" },
+          borderWidth: 1
+        },
+        edges: {
+          color: { color: "rgba(142, 207, 120, 0.45)" },
+          smooth: { type: "continuous" },
+          font: { color: "#a9b8a6", size: 10, align: "middle", strokeWidth: 3, strokeColor: "rgba(8, 12, 8, 0.92)" },
+          selectionWidth: 2
+        },
+        physics: {
+          stabilization: true,
+          barnesHut: {
+            gravitationalConstant: -4200,
+            springLength: 150,
+            springConstant: 0.04
+          }
+        },
+        interaction: {
+          hover: true,
+          tooltipDelay: 120,
+          navigationButtons: false,
+          keyboard: true
+        }
+      });
+      state.networkGraphInstance.once("stabilizationIterationsDone", () => {
+        state.networkGraphInstance.setOptions({ physics: false });
+        state.networkGraphInstance.fit({ animation: { duration: 420, easingFunction: "easeInOutQuad" } });
+      });
+      setTimeout(() => state.networkGraphInstance?.fit({ animation: false }), 120);
+      state.networkGraphInstance.on("click", (params) => {
+        const nodeId = params.nodes?.[0];
+        if (!nodeId || nodeId === centerId) return;
+        const row = rows.find((item) => `player:${playerKey(item.name)}` === nodeId);
+        if (row) openPlayerProfile(row.name);
+      });
+    }
+
+    function renderNetworkMap(playerName, network) {
+      return renderVisNetworkGraph(playerName, network);
+    }
+
+    function initializeNetworkGraph(playerName, network) {
+      mountVisNetworkGraph(playerName, network);
+    }
+
     function renderDashboard(transactions) {
       const sellers = new Set(transactions.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
       const buyers = new Set(transactions.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
       const activePlayers = new Set([...sellers, ...buyers]);
       const totalVolume = transactions.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0);
       const lastUpdated = Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0));
+      const health = calculateMarketHealth(transactions);
+      const sellerRows = sellerStats(transactions);
+      const sellersSorted = sellerRows.sort((a, b) => b.income - a.income).slice(0, 10);
+      const allPlayers = [...getAllPlayerNames(transactions).values()];
+      const highestMps = allPlayers.map((name) => ({ name, pattern: computePatternScore(transactions, name) })).sort((a, b) => b.pattern.score - a.pattern.score)[0];
+      const concentrationRows = itemStats(transactions);
+      const mostConcentrated = [...concentrationRows].sort((a, b) => (b.topSellerShare || 0) - (a.topSellerShare || 0) || b.total - a.total)[0];
+      const buyerMap = new Map();
+      transactions.forEach((tx) => {
+        if (!isKnownPlayer(tx.buyerName)) return;
+        const key = playerKey(tx.buyerName);
+        const row = buyerMap.get(key) || { name: tx.buyerName, count: 0, total: 0 };
+        row.count += 1;
+        row.total += Number(tx.totalAmountSigil) || 0;
+        buyerMap.set(key, row);
+      });
+      const mostActiveBuyer = [...buyerMap.values()].sort((a, b) => b.count - a.count || b.total - a.total)[0];
       el.dashboardNote.textContent = `${t("currentMarket")}: ${state.activeCategory}`;
+      el.executiveSummary.innerHTML = transactions.length ? [
+        summaryTile(t("marketHealthScore"), `${health.score} / 100`, health.level),
+        summaryTile(t("highestMpsPlayer"), highestMps ? playerButtonHtml(highestMps.name) : "-", highestMps ? `${t("patternScore")}: ${highestMps.pattern.score}` : ""),
+        summaryTile(t("mostConcentratedItem"), mostConcentrated ? itemButtonHtml(mostConcentrated.itemId, mostConcentrated.itemName) : "-", mostConcentrated ? `${t("topSellerShare")}: ${((mostConcentrated.topSellerShare || 0) * 100).toFixed(1)}%` : ""),
+        summaryTile(t("largestSeller"), sellersSorted[0] ? playerButtonHtml(sellersSorted[0].name) : "-", sellersSorted[0] ? `${t("totalIncome")}: ${formatPrice(sellersSorted[0].income)}` : ""),
+        summaryTile(t("mostActiveBuyer"), mostActiveBuyer ? playerButtonHtml(mostActiveBuyer.name) : "-", mostActiveBuyer ? `${t("tradeCount")}: ${formatInteger(mostActiveBuyer.count)}` : "")
+      ].join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
       el.marketMetrics.innerHTML = [
         metricCard(t("totalTransactions"), formatInteger(transactions.length)),
         metricCard(t("totalVolume"), formatPrice(totalVolume)),
@@ -1495,14 +2147,19 @@
         metricCard(t("lastUpdated"), formatTime(lastUpdated))
       ].join("");
 
-      const sellersSorted = sellerStats(transactions).sort((a, b) => b.income - a.income).slice(0, 10);
       el.topIncome.innerHTML = sellersSorted.length ? sellersSorted.map((row, index) => compactRow(`#${index + 1} ${playerButtonHtml(row.name)}`, `${t("relatedBuyers")}: ${row.buyers.size}`, [{ label: t("totalIncome"), value: formatPrice(row.income) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("averageIncome"), value: formatPrice(row.income / row.count) }])).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
 
-      const concentrated = itemStats(transactions).sort((a, b) => b.topShare - a.topShare || b.total - a.total).slice(0, 5);
+      const concentrated = concentrationRows.sort((a, b) => b.topShare - a.topShare || b.total - a.total).slice(0, 5);
       el.topConcentration.innerHTML = concentrated.length ? concentrated.map((row) => compactRow(itemButtonHtml(row.itemId, row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTradesShort"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
 
-      const highScores = sellerStats(transactions).map((row) => ({ ...row, pattern: computePatternScore(transactions, row.name) })).filter((row) => row.pattern.score >= 61).sort((a, b) => b.pattern.score - a.pattern.score).slice(0, 10);
+      const highScores = sellerRows.map((row) => ({ ...row, pattern: computePatternScore(transactions, row.name) })).filter((row) => row.pattern.score >= 61).sort((a, b) => b.pattern.score - a.pattern.score).slice(0, 10);
       el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(playerButtonHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }], "", "slim")).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.marketHealth.innerHTML = `<div class="health-score"><div class="health-ring" style="--score:${health.score}"><strong>${health.score}</strong><span>/ 100</span></div><div class="compact-list">
+        ${compactRow(t("marketHealthScore"), health.level, [{ label: t("concentration"), value: `${health.concentration} / 100` }, { label: t("distribution"), value: `${health.distribution} / 100` }, { label: t("activity"), value: `${health.activity} / 100` }, { label: t("risk"), value: `${health.risk} / 100` }])}
+      </div></div>`;
+      el.marketAlerts.innerHTML = renderMarketAlerts(buildMarketAlerts(transactions));
+      el.priceHistory.innerHTML = renderPriceHistory(transactions);
+      el.bubbleMap.innerHTML = renderMarketBubbleMap(transactions);
       el.recentTransactions.innerHTML = renderTransactionTable(transactions, 20);
     }
 
@@ -1579,12 +2236,16 @@
 
       const sort = document.getElementById("related-sort")?.value || "total";
       const sortedNetwork = [...network].sort((a, b) => sort === "count" ? b.count - a.count : sort === "last" ? b.lastSeen - a.lastSeen : b.total - a.total);
-      const networkGraph = `<div class="network-tree"><div class="network-root">${escapeHtml(playerName)}</div>${sortedNetwork.slice(0, 10).map((row) => `<div class="network-node"><span>↳ ${playerButtonHtml(row.name)}</span><strong>${formatInteger(row.count)} / ${formatPrice(row.total)}</strong></div>`).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
-      document.getElementById("tab-related").innerHTML = `${networkGraph}<div class="section-head"><select class="field" id="related-sort"><option value="total" ${sort === "total" ? "selected" : ""}>${t("sortByTotalAmount")}</option><option value="count" ${sort === "count" ? "selected" : ""}>${t("sortByTradeCount")}</option><option value="last" ${sort === "last" ? "selected" : ""}>${t("sortByLastSeen")}</option></select></div><div class="compact-list">${sortedNetwork.length ? sortedNetwork.slice(0, 50).map((row) => {
+      state.networkGraphData = { playerName, network: sortedNetwork };
+      const networkGraph = `<article class="card panel"><h3 class="section-title">${t("networkGraph")}</h3>${renderVisNetworkGraph(playerName, sortedNetwork)}</article>`;
+      const networkBubbles = `<article class="card panel network-fallback"><h3 class="section-title">${t("bubbleMaps")}</h3>${renderBubbleMap(sortedNetwork.slice(0, 14).map((row) => ({ label: row.name, value: row.total, count: row.count, html: playerButtonHtml(row.name) })), { format: (value, row) => `${formatPrice(value)} / ${formatInteger(row.count)}` })}</article>`;
+      const networkTree = `<div class="network-tree network-fallback"><div class="network-root">${escapeHtml(playerName)}</div>${sortedNetwork.slice(0, 10).map((row) => `<div class="network-node"><span>↳ ${playerButtonHtml(row.name)}</span><strong>${formatInteger(row.count)} / ${formatPrice(row.total)}</strong></div>`).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
+      document.getElementById("tab-related").innerHTML = `<div class="intel-grid">${networkGraph}${networkBubbles}</div>${networkTree}<div class="section-head"><select class="field" id="related-sort"><option value="total" ${sort === "total" ? "selected" : ""}>${t("sortByTotalAmount")}</option><option value="count" ${sort === "count" ? "selected" : ""}>${t("sortByTradeCount")}</option><option value="last" ${sort === "last" ? "selected" : ""}>${t("sortByLastSeen")}</option></select></div><div class="compact-list">${sortedNetwork.length ? sortedNetwork.slice(0, 50).map((row) => {
         const mainItems = [...row.items.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([name]) => name).join(", ");
         return compactRow(playerButtonHtml(row.name), `${t("mainItems")}: ${escapeHtml(mainItems || "-")}`, [{ label: t("totalAmount"), value: formatPrice(row.total) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("lastSeen"), value: formatTime(row.lastSeen) }], row.lowCount ? t("hasLowPrice") : t("noLowPrice"));
       }).join("") : `<div class="empty">${t("noDataFound")}</div>`}</div>`;
       document.getElementById("related-sort")?.addEventListener("change", () => renderPlayerTabs(playerName, transactions, playerTx, network, pattern));
+      if (state.activeTab === "related") setTimeout(() => mountVisNetworkGraph(playerName, sortedNetwork), 0);
 
       const daily = new Map();
       playerTx.filter((tx) => playerKey(tx.sellerName) === playerKey(playerName)).forEach((tx) => {
@@ -1656,6 +2317,23 @@
       }).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
     }
 
+    function renderItemPriceTrend(item, currentPrice) {
+      const trend = calculatePriceTrend(item, currentPrice);
+      const recentRows = trend.rows.slice(-14);
+      const chart = renderMiniBars(
+        recentRows,
+        (row) => new Date(Number(row.timestamp)).toLocaleDateString("en-CA").slice(5),
+        (row) => Number(row.price) || 0,
+        (value) => formatPrice(value)
+      );
+      return `<article class="card panel"><h3 class="section-title">${t("priceTrend")}</h3><div class="compact-list">
+        ${compactRow(t("marketSnapshots"), "", [{ label: t("snapshotCount"), value: formatInteger(trend.rows.length) }, { label: t("currentPrice"), value: formatPrice(trend.current) }, { label: t("lastUpdated"), value: trend.rows.length ? new Date(Number(trend.rows[trend.rows.length - 1].timestamp)).toLocaleString(state.lang === "zh-TW" ? "zh-TW" : "en-US", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }) : "-" }])}
+        ${compactRow(t("movingAverage"), "", [{ label: t("sevenDayMA"), value: formatPrice(trend.ma7) }, { label: t("thirtyDayMA"), value: formatPrice(trend.ma30) }, { label: t("averagePrice"), value: formatPrice(averageSnapshotPrice(trend.rows)) }])}
+        ${compactRow(t("priceRange"), "", [{ label: t("ath"), value: formatPrice(trend.ath) }, { label: t("atl"), value: formatPrice(trend.atl) }, { label: t("lastPrice"), value: formatPrice(trend.current) }])}
+        ${compactRow(t("priceChange"), "", [{ label: t("change24h"), value: trend.change24h }, { label: t("change7d"), value: trend.change7d }, { label: t("change30d"), value: trend.change30d }])}
+      </div>${chart}</article>`;
+    }
+
     function concentrationLevel(share) {
       if (share >= 0.9) return t("extremeConcentration");
       if (share >= 0.7) return t("highConcentration");
@@ -1691,6 +2369,7 @@
       const top5SellerRevenue = sellerRows.slice(0, 5).reduce((sum, row) => sum + row.total, 0);
       const lowRows = itemTx.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold);
       const commonQty = [...lowRows.reduce((map, tx) => map.set(tx.itemNum, (map.get(tx.itemNum) || 0) + 1), new Map()).entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
+      const currentItemPrice = state.prices.get(item.id)?.price || itemTx[0]?.price || 0;
 
       el.itemProfileNote.textContent = `${item.name} / ID ${item.id}`;
       el.itemProfile.innerHTML = `
@@ -1710,6 +2389,7 @@
           ${compactRow(t("firstSeen"), "", [{ label: t("firstTrade"), value: formatTime(Number.isFinite(firstSeen) ? firstSeen : 0) }, { label: t("lastTrade"), value: formatTime(lastSeen) }, { label: t("activeDays"), value: formatInteger(activeDays) }])}
           ${compactRow(t("quantityTrends"), "", [{ label: t("averageQuantityPerDay"), value: formatPrice(activeDays ? totalQty / activeDays : 0) }, { label: t("averageVolumePerDay"), value: formatPrice(activeDays ? totalRevenue / activeDays : 0) }, { label: t("tradeCount"), value: formatInteger(itemTx.length) }])}
         </div></article>
+        ${renderItemPriceTrend(item, currentItemPrice)}
         <article class="card panel"><h3 class="section-title">${t("marketConcentration")}</h3><div class="compact-list">
           ${compactRow(t("top1SellerShare"), concentrationLevel(totalRevenue ? topSellerRevenue / totalRevenue : 0), [{ label: t("marketShare"), value: `${((totalRevenue ? topSellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("sellerCount"), value: formatInteger(sellerRows.length) }, { label: t("buyerCount"), value: formatInteger(buyerRows.length) }])}
           ${compactRow(t("top3SellerShare"), "", [{ label: t("marketShare"), value: `${((totalRevenue ? top3SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("top5Share"), value: `${((totalRevenue ? top5SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("topSeller"), value: sellerRows[0]?.name || "-" }])}
@@ -1816,7 +2496,9 @@
           const item = items[index];
           setStatus("loading", `${t("loadingItem")} ${item.name} (${index + 1}/${items.length})`);
           try {
-            state.prices.set(item.id, await fetchItemPrice(item, accessToken));
+            const priceRow = await fetchItemPrice(item, accessToken);
+            state.prices.set(item.id, priceRow);
+            recordMarketSnapshot(item, priceRow.price);
           } catch (error) {
             state.prices.set(item.id, { price: null, tx: null, transactions: [], updatedAt: Date.now(), error: error.message });
           }
@@ -1857,6 +2539,9 @@
       state.activeTab = button.dataset.tab;
       el.tabButtons.forEach((tab) => tab.classList.toggle("active", tab === button));
       document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
+      if (state.activeTab === "related" && state.networkGraphData) {
+        setTimeout(() => mountVisNetworkGraph(state.networkGraphData.playerName, state.networkGraphData.network), 0);
+      }
     }));
     el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
     document.querySelectorAll(".side-link").forEach((button) => button.addEventListener("click", () => {
@@ -1873,6 +2558,7 @@
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
 
+    loadMarketSnapshots();
     applyRouteFromUrl();
     loadLanguage(state.lang).then(() => refreshPrices());
   </script>
