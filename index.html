@@ -35,9 +35,9 @@
     button, input, select { font: inherit; }
 
     .app {
-      width: min(1240px, calc(100% - 28px));
+      width: min(1560px, calc(100% - 24px));
       margin: 0 auto;
-      padding: 18px 0 36px;
+      padding: 12px 0 28px;
       display: grid;
       grid-template-columns: 176px minmax(0, 1fr);
       gap: 14px;
@@ -51,7 +51,7 @@
       grid-template-columns: 1fr auto;
       gap: 16px;
       align-items: start;
-      padding: 10px 0 14px;
+      padding: 4px 0 12px;
     }
 
     .brand {
@@ -188,8 +188,8 @@
       grid-template-columns: auto minmax(220px, 1fr) 180px auto;
       gap: 10px;
       align-items: center;
-      padding: 12px;
-      margin-bottom: 14px;
+      padding: 10px;
+      margin-bottom: 12px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(18, 26, 19, 0.96);
@@ -254,7 +254,7 @@
       align-items: center;
       color: var(--muted);
       font-size: 13px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .dot {
@@ -269,7 +269,7 @@
     .dot.error { background: var(--bad); box-shadow: 0 0 0 4px rgba(240, 111, 100, 0.16); }
 
     .section {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .section-head {
@@ -296,7 +296,7 @@
       display: grid;
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .card {
@@ -309,8 +309,8 @@
     }
 
     .metric {
-      min-height: 86px;
-      padding: 14px;
+      min-height: 72px;
+      padding: 11px 12px;
     }
 
     .metric-label {
@@ -320,7 +320,7 @@
 
     .metric-value {
       margin-top: 7px;
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1.05;
       font-weight: 950;
       color: var(--text);
@@ -329,12 +329,12 @@
 
     .dashboard-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(360px, 1.2fr) minmax(330px, 1fr) minmax(260px, 0.78fr);
       gap: 12px;
     }
 
     .panel {
-      padding: 14px;
+      padding: 12px;
       min-width: 0;
     }
 
@@ -350,7 +350,7 @@
       grid-template-columns: minmax(120px, 1.15fr) repeat(3, minmax(74px, 0.68fr));
       gap: 8px;
       align-items: center;
-      padding: 9px 10px;
+      padding: 7px 9px;
       border-radius: 8px;
       border: 1px solid rgba(52, 66, 53, 0.82);
       background: rgba(8, 12, 8, 0.28);
@@ -409,6 +409,10 @@
 
     .compact-row.six {
       grid-template-columns: minmax(130px, 1.1fr) minmax(110px, 0.9fr) minmax(110px, 0.9fr) 82px 70px 90px;
+    }
+
+    .compact-row.slim {
+      grid-template-columns: minmax(110px, 1fr) repeat(2, minmax(62px, 0.55fr));
     }
 
     .row-main {
@@ -746,8 +750,11 @@
         grid-template-columns: 1fr 1fr;
       }
 
+      .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .metric-grid,
-      .dashboard-grid,
       .search-layout,
       .analytics-grid,
       .profile {
@@ -1456,8 +1463,8 @@
       return `<article class="card metric"><div class="metric-label">${escapeHtml(label)}</div><div class="metric-value">${escapeHtml(value)}</div></article>`;
     }
 
-    function compactRow(main, sub, stats, tag = "") {
-      return `<article class="compact-row">
+    function compactRow(main, sub, stats, tag = "", className = "") {
+      return `<article class="compact-row ${className}">
         <div class="row-main">${main}<span class="row-sub">${sub || ""}</span></div>
         ${stats.map((stat) => `<div class="stat"><span>${escapeHtml(stat.label)}</span><strong>${escapeHtml(stat.value)}</strong></div>`).join("")}
         ${tag ? `<div class="stat"><span></span><strong><span class="tag">${escapeHtml(tag)}</span></strong></div>` : ""}
@@ -1495,7 +1502,7 @@
       el.topConcentration.innerHTML = concentrated.length ? concentrated.map((row) => compactRow(itemButtonHtml(row.itemId, row.itemName), `${t("topSeller")}: ${escapeHtml(row.topSellers[0]?.name || "-")}`, [{ label: t("totalVolume"), value: formatPrice(row.total) }, { label: t("totalTradesShort"), value: formatInteger(row.count) }, { label: t("top5Share"), value: `${(row.topShare * 100).toFixed(1)}%` }], row.topShare >= 0.8 ? t("highConcentration") : "")).join("") : `<div class="empty">${t("waitingForTransactions")}</div>`;
 
       const highScores = sellerStats(transactions).map((row) => ({ ...row, pattern: computePatternScore(transactions, row.name) })).filter((row) => row.pattern.score >= 61).sort((a, b) => b.pattern.score - a.pattern.score).slice(0, 10);
-      el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(playerButtonHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }, { label: t("relatedAccountCount"), value: formatInteger(row.pattern.relatedCount) }])).join("") : `<div class="empty">${t("noDataFound")}</div>`;
+      el.highScore.innerHTML = highScores.length ? highScores.map((row) => compactRow(playerButtonHtml(row.name), getScoreLevel(row.pattern.score), [{ label: t("patternScore"), value: String(row.pattern.score) }, { label: t("tradeCount"), value: formatInteger(row.pattern.txCount) }], "", "slim")).join("") : `<div class="empty">${t("noDataFound")}</div>`;
       el.recentTransactions.innerHTML = renderTransactionTable(transactions, 20);
     }
 
