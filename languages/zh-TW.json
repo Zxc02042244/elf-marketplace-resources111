@@ -191,5 +191,19 @@
   "mostConcentratedItem": "最集中商品",
   "largestSeller": "最大賣方",
   "mostActiveBuyer": "最活躍買方",
-  "showingTop50RelatedAccounts": "顯示前 50 個關聯帳戶"
+  "showingTop50RelatedAccounts": "顯示前 50 個關聯帳戶",
+  "itemDecisionCard": "商品即時決策卡",
+  "marketRead": "市場判斷",
+  "tradingHeat": "交易熱度",
+  "recent24hTrades": "24小時成交",
+  "active24hSellers": "24小時賣家",
+  "active24hBuyers": "24小時買家",
+  "highHeat": "高",
+  "mediumHeat": "中",
+  "lowHeat": "低",
+  "aboveRecentAverage": "高於近期均價",
+  "nearRecentAverage": "接近近期均價",
+  "belowRecentAverage": "低於近期均價",
+  "liquidity": "流動性",
+  "pricePosition": "近期參考價"
 }

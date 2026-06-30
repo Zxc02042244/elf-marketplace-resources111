@@ -627,6 +627,111 @@
       gap: 12px;
     }
 
+    .decision-card {
+      grid-column: 1 / -1;
+    }
+
+    .decision-layout {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.12fr) repeat(3, minmax(160px, 0.72fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .decision-main,
+    .decision-tile {
+      min-width: 0;
+      border-radius: 8px;
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      background: rgba(8, 12, 8, 0.3);
+      padding: 11px;
+    }
+
+    .decision-main {
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+      border-color: rgba(240, 198, 109, 0.35);
+      background: linear-gradient(135deg, rgba(240, 198, 109, 0.13), rgba(17, 38, 20, 0.42));
+    }
+
+    .decision-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 850;
+      margin-bottom: 5px;
+    }
+
+    .decision-value {
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .decision-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .decision-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 9px;
+      border: 1px solid rgba(142, 207, 120, 0.35);
+      background: rgba(142, 207, 120, 0.12);
+      color: #c9f2b8;
+      font-size: 11px;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .decision-status.watch {
+      color: #ffe1a1;
+      border-color: rgba(240, 198, 109, 0.4);
+      background: rgba(240, 198, 109, 0.14);
+    }
+
+    .decision-status.hot {
+      color: #ffd0c6;
+      border-color: rgba(244, 96, 82, 0.38);
+      background: rgba(244, 96, 82, 0.13);
+    }
+
+    .decision-tile strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.1;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .decision-subgrid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .decision-mini {
+      border-radius: 7px;
+      border: 1px solid rgba(52, 66, 53, 0.7);
+      background: rgba(17, 38, 20, 0.32);
+      padding: 8px;
+      min-width: 0;
+    }
+
+    .decision-mini b {
+      display: block;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
     .mini-bars {
       display: grid;
       gap: 8px;
@@ -1066,6 +1171,11 @@
         grid-template-columns: 1fr;
       }
 
+      .decision-layout,
+      .decision-subgrid {
+        grid-template-columns: 1fr;
+      }
+
       .metric {
         min-height: 74px;
         padding: 12px;
@@ -1308,10 +1418,10 @@
 
     const FALLBACK_I18N = {
       "zh-TW": {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", marketHealthScore: "市場健康分數", executiveSummary: "重點摘要", highestMpsPlayer: "最高 MPS 玩家", mostConcentratedItem: "最集中商品", largestSeller: "最大賣方", mostActiveBuyer: "最活躍買方", marketAlerts: "市場通知", priceHistory: "價格歷史", priceTrend: "價格趨勢", marketSnapshots: "市場快照", movingAverage: "移動平均", priceRange: "價格區間", priceChange: "價格變化", sevenDayMA: "7日均價", thirtyDayMA: "30日均價", ath: "歷史最高", atl: "歷史最低", change24h: "24小時變化", change7d: "7日變化", change30d: "30日變化", snapshotCount: "快照數", bubbleMaps: "泡泡圖", networkGraph: "交易網路圖", showingTop50RelatedAccounts: "顯示前 50 個關聯帳戶", marketIntelligence: "市場情報", healthHealthy: "健康", healthStable: "穩定", healthWatch: "觀察", healthRisk: "風險", healthWatchlist: "值得觀察", healthConcentrated: "高度集中", concentration: "集中度", distribution: "分布", activity: "活躍度", risk: "風險", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度商品集中", extremeMarketConcentration: "極高市場集中", priceSpikeDetected: "偵測到價格急升", frequentLowPriceTransfers: "頻繁低價轉移", topSellerShare: "最高賣家佔比", currentPrice: "目前價格", severity: "嚴重度", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", marketHealthScore: "市場健康分數", executiveSummary: "重點摘要", highestMpsPlayer: "最高 MPS 玩家", mostConcentratedItem: "最集中商品", largestSeller: "最大賣方", mostActiveBuyer: "最活躍買方", marketAlerts: "市場通知", priceHistory: "價格歷史", priceTrend: "價格趨勢", marketSnapshots: "市場快照", movingAverage: "移動平均", priceRange: "價格區間", priceChange: "價格變化", sevenDayMA: "7日均價", thirtyDayMA: "30日均價", ath: "歷史最高", atl: "歷史最低", change24h: "24小時變化", change7d: "7日變化", change30d: "30日變化", snapshotCount: "快照數", itemDecisionCard: "商品即時決策卡", marketRead: "市場判斷", tradingHeat: "交易熱度", recent24hTrades: "24小時成交", active24hSellers: "24小時賣家", active24hBuyers: "24小時買家", highHeat: "高", mediumHeat: "中", lowHeat: "低", aboveRecentAverage: "高於近期均價", nearRecentAverage: "接近近期均價", belowRecentAverage: "低於近期均價", liquidity: "流動性", pricePosition: "近期參考價", bubbleMaps: "泡泡圖", networkGraph: "交易網路圖", showingTop50RelatedAccounts: "顯示前 50 個關聯帳戶", marketIntelligence: "市場情報", healthHealthy: "健康", healthStable: "穩定", healthWatch: "觀察", healthRisk: "風險", healthWatchlist: "值得觀察", healthConcentrated: "高度集中", concentration: "集中度", distribution: "分布", activity: "活躍度", risk: "風險", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度商品集中", extremeMarketConcentration: "極高市場集中", priceSpikeDetected: "偵測到價格急升", frequentLowPriceTransfers: "頻繁低價轉移", topSellerShare: "最高賣家佔比", currentPrice: "目前價格", severity: "嚴重度", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
       },
       en: {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", marketHealthScore: "Market Health Score", executiveSummary: "Executive Summary", highestMpsPlayer: "Highest MPS Player", mostConcentratedItem: "Most Concentrated Item", largestSeller: "Largest Seller", mostActiveBuyer: "Most Active Buyer", marketAlerts: "Market Alerts", priceHistory: "Price History", priceTrend: "Price Trend", marketSnapshots: "Market Snapshots", movingAverage: "Moving Average", priceRange: "Price Range", priceChange: "Price Change", sevenDayMA: "7D MA", thirtyDayMA: "30D MA", ath: "ATH", atl: "ATL", change24h: "24h Change", change7d: "7d Change", change30d: "30d Change", snapshotCount: "Snapshot Count", bubbleMaps: "BubbleMaps", networkGraph: "Network Graph", showingTop50RelatedAccounts: "Showing top 50 related accounts", marketIntelligence: "Market Intelligence", healthHealthy: "Healthy", healthStable: "Stable", healthWatch: "Watch", healthRisk: "Risk", healthWatchlist: "Watchlist", healthConcentrated: "High Concentration", concentration: "Concentration", distribution: "Distribution", activity: "Activity", risk: "Risk", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Item Concentration", extremeMarketConcentration: "Extreme Market Concentration", priceSpikeDetected: "Price Spike Detected", frequentLowPriceTransfers: "Frequent Low-price Transfers", topSellerShare: "Top Seller Share", currentPrice: "Current Price", severity: "Severity", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", marketHealthScore: "Market Health Score", executiveSummary: "Executive Summary", highestMpsPlayer: "Highest MPS Player", mostConcentratedItem: "Most Concentrated Item", largestSeller: "Largest Seller", mostActiveBuyer: "Most Active Buyer", marketAlerts: "Market Alerts", priceHistory: "Price History", priceTrend: "Price Trend", marketSnapshots: "Market Snapshots", movingAverage: "Moving Average", priceRange: "Price Range", priceChange: "Price Change", sevenDayMA: "7D MA", thirtyDayMA: "30D MA", ath: "ATH", atl: "ATL", change24h: "24h Change", change7d: "7d Change", change30d: "30d Change", snapshotCount: "Snapshot Count", itemDecisionCard: "Item Decision Card", marketRead: "Market Read", tradingHeat: "Trading Heat", recent24hTrades: "24h Trades", active24hSellers: "24h Sellers", active24hBuyers: "24h Buyers", highHeat: "High", mediumHeat: "Medium", lowHeat: "Low", aboveRecentAverage: "Above Recent Average", nearRecentAverage: "Near Recent Average", belowRecentAverage: "Below Recent Average", liquidity: "Liquidity", pricePosition: "Recent Reference Price", bubbleMaps: "BubbleMaps", networkGraph: "Network Graph", showingTop50RelatedAccounts: "Showing top 50 related accounts", marketIntelligence: "Market Intelligence", healthHealthy: "Healthy", healthStable: "Stable", healthWatch: "Watch", healthRisk: "Risk", healthWatchlist: "Watchlist", healthConcentrated: "High Concentration", concentration: "Concentration", distribution: "Distribution", activity: "Activity", risk: "Risk", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Item Concentration", extremeMarketConcentration: "Extreme Market Concentration", priceSpikeDetected: "Price Spike Detected", frequentLowPriceTransfers: "Frequent Low-price Transfers", topSellerShare: "Top Seller Share", currentPrice: "Current Price", severity: "Severity", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
       }
     };
 
@@ -2317,8 +2427,73 @@
       }).join("") || `<div class="empty">${t("noDataFound")}</div>`}</div>`;
     }
 
-    function renderItemPriceTrend(item, currentPrice) {
-      const trend = calculatePriceTrend(item, currentPrice);
+    function getItemMarketDecision(itemTx, prices, currentPrice, trend) {
+      const latestTime = Math.max(0, ...itemTx.map((tx) => Number(tx.txnTime) || 0));
+      const referenceNow = latestTime || Math.floor(Date.now() / 1000);
+      const recent24h = itemTx.filter((tx) => Number(tx.txnTime) >= referenceNow - 86400);
+      const recentSellers = new Set(recent24h.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
+      const recentBuyers = new Set(recent24h.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+      const averagePrice = prices.length ? prices.reduce((sum, price) => sum + price, 0) / prices.length : 0;
+      const referencePrice = Number(trend.ma7) || averagePrice || Number(currentPrice) || 0;
+      let priceLevel = "near";
+      if (referencePrice > 0 && Number(currentPrice) >= referencePrice * 1.15) priceLevel = Number(currentPrice) >= referencePrice * 1.5 ? "hot" : "watch";
+      if (referencePrice > 0 && Number(currentPrice) <= referencePrice * 0.85) priceLevel = "normal";
+      const activePlayers = new Set([...recentSellers, ...recentBuyers]).size;
+      const heatLevel = recent24h.length >= 20 || activePlayers >= 16 ? "hot" : recent24h.length >= 6 || activePlayers >= 6 ? "watch" : "normal";
+      return {
+        averagePrice,
+        referencePrice,
+        lowestPrice: prices.length ? Math.min(...prices) : 0,
+        highestPrice: prices.length ? Math.max(...prices) : 0,
+        recent24h,
+        recentVolume: recent24h.reduce((sum, tx) => sum + (Number(tx.totalAmountSigil) || 0), 0),
+        recentSellers: recentSellers.size,
+        recentBuyers: recentBuyers.size,
+        priceLevel,
+        heatLevel
+      };
+    }
+
+    function renderItemDecisionCard(item, itemTx, prices, currentPrice, trend) {
+      const decision = getItemMarketDecision(itemTx, prices, Number(currentPrice) || 0, trend);
+      const priceText = decision.priceLevel === "hot" || decision.priceLevel === "watch" ? t("aboveRecentAverage") : decision.priceLevel === "normal" ? t("belowRecentAverage") : t("nearRecentAverage");
+      const heatText = decision.heatLevel === "hot" ? t("highHeat") : decision.heatLevel === "watch" ? t("mediumHeat") : t("lowHeat");
+      return `<article class="card panel decision-card">
+        <div class="section-head"><h3 class="section-title">${t("itemDecisionCard")}</h3><span class="tag">${itemLabelHtml(item.id, item.name)}</span></div>
+        <div class="decision-layout">
+          <div class="decision-main">
+            <div><span class="decision-label">${t("currentPrice")}</span><div class="decision-value">${formatPrice(currentPrice)}</div></div>
+            <div class="decision-row"><span class="decision-status ${decision.priceLevel}">${priceText}</span><span class="decision-status ${decision.heatLevel}">${t("tradingHeat")}: ${heatText}</span></div>
+          </div>
+          <div class="decision-tile">
+            <span class="decision-label">${t("pricePosition")}</span>
+            <strong>${formatPrice(decision.referencePrice)}</strong>
+            <div class="decision-subgrid">
+              <div class="decision-mini"><span class="decision-label">${t("lowestPrice")}</span><b>${formatPrice(decision.lowestPrice)}</b></div>
+              <div class="decision-mini"><span class="decision-label">${t("highestPrice")}</span><b>${formatPrice(decision.highestPrice)}</b></div>
+            </div>
+          </div>
+          <div class="decision-tile">
+            <span class="decision-label">${t("recent24hTrades")}</span>
+            <strong>${formatInteger(decision.recent24h.length)}</strong>
+            <div class="decision-subgrid">
+              <div class="decision-mini"><span class="decision-label">${t("totalVolume")}</span><b>${formatPrice(decision.recentVolume)}</b></div>
+              <div class="decision-mini"><span class="decision-label">${t("averagePrice")}</span><b>${formatPrice(decision.averagePrice)}</b></div>
+            </div>
+          </div>
+          <div class="decision-tile">
+            <span class="decision-label">${t("liquidity")}</span>
+            <strong>${formatInteger(decision.recentSellers + decision.recentBuyers)}</strong>
+            <div class="decision-subgrid">
+              <div class="decision-mini"><span class="decision-label">${t("active24hSellers")}</span><b>${formatInteger(decision.recentSellers)}</b></div>
+              <div class="decision-mini"><span class="decision-label">${t("active24hBuyers")}</span><b>${formatInteger(decision.recentBuyers)}</b></div>
+            </div>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function renderItemPriceTrend(item, currentPrice, trend = calculatePriceTrend(item, currentPrice)) {
       const recentRows = trend.rows.slice(-14);
       const chart = renderMiniBars(
         recentRows,
@@ -2370,6 +2545,7 @@
       const lowRows = itemTx.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold);
       const commonQty = [...lowRows.reduce((map, tx) => map.set(tx.itemNum, (map.get(tx.itemNum) || 0) + 1), new Map()).entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "-";
       const currentItemPrice = state.prices.get(item.id)?.price || itemTx[0]?.price || 0;
+      const priceTrend = calculatePriceTrend(item, currentItemPrice);
 
       el.itemProfileNote.textContent = `${item.name} / ID ${item.id}`;
       el.itemProfile.innerHTML = `
@@ -2384,12 +2560,13 @@
       `;
 
       el.itemAnalytics.innerHTML = `
+        ${renderItemDecisionCard(item, itemTx, prices, currentItemPrice, priceTrend)}
         <article class="card panel"><h3 class="section-title">${t("lifetimeStatistics")}</h3><div class="compact-list">
           ${compactRow(t("priceTrends"), "", [{ label: t("highestPrice"), value: formatPrice(Math.max(0, ...prices)) }, { label: t("lowestPrice"), value: formatPrice(Math.min(...prices)) }, { label: t("lastPrice"), value: formatPrice(itemTx[0]?.price) }])}
           ${compactRow(t("firstSeen"), "", [{ label: t("firstTrade"), value: formatTime(Number.isFinite(firstSeen) ? firstSeen : 0) }, { label: t("lastTrade"), value: formatTime(lastSeen) }, { label: t("activeDays"), value: formatInteger(activeDays) }])}
           ${compactRow(t("quantityTrends"), "", [{ label: t("averageQuantityPerDay"), value: formatPrice(activeDays ? totalQty / activeDays : 0) }, { label: t("averageVolumePerDay"), value: formatPrice(activeDays ? totalRevenue / activeDays : 0) }, { label: t("tradeCount"), value: formatInteger(itemTx.length) }])}
         </div></article>
-        ${renderItemPriceTrend(item, currentItemPrice)}
+        ${renderItemPriceTrend(item, currentItemPrice, priceTrend)}
         <article class="card panel"><h3 class="section-title">${t("marketConcentration")}</h3><div class="compact-list">
           ${compactRow(t("top1SellerShare"), concentrationLevel(totalRevenue ? topSellerRevenue / totalRevenue : 0), [{ label: t("marketShare"), value: `${((totalRevenue ? topSellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("sellerCount"), value: formatInteger(sellerRows.length) }, { label: t("buyerCount"), value: formatInteger(buyerRows.length) }])}
           ${compactRow(t("top3SellerShare"), "", [{ label: t("marketShare"), value: `${((totalRevenue ? top3SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("top5Share"), value: `${((totalRevenue ? top5SellerRevenue / totalRevenue : 0) * 100).toFixed(1)}%` }, { label: t("topSeller"), value: sellerRows[0]?.name || "-" }])}
