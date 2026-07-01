@@ -371,6 +371,91 @@
       overflow-wrap: anywhere;
     }
 
+    .market-hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(260px, 0.84fr) minmax(0, 1.16fr);
+      gap: 16px;
+      margin-bottom: 12px;
+      padding: 16px;
+      border-color: rgba(240, 198, 109, 0.3);
+      background:
+        radial-gradient(circle at 12% 20%, rgba(240, 198, 109, 0.16), transparent 30%),
+        linear-gradient(135deg, rgba(30, 48, 30, 0.96), rgba(8, 14, 10, 0.92));
+    }
+
+    .market-hero-main {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .market-hero-copy {
+      min-width: 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .hero-eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .hero-title {
+      font-size: clamp(24px, 4vw, 40px);
+      line-height: 1;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .hero-state {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 999px;
+      padding: 0 10px;
+      color: #102010;
+      background: var(--accent);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .hero-metric {
+      min-width: 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(142, 207, 120, 0.18);
+      background: rgba(8, 12, 8, 0.28);
+    }
+
+    .hero-metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .hero-metric strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.08;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
     .dashboard-grid {
       display: grid;
       grid-template-columns: minmax(360px, 1.2fr) minmax(330px, 1fr) minmax(260px, 0.78fr);
@@ -829,7 +914,9 @@
     }
 
     .alert-row {
-      padding: 10px;
+      position: relative;
+      overflow: hidden;
+      padding: 11px;
       border-radius: 8px;
       border: 1px solid rgba(240, 198, 109, 0.22);
       background: rgba(240, 198, 109, 0.08);
@@ -838,19 +925,48 @@
       line-height: 1.4;
     }
 
+    .alert-row::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--accent);
+      opacity: 0.9;
+    }
+
     .alert-row.severity-5 {
       border-color: rgba(255, 92, 92, 0.42);
       background: rgba(255, 92, 92, 0.12);
     }
 
+    .alert-row.severity-5::before { background: #ff5c5c; }
+
     .alert-row.severity-4 {
-      border-color: rgba(240, 198, 109, 0.42);
-      background: rgba(240, 198, 109, 0.12);
+      border-color: rgba(255, 151, 74, 0.42);
+      background: rgba(255, 151, 74, 0.12);
     }
 
+    .alert-row.severity-4::before { background: #ff974a; }
+
     .alert-row.severity-3 {
-      border-color: rgba(142, 207, 120, 0.34);
-      background: rgba(142, 207, 120, 0.1);
+      border-color: rgba(240, 198, 109, 0.42);
+      background: rgba(240, 198, 109, 0.11);
+    }
+
+    .alert-row.severity-3::before { background: var(--gold); }
+
+    .alert-level {
+      display: inline-flex;
+      min-height: 24px;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0 8px;
+      background: rgba(8, 12, 8, 0.32);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 11px;
+      font-weight: 950;
+      color: var(--text);
+      white-space: nowrap;
     }
 
     .alert-title {
@@ -865,6 +981,72 @@
       margin-top: 4px;
       color: var(--muted);
       font-size: 12px;
+    }
+
+    .trending-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .trending-card {
+      border: 1px solid rgba(240, 198, 109, 0.2);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgba(240, 198, 109, 0.1), rgba(8, 12, 8, 0.26));
+      padding: 10px;
+      cursor: pointer;
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .trending-card:hover,
+    .item-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(240, 198, 109, 0.5);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(240, 198, 109, 0.12);
+    }
+
+    .trending-head {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .trending-rank {
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .trending-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .trending-stat {
+      min-width: 0;
+      padding: 7px;
+      border-radius: 7px;
+      background: rgba(8, 12, 8, 0.28);
+      border: 1px solid rgba(52, 66, 53, 0.72);
+    }
+
+    .trending-stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 3px;
+    }
+
+    .trending-stat strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 950;
+      overflow-wrap: anywhere;
     }
 
     .price-chart {
@@ -996,6 +1178,10 @@
     .item-card {
       padding: 12px;
       min-height: 134px;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(240, 198, 109, 0.13), transparent 34%),
+        rgba(24, 32, 25, 0.88);
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
     }
 
     .item-head {
@@ -1006,11 +1192,11 @@
     }
 
     .item-media {
-      width: 44px;
-      height: 44px;
+      width: 58px;
+      height: 58px;
       border-radius: 8px;
-      border: 1px solid var(--line);
-      background: var(--panel-2);
+      border: 1px solid rgba(240, 198, 109, 0.28);
+      background: linear-gradient(135deg, rgba(240, 198, 109, 0.12), rgba(142, 207, 120, 0.12));
       display: grid;
       place-items: center;
       color: var(--gold);
@@ -1026,9 +1212,114 @@
     }
 
     .item-name {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 950;
       overflow-wrap: anywhere;
+    }
+
+    .player-summary-card {
+      display: grid;
+      grid-template-columns: minmax(220px, 1.1fr) minmax(0, 1.9fr);
+      gap: 12px;
+      align-items: stretch;
+      border-color: rgba(240, 198, 109, 0.28);
+      background: linear-gradient(135deg, rgba(240, 198, 109, 0.1), rgba(17, 38, 20, 0.42));
+    }
+
+    .player-summary-main {
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .player-summary-score {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      color: var(--gold);
+      font-weight: 950;
+    }
+
+    .player-summary-score strong {
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .player-summary-grid,
+    .mps-dimension-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .summary-stat,
+    .mps-dimension {
+      min-width: 0;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid rgba(52, 66, 53, 0.78);
+      background: rgba(8, 12, 8, 0.28);
+    }
+
+    .summary-stat span,
+    .mps-dimension span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 5px;
+    }
+
+    .summary-stat strong,
+    .mps-dimension strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 950;
+      overflow-wrap: anywhere;
+    }
+
+    .mps-note {
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 850;
+      margin: 4px 0 10px;
+    }
+
+    .mps-dimension-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .mps-dimension {
+      display: grid;
+      gap: 7px;
+    }
+
+    .mps-bar {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(8, 12, 8, 0.52);
+      border: 1px solid rgba(52, 66, 53, 0.78);
+      overflow: hidden;
+    }
+
+    .mps-bar-fill {
+      height: 100%;
+      width: var(--pct);
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--bad));
+    }
+
+    .mps-desc {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
     }
 
     .item-meta {
@@ -1106,6 +1397,15 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .market-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .trending-grid,
+      .mps-dimension-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .executive-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -1113,7 +1413,8 @@
       .metric-grid,
       .search-layout,
       .analytics-grid,
-      .profile {
+      .profile,
+      .player-summary-card {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
@@ -1167,7 +1468,24 @@
       .search-layout,
       .analytics-grid,
       .intel-grid,
-      .profile {
+      .profile,
+      .market-hero,
+      .player-summary-card,
+      .player-summary-grid,
+      .mps-dimension-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .market-hero {
+        padding: 12px;
+      }
+
+      .market-hero-main {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-metrics,
+      .trending-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1289,6 +1607,15 @@
         <h2 class="section-title" data-i18n="marketOverview">市場總覽</h2>
         <div class="section-note" id="dashboard-note"></div>
       </div>
+      <article class="card market-hero" id="market-hero"></article>
+      <article class="card panel executive-summary">
+        <div class="section-head"><h3 class="section-title" data-i18n="marketAlerts">Market Alerts</h3></div>
+        <div id="market-alerts"></div>
+      </article>
+      <article class="card panel executive-summary">
+        <div class="section-head"><h3 class="section-title" data-i18n="trendingItems">Trending Items</h3></div>
+        <div id="trending-items"></div>
+      </article>
       <article class="card panel executive-summary">
         <div class="section-head"><h3 class="section-title" data-i18n="executiveSummary">Executive Summary</h3></div>
         <div class="executive-grid" id="executive-summary"></div>
@@ -1310,10 +1637,6 @@
         <article class="card panel">
           <div class="section-head"><h3 class="section-title" data-i18n="marketHealthScore">Market Health Score</h3></div>
           <div id="market-health"></div>
-        </article>
-        <article class="card panel">
-          <div class="section-head"><h3 class="section-title" data-i18n="marketAlerts">Market Alerts</h3></div>
-          <div id="market-alerts"></div>
         </article>
         <article class="card panel wide">
           <div class="section-head"><h3 class="section-title" data-i18n="priceHistory">Price History</h3></div>
@@ -1418,10 +1741,10 @@
 
     const FALLBACK_I18N = {
       "zh-TW": {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", marketHealthScore: "市場健康分數", executiveSummary: "重點摘要", highestMpsPlayer: "最高 MPS 玩家", mostConcentratedItem: "最集中商品", largestSeller: "最大賣方", mostActiveBuyer: "最活躍買方", marketAlerts: "市場通知", priceHistory: "價格歷史", priceTrend: "價格趨勢", marketSnapshots: "市場快照", movingAverage: "移動平均", priceRange: "價格區間", priceChange: "價格變化", sevenDayMA: "7日均價", thirtyDayMA: "30日均價", ath: "歷史最高", atl: "歷史最低", change24h: "24小時變化", change7d: "7日變化", change30d: "30日變化", snapshotCount: "快照數", itemDecisionCard: "商品即時決策卡", marketRead: "市場判斷", tradingHeat: "交易熱度", recent24hTrades: "24小時成交", active24hSellers: "24小時賣家", active24hBuyers: "24小時買家", highHeat: "高", mediumHeat: "中", lowHeat: "低", aboveRecentAverage: "高於近期均價", nearRecentAverage: "接近近期均價", belowRecentAverage: "低於近期均價", liquidity: "流動性", pricePosition: "近期參考價", bubbleMaps: "泡泡圖", networkGraph: "交易網路圖", showingTop50RelatedAccounts: "顯示前 50 個關聯帳戶", marketIntelligence: "市場情報", healthHealthy: "健康", healthStable: "穩定", healthWatch: "觀察", healthRisk: "風險", healthWatchlist: "值得觀察", healthConcentrated: "高度集中", concentration: "集中度", distribution: "分布", activity: "活躍度", risk: "風險", playerRanking: "玩家收入排名", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度商品集中", extremeMarketConcentration: "極高市場集中", priceSpikeDetected: "偵測到價格急升", frequentLowPriceTransfers: "頻繁低價轉移", topSellerShare: "最高賣家佔比", currentPrice: "目前價格", severity: "嚴重度", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "市場交易、玩家收入、關聯帳戶與交易集中度分析", language: "語言", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "市場總覽", marketOverview: "市場總覽", searchPlaceholder: "搜尋玩家 / 物品 / 交易紀錄", refresh: "更新", loading: "載入中…", preparing: "準備中…", noDataFound: "查無資料", selectedMarket: "目前市場", itemsWithPrice: "有價格物品", averagePrice: "平均價格", nextRefresh: "下次更新", totalTransactions: "總交易筆數", totalVolume: "總交易額", activeSellers: "活躍賣家", activeBuyers: "活躍買家", top10IncomePlayers: "Top 10 收入玩家", top5ConcentratedItems: "Top 5 集中商品", recent20Transactions: "最近 20 筆交易", highPatternScorePlayers: "高市場模式分數玩家", marketHealthScore: "市場健康分數", executiveSummary: "重點摘要", highestMpsPlayer: "最高 MPS 玩家", mostConcentratedItem: "最集中商品", largestSeller: "最大賣方", mostActiveBuyer: "最活躍買方", marketAlerts: "市場通知", trendingItems: "熱門商品排行", marketIntelligenceCenter: "市場情報中心", marketPulse: "市場脈動", critical: "Critical", high: "High", watch: "Watch", info: "Info", activePlayers: "活躍玩家", totalSellers: "總賣家", totalBuyers: "總買家", lastUpdated: "最後更新", priceHistory: "價格歷史", priceTrend: "價格趨勢", marketSnapshots: "市場快照", movingAverage: "移動平均", priceRange: "價格區間", priceChange: "價格變化", sevenDayMA: "7日均價", thirtyDayMA: "30日均價", ath: "歷史最高", atl: "歷史最低", change24h: "24小時變化", change7d: "7日變化", change30d: "30日變化", snapshotCount: "快照數", itemDecisionCard: "價格狀態卡", marketRead: "市場判斷", tradingHeat: "交易熱度", recent24hTrades: "24小時成交", active24hSellers: "24小時賣家", active24hBuyers: "24小時買家", highHeat: "高", mediumHeat: "中", lowHeat: "低", aboveRecentAverage: "高於近期均價", nearRecentAverage: "接近近期均價", belowRecentAverage: "低於近期均價", liquidity: "流動性", pricePosition: "近期參考價", bubbleMaps: "泡泡圖", networkGraph: "交易網路圖", showingTop50RelatedAccounts: "顯示前 50 個關聯帳戶", marketIntelligence: "市場情報", healthHealthy: "健康", healthStable: "穩定", healthWatch: "觀察", healthRisk: "風險", healthWatchlist: "值得觀察", healthConcentrated: "高度集中", concentration: "集中度", distribution: "分布", activity: "活躍度", risk: "風險", playerRanking: "玩家收入排名", playerSummary: "玩家摘要", relatedAccounts: "關聯帳戶", marketplacePatternScore: "市場模式評分", mpsObservationNote: "MPS 是市場觀察指標，不是違規判定。", patternAlerts: "市場模式通知", dailySigilIncome: "每日符文收入", itemMarketConcentration: "商品市場集中度", transactions: "交易紀錄", totalIncome: "總收入", tradeCount: "交易次數", relatedBuyers: "關聯買家", relatedAccountCount: "關聯帳戶數量", averageIncome: "平均收入", lastSeen: "最後出現時間", highConcentration: "高度商品集中", extremeMarketConcentration: "極高市場集中", priceSpikeDetected: "偵測到價格急升", frequentLowPriceTransfers: "頻繁低價轉移", highCounterpartyConcentration: "交易對象高度集中", topSellerShare: "最高賣家佔比", currentPrice: "目前價格", severity: "嚴重度", abnormalPattern: "異常模式", structuredTradingPattern: "結構化交易模式", watchlist: "值得觀察", normalPattern: "正常模式", lowPriceTransfer: "低價轉移", lowPriceTransferCount: "低價轉移次數", patternScore: "模式分數", playerName: "玩家名稱", playerProfile: "玩家分析", overview: "總覽", dailyIncome: "每日收入", itemConcentration: "商品集中度", searchResults: "搜尋結果", resultCount: "搜尋結果數量", relatedPlayers: "相關玩家", relatedItems: "相關物品", relatedTransactions: "相關交易紀錄", item: "物品", seller: "賣方", buyer: "買方", sellerPlayer: "賣方玩家", buyerPlayer: "買方玩家", price: "價格", quantity: "數量", time: "時間", date: "日期", income: "收入", cumulativeIncome: "累計收入", totalAmount: "總額", totalTrades: "總交易數", totalTradesShort: "交易數", topSeller: "最高賣家", top5Share: "Top 5 佔比", sellerCount: "賣家數", sortByTotalAmount: "依總額排序", sortByTradeCount: "依交易次數排序", sortByLastSeen: "依最後出現排序", mainItems: "主要商品", hasLowPrice: "含低價交易", noLowPrice: "無低價交易", relatedAccountsCount: "關聯帳戶數", lowPriceTransferRatio: "低價轉移比例", repeatedItemQuantityRatio: "固定物品/數量重複比例", hourlyTradeDensity: "每小時交易密度", sameCounterpartFrequency: "同一交易對象頻率", top10: "前 10 名", top50: "前 50 名", sortByIncome: "依總收入排序", sortByCount: "依交易次數排序", noNotices: "目前沒有明顯市場模式通知", enterPlayerForProfile: "搜尋玩家名稱後顯示完整玩家分析", enterSearch: "輸入玩家、物品或交易關鍵字", waitingForTransactions: "等待交易資料載入", currentMarket: "目前市場", updated: "已更新", refreshingToken: "更新授權中…", loadingItem: "載入物品", updateFailed: "更新失敗", defaultOrder: "預設排序", priceHighToLow: "價格由高到低", priceLowToHigh: "價格由低到高", nameAZ: "名稱 A-Z", level: "層級", value: "數值", score: "分數", mpsBreakdown: "MPS 子分數", relatedAccountsScore: "關聯帳戶分數", lowPriceTransferScore: "低價轉移分數", repeatedItemQuantityScore: "固定物品 / 數量分數", counterpartyConcentrationScore: "交易對象集中度分數", hourlyTradingDensityScore: "每小時交易密度分數", mostRepeatedPattern: "最常重複模式", top5CounterpartyShare: "Top 5 交易對象佔比", hourlyMax: "每小時最高交易數", tradesPerHour: "筆/小時", noRepeatedPattern: "無重複模式", reasonHighRelatedAccounts: "關聯帳戶數量偏高", reasonLowPriceTransfers: "低價轉移比例偏高", reasonRepeatedPattern: "出現固定物品與數量重複模式", reasonCounterpartyConcentration: "交易活動集中於少數交易對象", reasonHourlyDensity: "短時間交易密度偏高"
       },
       en: {
-        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", marketHealthScore: "Market Health Score", executiveSummary: "Executive Summary", highestMpsPlayer: "Highest MPS Player", mostConcentratedItem: "Most Concentrated Item", largestSeller: "Largest Seller", mostActiveBuyer: "Most Active Buyer", marketAlerts: "Market Alerts", priceHistory: "Price History", priceTrend: "Price Trend", marketSnapshots: "Market Snapshots", movingAverage: "Moving Average", priceRange: "Price Range", priceChange: "Price Change", sevenDayMA: "7D MA", thirtyDayMA: "30D MA", ath: "ATH", atl: "ATL", change24h: "24h Change", change7d: "7d Change", change30d: "30d Change", snapshotCount: "Snapshot Count", itemDecisionCard: "Item Decision Card", marketRead: "Market Read", tradingHeat: "Trading Heat", recent24hTrades: "24h Trades", active24hSellers: "24h Sellers", active24hBuyers: "24h Buyers", highHeat: "High", mediumHeat: "Medium", lowHeat: "Low", aboveRecentAverage: "Above Recent Average", nearRecentAverage: "Near Recent Average", belowRecentAverage: "Below Recent Average", liquidity: "Liquidity", pricePosition: "Recent Reference Price", bubbleMaps: "BubbleMaps", networkGraph: "Network Graph", showingTop50RelatedAccounts: "Showing top 50 related accounts", marketIntelligence: "Market Intelligence", healthHealthy: "Healthy", healthStable: "Stable", healthWatch: "Watch", healthRisk: "Risk", healthWatchlist: "Watchlist", healthConcentrated: "High Concentration", concentration: "Concentration", distribution: "Distribution", activity: "Activity", risk: "Risk", playerRanking: "Player Ranking", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Item Concentration", extremeMarketConcentration: "Extreme Market Concentration", priceSpikeDetected: "Price Spike Detected", frequentLowPriceTransfers: "Frequent Low-price Transfers", topSellerShare: "Top Seller Share", currentPrice: "Current Price", severity: "Severity", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
+        appTitle: "Elf Continent Marketplace Analytics Dashboard", subtitle: "Market transactions, player income, related accounts, and concentration analytics", language: "Language", traditionalChinese: "繁體中文", english: "English", resources: "Resources", general: "General", piElfOutfit: "Pi Elf Outfit", dashboard: "Dashboard", marketOverview: "Market Overview", searchPlaceholder: "Search player / item / transaction", refresh: "Refresh", loading: "Loading…", preparing: "Preparing…", noDataFound: "No data found", selectedMarket: "Selected Market", itemsWithPrice: "Items With Price", averagePrice: "Average Price", nextRefresh: "Next Refresh", totalTransactions: "Total Transactions", totalVolume: "Total Volume", activeSellers: "Active Sellers", activeBuyers: "Active Buyers", top10IncomePlayers: "Top 10 Income Players", top5ConcentratedItems: "Top 5 Concentrated Items", recent20Transactions: "Recent 20 Transactions", highPatternScorePlayers: "High Pattern Score Players", marketHealthScore: "Market Health Score", executiveSummary: "Executive Summary", highestMpsPlayer: "Highest MPS Player", mostConcentratedItem: "Most Concentrated Item", largestSeller: "Largest Seller", mostActiveBuyer: "Most Active Buyer", marketAlerts: "Market Alerts", trendingItems: "Trending Items", marketIntelligenceCenter: "Market Intelligence Center", marketPulse: "Market Pulse", critical: "Critical", high: "High", watch: "Watch", info: "Info", activePlayers: "Active Players", totalSellers: "Total Sellers", totalBuyers: "Total Buyers", lastUpdated: "Last Updated", priceHistory: "Price History", priceTrend: "Price Trend", marketSnapshots: "Market Snapshots", movingAverage: "Moving Average", priceRange: "Price Range", priceChange: "Price Change", sevenDayMA: "7D MA", thirtyDayMA: "30D MA", ath: "ATH", atl: "ATL", change24h: "24h Change", change7d: "7d Change", change30d: "30d Change", snapshotCount: "Snapshot Count", itemDecisionCard: "Price Status Card", marketRead: "Market Read", tradingHeat: "Trading Heat", recent24hTrades: "24h Trades", active24hSellers: "24h Sellers", active24hBuyers: "24h Buyers", highHeat: "High", mediumHeat: "Medium", lowHeat: "Low", aboveRecentAverage: "Above Recent Average", nearRecentAverage: "Near Recent Average", belowRecentAverage: "Below Recent Average", liquidity: "Liquidity", pricePosition: "Recent Reference Price", bubbleMaps: "BubbleMaps", networkGraph: "Network Graph", showingTop50RelatedAccounts: "Showing top 50 related accounts", marketIntelligence: "Market Intelligence", healthHealthy: "Healthy", healthStable: "Stable", healthWatch: "Watch", healthRisk: "Risk", healthWatchlist: "Watchlist", healthConcentrated: "High Concentration", concentration: "Concentration", distribution: "Distribution", activity: "Activity", risk: "Risk", playerRanking: "Player Ranking", playerSummary: "Player Summary", relatedAccounts: "Related Accounts", marketplacePatternScore: "Marketplace Pattern Score", mpsObservationNote: "MPS is a market observation indicator, not a violation judgment.", patternAlerts: "Pattern Alerts", dailySigilIncome: "Daily Sigil Income", itemMarketConcentration: "Item Market Concentration", transactions: "Transactions", totalIncome: "Total Income", tradeCount: "Trade Count", relatedBuyers: "Related Buyers", relatedAccountCount: "Related Accounts", averageIncome: "Average Income", lastSeen: "Last Seen", highConcentration: "High Item Concentration", extremeMarketConcentration: "Extreme Market Concentration", priceSpikeDetected: "Price Spike Detected", frequentLowPriceTransfers: "Frequent Low-price Transfers", highCounterpartyConcentration: "High Counterparty Concentration", topSellerShare: "Top Seller Share", currentPrice: "Current Price", severity: "Severity", abnormalPattern: "Abnormal Pattern", structuredTradingPattern: "Structured Trading Pattern", watchlist: "Watchlist", normalPattern: "Normal Pattern", lowPriceTransfer: "Low-price Transfer", lowPriceTransferCount: "Low-price Transfer Count", patternScore: "Pattern Score", playerName: "Player Name", playerProfile: "Player Profile", overview: "Overview", dailyIncome: "Daily Income", itemConcentration: "Item Concentration", searchResults: "Search Results", resultCount: "Result Count", relatedPlayers: "Related Players", relatedItems: "Related Items", relatedTransactions: "Related Transactions", item: "Item", seller: "Seller", buyer: "Buyer", sellerPlayer: "Seller Player", buyerPlayer: "Buyer Player", price: "Price", quantity: "Qty", time: "Time", date: "Date", income: "Income", cumulativeIncome: "Cumulative Income", totalAmount: "Total Amount", totalTrades: "Total Trades", totalTradesShort: "Trades", topSeller: "Top Seller", top5Share: "Top 5 Share", sellerCount: "Seller Count", sortByTotalAmount: "Sort by Total Amount", sortByTradeCount: "Sort by Trade Count", sortByLastSeen: "Sort by Last Seen", mainItems: "Main Items", hasLowPrice: "Has Low-price Trades", noLowPrice: "No Low-price Trades", relatedAccountsCount: "Related accounts count", lowPriceTransferRatio: "Low-price transfer ratio", repeatedItemQuantityRatio: "Repeated item / quantity ratio", hourlyTradeDensity: "Hourly trade density", sameCounterpartFrequency: "Same counterpart frequency", top10: "Top 10", top50: "Top 50", sortByIncome: "Sort by total income", sortByCount: "Sort by trade count", noNotices: "No notable market-pattern notices", enterPlayerForProfile: "Search a player name to show the full player profile", enterSearch: "Enter a player, item, or transaction keyword", waitingForTransactions: "Waiting for loaded transactions", currentMarket: "Current Market", updated: "Updated", refreshingToken: "Refreshing token…", loadingItem: "Loading item", updateFailed: "Update failed", defaultOrder: "Default order", priceHighToLow: "Price high to low", priceLowToHigh: "Price low to high", nameAZ: "Name A-Z", level: "Level", value: "Value", score: "Score", mpsBreakdown: "MPS Breakdown", relatedAccountsScore: "Related Accounts Score", lowPriceTransferScore: "Low-price Transfer Score", repeatedItemQuantityScore: "Repeated Item / Quantity Score", counterpartyConcentrationScore: "Counterparty Concentration Score", hourlyTradingDensityScore: "Hourly Trading Density Score", mostRepeatedPattern: "Most Repeated Pattern", top5CounterpartyShare: "Top 5 Counterparty Share", hourlyMax: "Hourly Max", tradesPerHour: "trades/hour", noRepeatedPattern: "No repeated pattern", reasonHighRelatedAccounts: "High number of related accounts", reasonLowPriceTransfers: "Frequent low-price transfers observed", reasonRepeatedPattern: "Repeated item and quantity pattern observed", reasonCounterpartyConcentration: "Trading activity is concentrated among a small group of counterparties", reasonHourlyDensity: "High trading density within a short time window"
       }
     };
 
@@ -1478,7 +1801,9 @@
       refresh: document.getElementById("refresh"),
       error: document.getElementById("error-area"),
       dashboardNote: document.getElementById("dashboard-note"),
+      marketHero: document.getElementById("market-hero"),
       executiveSummary: document.getElementById("executive-summary"),
+      trendingItems: document.getElementById("trending-items"),
       marketMetrics: document.getElementById("market-metrics"),
       topIncome: document.getElementById("top-income-list"),
       topConcentration: document.getElementById("top-concentration-list"),
@@ -1948,6 +2273,111 @@
       </div>`;
     }
 
+    function heroMetric(label, value) {
+      return `<div class="hero-metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`;
+    }
+
+    function renderMarketHero(transactions, health, totals) {
+      if (!transactions.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
+      return `
+        <div class="market-hero-main">
+          <div class="health-ring" style="--score:${health.score}"><strong>${health.score}</strong><span>/ 100</span></div>
+          <div class="market-hero-copy">
+            <div class="hero-eyebrow">${t("marketIntelligenceCenter")} · ${escapeHtml(state.activeCategory)}</div>
+            <div class="hero-title">${t("marketPulse")}</div>
+            <div class="hero-state">${escapeHtml(health.level)}</div>
+          </div>
+        </div>
+        <div class="hero-metrics">
+          ${heroMetric(t("totalTransactions"), formatInteger(transactions.length))}
+          ${heroMetric(t("totalVolume"), formatPrice(totals.totalVolume))}
+          ${heroMetric(t("activeBuyers"), formatInteger(totals.buyers))}
+          ${heroMetric(t("activeSellers"), formatInteger(totals.sellers))}
+          ${heroMetric(t("activePlayers"), formatInteger(totals.activePlayers))}
+          ${heroMetric(t("lastUpdated"), formatTime(totals.lastUpdated))}
+        </div>
+      `;
+    }
+
+    function getRecentTransactions(transactions, seconds = 86400) {
+      const latest = Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0));
+      const reference = latest || Math.floor(Date.now() / 1000);
+      return transactions.filter((tx) => Number(tx.txnTime) >= reference - seconds);
+    }
+
+    function calculateTrendingItems(transactions) {
+      const recent = getRecentTransactions(transactions, 86400);
+      const rows = new Map();
+      recent.forEach((tx) => {
+        const key = String(tx.itemId);
+        const row = rows.get(key) || { itemId: tx.itemId, itemName: tx.itemName, trades: 0, volume: 0, sellers: new Set(), buyers: new Set(), activePlayers: 0, price: 0 };
+        row.trades += 1;
+        row.volume += Number(tx.totalAmountSigil) || 0;
+        row.price = Number(tx.price) || row.price;
+        if (isKnownPlayer(tx.sellerName)) row.sellers.add(playerKey(tx.sellerName));
+        if (isKnownPlayer(tx.buyerName)) row.buyers.add(playerKey(tx.buyerName));
+        rows.set(key, row);
+      });
+      return [...rows.values()].map((row) => {
+        row.activePlayers = new Set([...row.sellers, ...row.buyers]).size;
+        row.currentPrice = state.prices.get(row.itemId)?.price || row.price || 0;
+        row.heat = row.trades * 4 + row.volume * 0.35 + row.activePlayers * 2;
+        return row;
+      }).sort((a, b) => b.heat - a.heat || b.volume - a.volume).slice(0, 5);
+    }
+
+    function renderTrendingItems(transactions) {
+      const rows = calculateTrendingItems(transactions);
+      if (!rows.length) return `<div class="empty">${t("waitingForTransactions")}</div>`;
+      return `<div class="trending-grid">${rows.map((row, index) => `
+        <article class="trending-card" data-item="${escapeHtml(String(row.itemId))}">
+          <div class="trending-head">
+            ${itemThumbHtml(row.itemId, row.itemName)}
+            <div class="row-main"><span class="trending-rank">#${index + 1}</span> ${escapeHtml(row.itemName)}</div>
+          </div>
+          <div class="trending-stats">
+            <div class="trending-stat"><span>${t("recent24hTrades")}</span><strong>${formatInteger(row.trades)}</strong></div>
+            <div class="trending-stat"><span>${t("totalVolume")}</span><strong>${formatPrice(row.volume)}</strong></div>
+            <div class="trending-stat"><span>${t("activePlayers")}</span><strong>${formatInteger(row.activePlayers)}</strong></div>
+            <div class="trending-stat"><span>${t("currentPrice")}</span><strong>${formatPrice(row.currentPrice)}</strong></div>
+          </div>
+        </article>
+      `).join("")}</div>`;
+    }
+
+    function alertSeverityLabel(severity) {
+      if (severity >= 5) return t("critical");
+      if (severity >= 4) return t("high");
+      if (severity >= 3) return t("watch");
+      return t("info");
+    }
+
+    function playerPatternTags(pattern) {
+      const tags = [pattern.level];
+      if (pattern.lowPriceRatio >= 0.3) tags.push(t("frequentLowPriceTransfers"));
+      if (pattern.top5CounterpartyShare >= 0.8) tags.push(t("highCounterpartyConcentration"));
+      return [...new Set(tags)].map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+    }
+
+    function renderMpsDimensions(pattern) {
+      const rows = [
+        [t("relatedAccountsScore"), pattern.breakdown.relatedAccounts, MPS_CONFIG.scoreWeights.relatedAccounts, `${t("relatedAccountsCount")}: ${formatInteger(pattern.relatedAccountsCount)}`],
+        [t("lowPriceTransferScore"), pattern.breakdown.lowPriceTransfer, MPS_CONFIG.scoreWeights.lowPriceTransfer, `${t("lowPriceTransferRatio")}: ${(pattern.lowPriceRatio * 100).toFixed(1)}%`],
+        [t("repeatedItemQuantityScore"), pattern.breakdown.repeatedItemQuantity, MPS_CONFIG.scoreWeights.repeatedItemQuantity, `${t("repeatedItemQuantityRatio")}: ${(pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%`],
+        [t("counterpartyConcentrationScore"), pattern.breakdown.counterpartyConcentration, MPS_CONFIG.scoreWeights.counterpartyConcentration, `${t("top5CounterpartyShare")}: ${(pattern.top5CounterpartyShare * 100).toFixed(1)}%`],
+        [t("hourlyTradingDensityScore"), pattern.breakdown.hourlyDensity, MPS_CONFIG.scoreWeights.hourlyDensity, `${t("hourlyMax")}: ${formatInteger(pattern.hourlyMax)} ${t("tradesPerHour")}`]
+      ];
+      return `<div class="mps-dimension-grid">${rows.map(([label, value, max, desc]) => {
+        const pct = max ? Math.min(100, Math.round((value / max) * 100)) : 0;
+        return `<div class="mps-dimension">
+          <span>${escapeHtml(label)}</span>
+          <strong>${formatInteger(value)} / ${formatInteger(max)}</strong>
+          <div class="mps-bar"><div class="mps-bar-fill" style="--pct:${pct}%"></div></div>
+          <div class="mps-desc">${escapeHtml(desc)}</div>
+        </div>`;
+      }).join("")}</div>`;
+    }
+
     function compactRow(main, sub, stats, tag = "", className = "") {
       return `<article class="compact-row ${className}">
         <div class="row-main">${main}<span class="row-sub">${sub || ""}</span></div>
@@ -2058,7 +2488,7 @@
       if (!alerts.length) return `<div class="empty">${t("noNotices")}</div>`;
       return `<div class="alert-list">${alerts.map((alert) => `
         <div class="alert-row severity-${alert.severity}">
-          <div class="alert-title"><span>${escapeHtml(alert.message)}</span><span class="tag">${t("severity")} ${escapeHtml(String(alert.severity))}</span></div>
+          <div class="alert-title"><span>${escapeHtml(alert.message)}</span><span class="alert-level">${alertSeverityLabel(alert.severity)}</span></div>
           ${alert.detail ? `<div class="alert-detail">${escapeHtml(alert.detail)}</div>` : ""}
         </div>
       `).join("")}</div>`;
@@ -2142,14 +2572,17 @@
         },
         ...rows.map((row) => {
           const mainItems = networkMainItems(row) || "-";
+          const warmNode = Number(row.lowCount) > 0;
           return {
             id: `player:${playerKey(row.name)}`,
             label: row.name,
             size: accountSize(row),
             title: `${t("playerName")}: ${row.name}\n${t("tradeCount")}: ${formatInteger(row.count)}\n${t("totalAmount")}: ${formatPrice(row.total)} Sigil\n${t("lastSeen")}: ${formatTime(row.lastSeen)}\n${t("mainItems")}: ${mainItems}`,
-            color: { background: "rgba(142, 207, 120, 0.92)", border: "#8ecf78", highlight: { background: "#f0c66d", border: "#ffe1a1" } },
+            color: warmNode
+              ? { background: "rgba(240, 198, 109, 0.94)", border: "#ff974a", highlight: { background: "#ffe1a1", border: "#ff974a" } }
+              : { background: "rgba(142, 207, 120, 0.92)", border: "#8ecf78", highlight: { background: "#f0c66d", border: "#ffe1a1" } },
             font: { color: "#eef4eb", size: 13, face: "Inter, sans-serif" },
-            borderWidth: row.lowCount ? 2 : 1
+            borderWidth: warmNode ? 3 : 1
           };
         })
       ]);
@@ -2161,7 +2594,7 @@
           width: Math.max(1, Math.min(9, 1 + (count / maxCount) * 8)),
           label: `${formatInteger(count)} ${t("totalTradesShort")} / ${formatPrice(row.total)} Sigil`,
           title: `${t("tradeCount")}: ${formatInteger(count)}\n${t("totalAmount")}: ${formatPrice(row.total)} Sigil`,
-          color: { color: "rgba(142, 207, 120, 0.45)", highlight: "#f0c66d" },
+          color: { color: row.lowCount ? "rgba(240, 198, 109, 0.62)" : "rgba(142, 207, 120, 0.45)", highlight: "#f0c66d" },
           smooth: { type: "continuous" },
           font: { color: "#a9b8a6", size: 10, align: "middle", strokeWidth: 3, strokeColor: "rgba(8, 12, 8, 0.92)" }
         };
@@ -2241,6 +2674,8 @@
       });
       const mostActiveBuyer = [...buyerMap.values()].sort((a, b) => b.count - a.count || b.total - a.total)[0];
       el.dashboardNote.textContent = `${t("currentMarket")}: ${state.activeCategory}`;
+      el.marketHero.innerHTML = renderMarketHero(transactions, health, { totalVolume, sellers: sellers.size, buyers: buyers.size, activePlayers: activePlayers.size, lastUpdated });
+      el.trendingItems.innerHTML = renderTrendingItems(transactions);
       el.executiveSummary.innerHTML = transactions.length ? [
         summaryTile(t("marketHealthScore"), `${health.score} / 100`, health.level),
         summaryTile(t("highestMpsPlayer"), highestMps ? playerButtonHtml(highestMps.name) : "-", highestMps ? `${t("patternScore")}: ${highestMps.pattern.score}` : ""),
@@ -2295,6 +2730,7 @@
       const playerName = resolvePlayerName(el.search.value.trim(), transactions);
       if (!playerName) {
         el.playerNote.textContent = t("enterPlayerForProfile");
+        el.playerProfile.className = "card profile";
         el.playerProfile.innerHTML = `<div class="notice">${t("enterPlayerForProfile")}</div>`;
         document.querySelectorAll(".tab-panel").forEach((panel) => { panel.innerHTML = ""; });
         return;
@@ -2307,16 +2743,23 @@
       const lastSeen = Math.max(0, ...playerTx.map((tx) => Number(tx.txnTime) || 0));
       const pattern = computePatternScore(transactions, playerName);
       el.playerNote.textContent = playerName;
+      el.playerProfile.className = "card profile player-summary-card";
       el.playerProfile.innerHTML = `
-        <div><span class="metric-label">${t("playerName")}</span><div class="profile-name">${escapeHtml(playerName)}</div></div>
-        <div class="profile-stat"><span>${t("totalIncome")}</span><strong>${formatPrice(income)}</strong></div>
-        <div class="profile-stat"><span>${t("tradeCount")}</span><strong>${formatInteger(playerTx.length)}</strong></div>
-        <div class="profile-stat"><span>${t("relatedAccounts")}</span><strong>${formatInteger(network.length)}</strong></div>
-        <div class="profile-stat"><span>${t("patternScore")}</span><strong>${pattern.score} / 100</strong></div>
-        <div class="profile-stat"><span>${t("level")}</span><strong>${escapeHtml(pattern.level)}</strong></div>
-        <div class="profile-stat"><span>${t("averageIncome")}</span><strong>${formatPrice(soldTx.length ? income / soldTx.length : 0)}</strong></div>
-        <div class="profile-stat"><span>${t("lowPriceTransferCount")}</span><strong>${formatInteger(lowCount)}</strong></div>
-        <div class="profile-stat"><span>${t("lastSeen")}</span><strong>${formatTime(lastSeen)}</strong></div>
+        <div class="player-summary-main">
+          <div><span class="metric-label">${t("playerSummary")}</span><div class="profile-name">${escapeHtml(playerName)}</div></div>
+          <div class="player-summary-score"><strong>${pattern.score}</strong><span>/ 100 · ${escapeHtml(pattern.level)}</span></div>
+          <div class="tag-row">${playerPatternTags(pattern)}</div>
+        </div>
+        <div class="player-summary-grid">
+          <div class="summary-stat"><span>${t("totalIncome")}</span><strong>${formatPrice(income)}</strong></div>
+          <div class="summary-stat"><span>${t("tradeCount")}</span><strong>${formatInteger(playerTx.length)}</strong></div>
+          <div class="summary-stat"><span>${t("relatedAccounts")}</span><strong>${formatInteger(network.length)}</strong></div>
+          <div class="summary-stat"><span>${t("lowPriceTransferRatio")}</span><strong>${(pattern.lowPriceRatio * 100).toFixed(1)}%</strong></div>
+          <div class="summary-stat"><span>${t("lowPriceTransferCount")}</span><strong>${formatInteger(lowCount)}</strong></div>
+          <div class="summary-stat"><span>${t("averageIncome")}</span><strong>${formatPrice(soldTx.length ? income / soldTx.length : 0)}</strong></div>
+          <div class="summary-stat"><span>${t("top5CounterpartyShare")}</span><strong>${(pattern.top5CounterpartyShare * 100).toFixed(1)}%</strong></div>
+          <div class="summary-stat"><span>${t("lastSeen")}</span><strong>${formatTime(lastSeen)}</strong></div>
+        </div>
       `;
       renderPlayerTabs(playerName, transactions, playerTx, network, pattern);
     }
@@ -2341,7 +2784,17 @@
         [t("counterpartyConcentrationScore"), pattern.breakdown.counterpartyConcentration, MPS_CONFIG.scoreWeights.counterpartyConcentration],
         [t("hourlyTradingDensityScore"), pattern.breakdown.hourlyDensity, MPS_CONFIG.scoreWeights.hourlyDensity]
       ];
-      document.getElementById("tab-overview").innerHTML = `<article class="card panel"><h3 class="section-title">${t("marketplacePatternScore")}</h3><div class="score-wrap"><div class="metric-value">${pattern.score} / 100 <span class="tag">${escapeHtml(pattern.level)}</span></div><div class="score-line"><div class="score-fill" style="width:${pattern.score}%"></div></div><div class="compact-list">${reasons.map(([label, value]) => compactRow(escapeHtml(label), "", [{ label: t("currentMarket"), value: state.activeCategory }, { label: t("value"), value: String(value) }, { label: t("playerName"), value: playerName }])).join("")}</div><h3 class="section-title">${t("mpsBreakdown")}</h3><div class="compact-list">${breakdownRows.map(([label, value, max]) => compactRow(escapeHtml(label), "", [{ label: t("score"), value: `${value} / ${max}` }, { label: t("patternScore"), value: `${pattern.score} / 100` }, { label: t("level"), value: pattern.level }])).join("")}</div></div></article>`;
+      document.getElementById("tab-overview").innerHTML = `<article class="card panel">
+        <h3 class="section-title">${t("marketplacePatternScore")}</h3>
+        <div class="score-wrap">
+          <div class="metric-value">${pattern.score} / 100 <span class="tag">${escapeHtml(pattern.level)}</span></div>
+          <div class="score-line"><div class="score-fill" style="width:${pattern.score}%"></div></div>
+          <div class="mps-note">${t("mpsObservationNote")}</div>
+          ${renderMpsDimensions(pattern)}
+          <h3 class="section-title">${t("marketRead")}</h3>
+          <div class="compact-list">${reasons.map(([label, value]) => compactRow(escapeHtml(label), "", [{ label: t("currentMarket"), value: state.activeCategory }, { label: t("value"), value: String(value) }, { label: t("playerName"), value: playerName }])).join("")}</div>
+        </div>
+      </article>`;
       document.getElementById("tab-transactions").innerHTML = renderTransactionTable(playerTx, 80);
 
       const sort = document.getElementById("related-sort")?.value || "total";
@@ -2610,7 +3063,7 @@
         const imageSrc = getItemImageSrc(item);
         const fallbackText = escapeHtml(item.name.slice(0, 1).toUpperCase());
         const media = `<img class="item-img" src="${imageSrc}" alt="${escapeHtml(item.name)}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${fallbackText}'))" />`;
-        return `<article class="card item-card"><div class="item-head"><div class="item-media">${media}</div><div><div class="item-name">${escapeHtml(item.name)}</div><div class="item-meta">${escapeHtml(item.group)} - ID ${item.id}</div></div></div><div class="item-stats"><div class="stat"><span>${t("price")}</span><strong>${formatPrice(row?.price)}</strong></div><div class="stat"><span>${t("tradeCount")}</span><strong>${formatInteger(row?.transactions?.length || 0)}</strong></div><div class="stat"><span>${t("seller")}</span><strong>${escapeHtml(tx?.sellerName || "-")}</strong></div><div class="stat"><span>${t("buyer")}</span><strong>${escapeHtml(tx?.buyerName || "-")}</strong></div></div></article>`;
+        return `<article class="card item-card" data-item="${escapeHtml(String(item.id))}"><div class="item-head"><div class="item-media">${media}</div><div><div class="item-name">${escapeHtml(item.name)}</div><div class="item-meta">${escapeHtml(item.group)} - ID ${item.id}</div></div></div><div class="item-stats"><div class="stat"><span>${t("price")}</span><strong>${formatPrice(row?.price)}</strong></div><div class="stat"><span>${t("tradeCount")}</span><strong>${formatInteger(row?.transactions?.length || 0)}</strong></div><div class="stat"><span>${t("seller")}</span><strong>${escapeHtml(tx?.sellerName || "-")}</strong></div><div class="stat"><span>${t("buyer")}</span><strong>${escapeHtml(tx?.buyerName || "-")}</strong></div></div></article>`;
       }).join("") || `<div class="empty">${t("noDataFound")}</div>`;
     }
 
