@@ -1635,16 +1635,16 @@
     </header>
 
     <aside class="sidebar" aria-label="Dashboard navigation">
-      <div class="side-brand"><span class="mark" aria-hidden="true">ELF</span><span>Marketplace</span></div>
+      <div class="side-brand"><span class="mark" aria-hidden="true">ELF</span><span data-i18n="marketplace">Marketplace</span></div>
       <nav class="side-nav">
-        <button class="side-link active" type="button" data-view="dashboard">Dashboard</button>
-        <button class="side-link" type="button" data-view="market-transactions">Market Transactions</button>
-        <button class="side-link" type="button" data-view="bubble-map">Bubble Map</button>
-        <button class="side-link" type="button" data-view="player-network">Player Network</button>
-        <button class="side-link" type="button" data-view="item-analysis">Item Analysis</button>
-        <button class="side-link" type="button" data-view="alerts-center">Alerts Center</button>
-        <button class="side-link" type="button" data-view="player-watchlist">Player Watchlist</button>
-        <button class="side-link" type="button" data-view="search">Search</button>
+        <button class="side-link active" type="button" data-view="dashboard" data-i18n="navDashboard">Dashboard</button>
+        <button class="side-link" type="button" data-view="market-transactions" data-i18n="navMarketTransactions">Market Transactions</button>
+        <button class="side-link" type="button" data-view="bubble-map" data-i18n="navBubbleMap">Bubble Map</button>
+        <button class="side-link" type="button" data-view="player-network" data-i18n="navPlayerNetwork">Player Network</button>
+        <button class="side-link" type="button" data-view="item-analysis" data-i18n="navItemAnalysis">Item Analysis</button>
+        <button class="side-link" type="button" data-view="alerts-center" data-i18n="navAlertsCenter">Alerts Center</button>
+        <button class="side-link" type="button" data-view="player-watchlist" data-i18n="navPlayerWatchlist">Player Watchlist</button>
+        <button class="side-link" type="button" data-view="search" data-i18n="navSearch">Search</button>
       </nav>
       <div class="side-note">製作人：潮州人TW<br>資料來源：目前市場分頁<br>自動更新：每 5 分鐘</div>
     </aside>
@@ -1656,7 +1656,7 @@
         <button class="market-tab" type="button" data-category="Pi Elf Outfit" role="tab" aria-selected="false" data-i18n="piElfOutfit">Pi Elf Outfit</button>
       </div>
       <input class="field" id="global-search" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="搜尋玩家 / 物品 / 交易紀錄" />
-      <button class="search-submit" id="search-submit" type="button">搜尋</button>
+      <button class="search-submit" id="search-submit" type="button" data-i18n="searchAction">搜尋</button>
       <select class="field" id="item-sort">
         <option value="default" data-i18n="defaultOrder">預設排序</option>
         <option value="price-desc" data-i18n="priceHighToLow">價格由高到低</option>
@@ -1726,35 +1726,35 @@
 
     <section class="section view-section" id="market-transactions-section" data-view-section="market-transactions" hidden>
       <div class="section-head">
-        <h2 class="section-title">Market Transactions</h2>
+        <h2 class="section-title" data-i18n="marketTransactions">Market Transactions</h2>
         <div class="section-note" id="market-transactions-note"></div>
       </div>
       <article class="card panel">
         <div class="toolbar">
-          <input class="field" id="tx-item-filter" type="search" placeholder="Item Search" />
-          <input class="field" id="tx-player-filter" type="search" placeholder="Player Search" />
+          <input class="field" id="tx-item-filter" type="search" data-i18n-placeholder="itemSearch" placeholder="Item Search" />
+          <input class="field" id="tx-player-filter" type="search" data-i18n-placeholder="playerSearch" placeholder="Player Search" />
           <select class="field" id="tx-side-filter">
-            <option value="all">Seller + Buyer</option>
-            <option value="seller">Seller Only</option>
-            <option value="buyer">Buyer Only</option>
+            <option value="all" data-i18n="sellerBuyer">Seller + Buyer</option>
+            <option value="seller" data-i18n="sellerOnly">Seller Only</option>
+            <option value="buyer" data-i18n="buyerOnly">Buyer Only</option>
           </select>
-          <select class="field" id="tx-group-filter"><option value="">All Item Groups</option></select>
+          <select class="field" id="tx-group-filter"><option value="" data-i18n="allItemGroups">All Item Groups</option></select>
           <select class="field" id="tx-time-filter">
-            <option value="all">All Time</option>
-            <option value="1h">1h</option>
-            <option value="6h">6h</option>
-            <option value="24h">24h</option>
+            <option value="all" data-i18n="allTime">All Time</option>
+            <option value="1h" data-i18n="last1Hour">Last 1 Hour</option>
+            <option value="6h" data-i18n="last6Hours">Last 6 Hours</option>
+            <option value="24h" data-i18n="last24Hours">Last 24 Hours</option>
           </select>
           <select class="field" id="tx-sort-filter">
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="total-desc">Highest Total Amount</option>
-            <option value="total-asc">Lowest Total Amount</option>
-            <option value="price-desc">Highest Price</option>
-            <option value="price-asc">Lowest Price</option>
-            <option value="qty-desc">Highest Quantity</option>
+            <option value="newest" data-i18n="newest">Newest</option>
+            <option value="oldest" data-i18n="oldest">Oldest</option>
+            <option value="total-desc" data-i18n="highestTotal">Highest Total</option>
+            <option value="total-asc" data-i18n="lowestTotal">Lowest Total</option>
+            <option value="price-desc" data-i18n="highestPrice">Highest Price</option>
+            <option value="price-asc" data-i18n="lowestPrice">Lowest Price</option>
+            <option value="qty-desc" data-i18n="highestQuantity">Highest Quantity</option>
           </select>
-          <label class="checkbox-pill"><input id="tx-low-filter" type="checkbox" /> Low-price Transfers Only</label>
+          <label class="checkbox-pill"><input id="tx-low-filter" type="checkbox" /> <span data-i18n="lowPriceTransfersOnly">Low-price Transfers Only</span></label>
         </div>
         <div class="table-shell" id="market-transactions-table"></div>
       </article>
@@ -1762,19 +1762,19 @@
 
     <section class="section view-section" id="bubble-map-section" data-view-section="bubble-map" hidden>
       <div class="section-head">
-        <h2 class="section-title">Bubble Map</h2>
+        <h2 class="section-title" data-i18n="navBubbleMap">Bubble Map</h2>
         <div class="section-note" id="bubble-map-note"></div>
       </div>
       <article class="card panel">
         <div class="toolbar">
           <select class="field" id="bubble-size-mode">
-            <option value="count">Bubble Size: Trade Count</option>
-            <option value="volume">Bubble Size: Total Volume</option>
+            <option value="count" data-i18n="bubbleSizeTradeCount">Bubble Size: Trade Count</option>
+            <option value="volume" data-i18n="bubbleSizeTotalVolume">Bubble Size: Total Volume</option>
           </select>
           <select class="field" id="bubble-color-mode">
-            <option value="concentration">Bubble Color: Market Concentration</option>
-            <option value="risk">Bubble Color: Risk Level</option>
-            <option value="price">Bubble Color: Average Price</option>
+            <option value="concentration" data-i18n="bubbleColorConcentration">Bubble Color: Market Concentration</option>
+            <option value="risk" data-i18n="bubbleColorRisk">Bubble Color: Risk Level</option>
+            <option value="price" data-i18n="bubbleColorAveragePrice">Bubble Color: Average Price</option>
           </select>
         </div>
         <div id="bubble-map-full"></div>
@@ -1843,7 +1843,7 @@
 
     <section class="section view-section" id="alerts-center-section" data-view-section="alerts-center" hidden>
       <div class="section-head">
-        <h2 class="section-title">Alerts Center</h2>
+        <h2 class="section-title" data-i18n="navAlertsCenter">Alerts Center</h2>
         <div class="section-note" id="alerts-center-note"></div>
       </div>
       <article class="card panel"><div id="alerts-center-list"></div></article>
@@ -1851,17 +1851,17 @@
 
     <section class="section view-section" id="player-watchlist-section" data-view-section="player-watchlist" hidden>
       <div class="section-head">
-        <h2 class="section-title">Player Watchlist</h2>
+        <h2 class="section-title" data-i18n="navPlayerWatchlist">Player Watchlist</h2>
         <div class="section-note" id="player-watchlist-note"></div>
       </div>
       <article class="card panel">
         <div class="toolbar">
           <select class="field" id="watchlist-sort">
-            <option value="mps">Highest MPS</option>
-            <option value="ttp">Highest TTP</option>
-            <option value="low">Highest Low-price Ratio</option>
-            <option value="counterparty">Highest Counterparty Share</option>
-            <option value="recent">Most Recent Activity</option>
+            <option value="mps" data-i18n="highestMps">Highest MPS</option>
+            <option value="ttp" data-i18n="highestTtp">Highest TTP</option>
+            <option value="low" data-i18n="highestLowPriceRatio">Highest Low-price Ratio</option>
+            <option value="counterparty" data-i18n="highestCounterpartyShare">Highest Counterparty Share</option>
+            <option value="recent" data-i18n="mostRecentActivity">Most Recent Activity</option>
           </select>
         </div>
         <div class="table-shell" id="player-watchlist-table"></div>
@@ -1909,7 +1909,7 @@
       mpsObservationNote: "MPS 是市場觀察指標，不代表任何處置判定或玩家價值判斷。",
       twoStepTransferPattern: "Two-step Transfer Pattern",
       twoStepTransferScore: "雙步轉移分數",
-      transferPatternDisclaimer: "MPS and Transfer Pattern Analysis are market observation indicators based on public marketplace data. They do not represent violation judgment or player value judgment.",
+      transferPatternDisclaimer: "MPS 與轉移模式分析是基於公開市場資料的觀察指標，不代表任何處置判定或玩家價值判斷。",
       detectedPatternCount: "偵測模式數",
       relatedCounterparties: "關聯交易對象",
       averageCompletionTime: "平均完成時間",
@@ -1931,7 +1931,7 @@
     Object.assign(FALLBACK_I18N.en, {
       twoStepTransferPattern: "Two-step Transfer Pattern",
       twoStepTransferScore: "Two-step Transfer Score",
-      transferPatternDisclaimer: "MPS and Transfer Pattern Analysis are market observation indicators based on public marketplace data. They do not represent violation judgment or player value judgment.",
+      transferPatternDisclaimer: "MPS and Transfer Pattern Analysis are market observation indicators based on public marketplace data. They do not represent enforcement or player-value judgment.",
       detectedPatternCount: "Detected Pattern Count",
       relatedCounterparties: "Related Counterparties",
       averageCompletionTime: "Average Completion Time",
@@ -1948,6 +1948,185 @@
       counterpartyCount: "Counterparty Count",
       reasonTwoStepTransferPattern: "Short-window two-step transfer pattern observed",
       reasonBatchTransferWindow: "Batch transfer window observed"
+    });
+
+    Object.assign(FALLBACK_I18N["zh-TW"], {
+      marketplace: "市場",
+      critical: "關鍵",
+      high: "高",
+      watch: "觀察",
+      info: "資訊",
+      mpsObservationNote: "MPS 是市場觀察指標，不代表任何處置判定或玩家價值判斷。",
+      transferPatternDisclaimer: "MPS 與轉移模式分析是基於公開市場資料的觀察指標，不代表任何處置判定或玩家價值判斷。",
+      navDashboard: "市場總覽",
+      navMarketTransactions: "市場交易資料",
+      navBubbleMap: "泡泡圖",
+      navPlayerNetwork: "玩家關聯網路",
+      navItemAnalysis: "商品分析",
+      navAlertsCenter: "市場訊號中心",
+      navPlayerWatchlist: "玩家觀察榜",
+      navSearch: "搜尋",
+      searchAction: "搜尋",
+      viewAllAlerts: "查看全部訊號",
+      viewAllTransactions: "查看全部交易",
+      marketTransactions: "市場交易資料",
+      itemSearch: "商品搜尋",
+      playerSearch: "玩家搜尋",
+      sellerBuyer: "賣方 + 買方",
+      sellerOnly: "只看賣方",
+      buyerOnly: "只看買方",
+      allItemGroups: "全部商品分類",
+      allTime: "全部時間",
+      last1Hour: "最近 1 小時",
+      last6Hours: "最近 6 小時",
+      last24Hours: "最近 24 小時",
+      lowPriceTransfersOnly: "只看低價轉移",
+      newest: "最新優先",
+      oldest: "最舊優先",
+      highestTotal: "總額最高",
+      lowestTotal: "總額最低",
+      highestPrice: "價格最高",
+      lowestPrice: "價格最低",
+      highestQuantity: "數量最高",
+      itemImage: "商品圖片",
+      itemName: "商品名稱",
+      itemGroup: "商品分類",
+      unitPrice: "單價",
+      transactionId: "交易 ID",
+      patternTags: "模式標籤",
+      highFrequencyPattern: "高頻模式",
+      relatedPattern: "關聯模式",
+      showingFirstRows: "顯示前 {count} 筆",
+      transactionsCount: "{market} / {count} 筆交易",
+      itemsCount: "{market} / {count} 個商品",
+      signalsCount: "{market} / {count} 個訊號",
+      playersCount: "{market} / {count} 位玩家",
+      bubbleSizeTradeCount: "泡泡大小：交易次數",
+      bubbleSizeTotalVolume: "泡泡大小：總交易額",
+      bubbleColorConcentration: "泡泡顏色：市場集中度",
+      bubbleColorRisk: "泡泡顏色：風險層級",
+      bubbleColorAveragePrice: "泡泡顏色：平均價格",
+      tradeCountLabel: "交易次數",
+      volumeLabel: "交易額",
+      averagePriceLabel: "平均價格",
+      lowestPriceLabel: "最低價格",
+      highestPriceLabel: "最高價格",
+      activeSellersLabel: "活躍賣家",
+      activeBuyersLabel: "活躍買家",
+      topSellerShareLabel: "最高賣家佔比",
+      player: "玩家",
+      mpsScore: "MPS 分數",
+      ttpScore: "TTP 分數",
+      lowPriceRatio: "低價比例",
+      repeatedRatio: "重複比例",
+      hourlyDensity: "每小時密度",
+      highestMps: "MPS 最高",
+      highestTtp: "TTP 最高",
+      highestLowPriceRatio: "低價比例最高",
+      highestCounterpartyShare: "交易對象集中度最高",
+      mostRecentActivity: "最近活動",
+      transferPatternAnalysis: "轉移模式分析",
+      mainTradedItems: "主要交易商品",
+      latest: "最新",
+      priceSpike: "價格急升",
+      structuredTradingPattern: "結構化交易模式",
+      normalPattern: "正常模式",
+      watchlist: "值得觀察",
+      itemSummary: "商品摘要",
+      marketActivity: "市場活動",
+      volumeTrend: "交易量趨勢",
+      concentrationTrend: "集中度趨勢",
+      currentMarketSignals: "市場訊號",
+      marketStructure: "市場結構",
+      relationshipStructure: "關聯結構",
+      productIntelligence: "商品情報",
+      marketObservationBoard: "市場觀察榜"
+    });
+
+    Object.assign(FALLBACK_I18N.en, {
+      marketplace: "Marketplace",
+      mpsObservationNote: "MPS is a market observation indicator, not an enforcement or player-value judgment.",
+      transferPatternDisclaimer: "MPS and Transfer Pattern Analysis are market observation indicators based on public marketplace data. They do not represent enforcement or player-value judgment.",
+      navDashboard: "Dashboard",
+      navMarketTransactions: "Market Transactions",
+      navBubbleMap: "Bubble Map",
+      navPlayerNetwork: "Player Network",
+      navItemAnalysis: "Item Analysis",
+      navAlertsCenter: "Alerts Center",
+      navPlayerWatchlist: "Player Watchlist",
+      navSearch: "Search",
+      searchAction: "Search",
+      viewAllAlerts: "View All Alerts",
+      viewAllTransactions: "View All Transactions",
+      marketTransactions: "Market Transactions",
+      itemSearch: "Item Search",
+      playerSearch: "Player Search",
+      sellerBuyer: "Seller + Buyer",
+      sellerOnly: "Seller Only",
+      buyerOnly: "Buyer Only",
+      allItemGroups: "All Item Groups",
+      allTime: "All Time",
+      last1Hour: "Last 1 Hour",
+      last6Hours: "Last 6 Hours",
+      last24Hours: "Last 24 Hours",
+      lowPriceTransfersOnly: "Low-price Transfers Only",
+      newest: "Newest",
+      oldest: "Oldest",
+      highestTotal: "Highest Total",
+      lowestTotal: "Lowest Total",
+      highestPrice: "Highest Price",
+      lowestPrice: "Lowest Price",
+      highestQuantity: "Highest Quantity",
+      itemImage: "Item Image",
+      itemName: "Item Name",
+      itemGroup: "Item Group",
+      unitPrice: "Unit Price",
+      transactionId: "Transaction ID",
+      patternTags: "Pattern Tags",
+      highFrequencyPattern: "High-frequency Pattern",
+      relatedPattern: "Related Pattern",
+      showingFirstRows: "Showing first {count} rows",
+      transactionsCount: "{market} / {count} transactions",
+      itemsCount: "{market} / {count} items",
+      signalsCount: "{market} / {count} signals",
+      playersCount: "{market} / {count} players",
+      bubbleSizeTradeCount: "Bubble Size: Trade Count",
+      bubbleSizeTotalVolume: "Bubble Size: Total Volume",
+      bubbleColorConcentration: "Bubble Color: Market Concentration",
+      bubbleColorRisk: "Bubble Color: Risk Level",
+      bubbleColorAveragePrice: "Bubble Color: Average Price",
+      tradeCountLabel: "Trade Count",
+      volumeLabel: "Volume",
+      averagePriceLabel: "Average Price",
+      lowestPriceLabel: "Lowest Price",
+      highestPriceLabel: "Highest Price",
+      activeSellersLabel: "Active Sellers",
+      activeBuyersLabel: "Active Buyers",
+      topSellerShareLabel: "Top Seller Share",
+      player: "Player",
+      mpsScore: "MPS Score",
+      ttpScore: "TTP Score",
+      lowPriceRatio: "Low-price Ratio",
+      repeatedRatio: "Repeated Ratio",
+      hourlyDensity: "Hourly Density",
+      highestMps: "Highest MPS",
+      highestTtp: "Highest TTP",
+      highestLowPriceRatio: "Highest Low-price Ratio",
+      highestCounterpartyShare: "Highest Counterparty Share",
+      mostRecentActivity: "Most Recent Activity",
+      transferPatternAnalysis: "Transfer Pattern Analysis",
+      mainTradedItems: "Main Traded Items",
+      latest: "Latest",
+      priceSpike: "Price Spike",
+      itemSummary: "Item Summary",
+      marketActivity: "Market Activity",
+      volumeTrend: "Volume Trend",
+      concentrationTrend: "Concentration Trend",
+      currentMarketSignals: "Market Signals",
+      marketStructure: "Market Structure",
+      relationshipStructure: "Relationship Structure",
+      productIntelligence: "Product Intelligence",
+      marketObservationBoard: "Market Observation Board"
     });
 
     const RESOURCES = [
@@ -2054,12 +2233,30 @@
       langButtons: [...document.querySelectorAll(".lang-btn")]
     };
 
-    function t(key) { return state.i18n[key] || FALLBACK_I18N.en[key] || key; }
+    const missingI18nKeys = new Set();
+    function t(key) {
+      if (state.i18n[key]) return state.i18n[key];
+      const missingKey = `${state.lang}:${key}`;
+      if (!missingI18nKeys.has(missingKey)) {
+        missingI18nKeys.add(missingKey);
+        console.warn(`Missing i18n key: ${key}`);
+      }
+      if (FALLBACK_I18N.en[key]) return FALLBACK_I18N.en[key];
+      return key;
+    }
+    function formatTemplate(template, values = {}) {
+      return String(template || "").replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+    }
     function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
     function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
     function formatPrice(value) { if (!Number.isFinite(value) || value <= 0) return "-"; return value >= 1 ? value.toFixed(4) : value.toFixed(6); }
-    function formatInteger(value) { if (!Number.isFinite(value)) return "-"; return new Intl.NumberFormat("en-US").format(value); }
-    function formatTime(value) { const ts = Number(value); if (!Number.isFinite(ts) || ts <= 0) return "-"; return new Date(ts * 1000).toLocaleString(state.lang === "zh-TW" ? "zh-TW" : "en-US", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }); }
+    function formatInteger(value) { if (!Number.isFinite(value)) return "-"; return new Intl.NumberFormat(state.lang === "zh-TW" ? "zh-TW" : "en-US").format(value); }
+    function formatTime(value) {
+      const ts = Number(value);
+      if (!Number.isFinite(ts) || ts <= 0) return "-";
+      const locale = state.lang === "zh-TW" ? "zh-TW" : "en-US";
+      return new Date(ts * 1000).toLocaleString(locale, { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false });
+    }
     function playerKey(name) { return String(name || "").trim().toLowerCase(); }
     function isKnownPlayer(name) { const value = String(name || "").trim(); return value && value !== "-"; }
 
@@ -2856,7 +3053,7 @@
       if (!el.txGroupFilter) return;
       const current = el.txGroupFilter.value;
       const groups = [...new Set(transactions.map((tx) => tx.itemGroup).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-      el.txGroupFilter.innerHTML = `<option value="">All Item Groups</option>${groups.map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`).join("")}`;
+      el.txGroupFilter.innerHTML = `<option value="">${t("allItemGroups")}</option>${groups.map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`).join("")}`;
       el.txGroupFilter.value = groups.includes(current) ? current : "";
     }
 
@@ -2865,8 +3062,8 @@
       const repeatedKey = `${tx.itemName || tx.itemId}::${tx.itemNum}`;
       const pairKey = [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
       if (Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold) tags.push(t("lowPriceTransfer"));
-      if ((repeatedCounts.get(repeatedKey) || 0) >= 8) tags.push("High-frequency Pattern");
-      if ((pairCounts.get(pairKey) || 0) >= 4) tags.push("Related Pattern");
+      if ((repeatedCounts.get(repeatedKey) || 0) >= 8) tags.push(t("highFrequencyPattern"));
+      if ((pairCounts.get(pairKey) || 0) >= 4) tags.push(t("relatedPattern"));
       return tags;
     }
 
@@ -2913,13 +3110,13 @@
         "qty-desc": (a, b) => Number(b.itemNum) - Number(a.itemNum)
       };
       rows = rows.sort(sorters[sort] || sorters.newest);
-      if (el.marketTransactionsNote) el.marketTransactionsNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} transactions`;
+      if (el.marketTransactionsNote) el.marketTransactionsNote.textContent = formatTemplate(t("transactionsCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
       if (!el.marketTransactionsTable) return;
       const visibleRows = rows.slice(0, 300);
-      el.marketTransactionsTable.innerHTML = `<table class="data-table"><thead><tr><th>Time</th><th>Item Image</th><th>Item Name</th><th>Item Group</th><th>Seller</th><th>Buyer</th><th>Unit Price</th><th>Quantity</th><th>Total Amount</th><th>Transaction ID</th><th>Pattern Tags</th></tr></thead><tbody>${visibleRows.map((tx) => {
+      el.marketTransactionsTable.innerHTML = `<table class="data-table"><thead><tr><th>${t("time")}</th><th>${t("itemImage")}</th><th>${t("itemName")}</th><th>${t("itemGroup")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("unitPrice")}</th><th>${t("quantity")}</th><th>${t("totalAmount")}</th><th>${t("transactionId")}</th><th>${t("patternTags")}</th></tr></thead><tbody>${visibleRows.map((tx) => {
         const tags = transactionPatternTags(tx, repeatedCounts, pairCounts);
         return `<tr><td>${formatTime(tx.txnTime)}</td><td>${itemThumbHtml(tx.itemId, tx.itemName)}</td><td>${itemButtonHtml(tx.itemId, tx.itemName)}</td><td>${escapeHtml(tx.itemGroup || "-")}</td><td>${playerButtonHtml(tx.sellerName)}</td><td>${playerButtonHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatPrice(tx.totalAmountSigil)}</td><td>${escapeHtml(tx.txnId || "-")}</td><td><div class="tag-row">${tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("") || "-"}</div></td></tr>`;
-      }).join("")}</tbody></table>${rows.length > visibleRows.length ? `<div class="empty">Showing first ${formatInteger(visibleRows.length)} rows</div>` : ""}`;
+      }).join("")}</tbody></table>${rows.length > visibleRows.length ? `<div class="empty">${formatTemplate(t("showingFirstRows"), { count: formatInteger(visibleRows.length) })}</div>` : ""}`;
     }
 
     function renderBubbleMapPage(transactions) {
@@ -2928,7 +3125,7 @@
       const sizeMode = el.bubbleSizeMode?.value || "count";
       const colorMode = el.bubbleColorMode?.value || "concentration";
       const max = Math.max(1, ...rows.map((row) => sizeMode === "volume" ? row.total : row.count));
-      if (el.bubbleMapNote) el.bubbleMapNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} items`;
+      if (el.bubbleMapNote) el.bubbleMapNote.textContent = formatTemplate(t("itemsCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
       el.bubbleMapFull.innerHTML = rows.sort((a, b) => (sizeMode === "volume" ? b.total - a.total : b.count - a.count)).slice(0, 36).map((row) => {
         const itemTx = getItemTransactions({ id: row.itemId }, transactions);
         const prices = itemTx.map((tx) => Number(tx.price)).filter((price) => price > 0);
@@ -2941,14 +3138,14 @@
         const metric = sizeMode === "volume" ? row.total : row.count;
         const size = Math.round(54 + (metric / max) * 108);
         const className = colorMode === "concentration" && topShare >= 0.7 ? "bubble gold" : "bubble";
-        const title = `${row.itemName} | Trades ${row.count} | Volume ${formatPrice(row.total)} | Avg ${formatPrice(avg)} | Low ${formatPrice(low)} | High ${formatPrice(high)} | Sellers ${sellers.size} | Buyers ${buyers.size} | Top Seller Share ${(topShare * 100).toFixed(1)}%`;
+        const title = `${row.itemName} | ${t("tradeCountLabel")} ${formatInteger(row.count)} | ${t("volumeLabel")} ${formatPrice(row.total)} | ${t("averagePriceLabel")} ${formatPrice(avg)} | ${t("lowestPriceLabel")} ${formatPrice(low)} | ${t("highestPriceLabel")} ${formatPrice(high)} | ${t("activeSellersLabel")} ${formatInteger(sellers.size)} | ${t("activeBuyersLabel")} ${formatInteger(buyers.size)} | ${t("topSellerShareLabel")} ${(topShare * 100).toFixed(1)}%`;
         return `<button class="${className}" style="--size:${size}px" title="${escapeHtml(title)}" type="button" data-item="${escapeHtml(String(row.itemId))}">${escapeHtml(row.itemName)}<span class="row-sub">${formatPrice(sizeMode === "volume" ? row.total : row.count)}</span></button>`;
       }).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
     }
 
     function renderAlertsCenter(transactions) {
       const alerts = buildMarketAlerts(transactions);
-      if (el.alertsCenterNote) el.alertsCenterNote.textContent = `${state.activeCategory} / ${formatInteger(alerts.length)} signals`;
+      if (el.alertsCenterNote) el.alertsCenterNote.textContent = formatTemplate(t("signalsCount"), { market: state.activeCategory, count: formatInteger(alerts.length) });
       if (el.alertsCenterList) el.alertsCenterList.innerHTML = renderMarketAlerts(alerts);
     }
 
@@ -2968,8 +3165,8 @@
         recent: (a, b) => b.lastSeen - a.lastSeen
       };
       rows.sort(sorters[sort] || sorters.mps);
-      if (el.playerWatchlistNote) el.playerWatchlistNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} players`;
-      el.playerWatchlistTable.innerHTML = `<table class="data-table"><thead><tr><th>Player</th><th>MPS Score</th><th>TTP Score</th><th>Related Accounts</th><th>Low-price Ratio</th><th>Repeated Ratio</th><th>Top5 Counterparty Share</th><th>Hourly Density</th><th>Trade Count</th><th>Last Seen</th></tr></thead><tbody>${rows.slice(0, 100).map((row) => `<tr><td>${playerButtonHtml(row.name)}</td><td>${formatInteger(row.pattern.score)}</td><td>${formatInteger(row.pattern.twoStepScore || 0)}</td><td>${formatInteger(row.pattern.relatedAccountsCount)}</td><td>${(row.pattern.lowPriceRatio * 100).toFixed(1)}%</td><td>${(row.pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%</td><td>${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}%</td><td>${formatInteger(row.pattern.hourlyMax)}</td><td>${formatInteger(row.tradeCount)}</td><td>${formatTime(row.lastSeen)}</td></tr>`).join("")}</tbody></table>`;
+      if (el.playerWatchlistNote) el.playerWatchlistNote.textContent = formatTemplate(t("playersCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
+      el.playerWatchlistTable.innerHTML = `<table class="data-table"><thead><tr><th>${t("player")}</th><th>${t("mpsScore")}</th><th>${t("ttpScore")}</th><th>${t("relatedAccounts")}</th><th>${t("lowPriceRatio")}</th><th>${t("repeatedRatio")}</th><th>${t("top5CounterpartyShare")}</th><th>${t("hourlyDensity")}</th><th>${t("tradeCount")}</th><th>${t("lastSeen")}</th></tr></thead><tbody>${rows.slice(0, 100).map((row) => `<tr><td>${playerButtonHtml(row.name)}</td><td>${formatInteger(row.pattern.score)}</td><td>${formatInteger(row.pattern.twoStepScore || 0)}</td><td>${formatInteger(row.pattern.relatedAccountsCount)}</td><td>${(row.pattern.lowPriceRatio * 100).toFixed(1)}%</td><td>${(row.pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%</td><td>${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}%</td><td>${formatInteger(row.pattern.hourlyMax)}</td><td>${formatInteger(row.tradeCount)}</td><td>${formatTime(row.lastSeen)}</td></tr>`).join("")}</tbody></table>`;
     }
 
     function calculateMarketHealth(transactions) {
