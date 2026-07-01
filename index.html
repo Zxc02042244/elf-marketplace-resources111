@@ -2644,9 +2644,10 @@
       const addAlert = (message, severity, detail = "", sortValue = 0) => alerts.push({ message, severity, detail, sortValue });
       const lowPriceCount = transactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold).length;
       const lowRatio = transactions.length ? lowPriceCount / transactions.length : 0;
+      const playerPatterns = [...getAllPlayerNames(transactions).values()]
+        .map((name) => ({ name, pattern: computePatternScore(transactions, name) }));
 
-      sellerStats(transactions)
-        .map((row) => ({ name: row.name, pattern: computePatternScore(transactions, row.name) }))
+      playerPatterns
         .filter((row) => row.pattern.score >= 80)
         .forEach((row) => {
           addAlert(
@@ -2654,6 +2655,24 @@
             5,
             `${t("playerName")}: ${row.name} · MPS ${row.pattern.score} · ${t("tradeCount")}: ${formatInteger(row.pattern.txCount)}`,
             row.pattern.score
+          );
+        });
+
+      playerPatterns
+        .filter((row) => row.pattern.twoStepPatternCount >= 3)
+        .forEach((row) => {
+          const patterns = row.pattern.twoStepPatterns || [];
+          const counterparties = new Set(patterns.map((pattern) => playerKey(pattern.toPlayer)).filter(Boolean));
+          const topPattern = patterns[0];
+          const severity = row.pattern.transferBatches?.length || row.pattern.twoStepPatternCount >= 10 ? 5
+            : row.pattern.twoStepPatternCount >= 6 ? 4
+              : 3;
+          const itemLabel = topPattern ? `${topPattern.first?.itemName || "-"} x${formatInteger(Number(topPattern.first?.quantity) || 0)}` : "-";
+          addAlert(
+            t("twoStepTransferPattern"),
+            severity,
+            `${t("playerName")}: ${row.name} · ${t("detectedPatternCount")}: ${formatInteger(row.pattern.twoStepPatternCount)} · ${t("relatedCounterparties")}: ${formatInteger(counterparties.size)} · ${t("mostRepeatedPattern")}: ${itemLabel}`,
+            row.pattern.twoStepPatternCount
           );
         });
 
