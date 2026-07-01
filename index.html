@@ -242,7 +242,8 @@
     select.field { cursor: pointer; }
 
     .search-submit,
-    .refresh {
+    .refresh,
+    .mini-action {
       min-height: 42px;
       border: 0;
       border-radius: 8px;
@@ -251,6 +252,22 @@
       font-weight: 900;
       cursor: pointer;
       padding: 0 16px;
+    }
+
+    .mini-action {
+      min-height: 32px;
+      padding: 0 12px;
+      font-size: 12px;
+      background: rgba(142, 207, 120, 0.18);
+      color: var(--accent);
+      border: 1px solid rgba(142, 207, 120, 0.32);
+    }
+
+    .panel-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .refresh:disabled { cursor: progress; opacity: 0.66; }
@@ -1682,6 +1699,7 @@
       <article class="card panel executive-summary">
         <div class="section-head"><h3 class="section-title" data-i18n="marketAlerts">Market Alerts</h3></div>
         <div id="market-alerts"></div>
+        <div class="panel-actions"><button class="mini-action" type="button" data-jump-view="alerts-center" data-i18n="viewAllAlerts">View All Alerts</button></div>
       </article>
       <article class="card panel executive-summary">
         <div class="section-head"><h3 class="section-title" data-i18n="trendingItems">Trending Items</h3></div>
@@ -1720,6 +1738,7 @@
         <article class="card panel wide">
           <div class="section-head"><h3 class="section-title" data-i18n="recent20Transactions">最近 20 筆交易</h3></div>
           <div id="recent-transactions"></div>
+          <div class="panel-actions"><button class="mini-action" type="button" data-jump-view="market-transactions" data-i18n="viewAllTransactions">View All Transactions</button></div>
         </article>
       </div>
     </section>
@@ -1846,7 +1865,30 @@
         <h2 class="section-title" data-i18n="navAlertsCenter">Alerts Center</h2>
         <div class="section-note" id="alerts-center-note"></div>
       </div>
-      <article class="card panel"><div id="alerts-center-list"></div></article>
+      <article class="card panel">
+        <div class="toolbar">
+          <select class="field" id="alert-severity-filter">
+            <option value="all" data-i18n="allSeverities">All Severities</option>
+            <option value="5" data-i18n="critical">Critical</option>
+            <option value="4" data-i18n="high">High</option>
+            <option value="3" data-i18n="watch">Watch</option>
+            <option value="0" data-i18n="info">Info</option>
+          </select>
+          <select class="field" id="alert-time-filter">
+            <option value="all" data-i18n="allTime">All Time</option>
+            <option value="1h" data-i18n="last1Hour">Last 1 Hour</option>
+            <option value="6h" data-i18n="last6Hours">Last 6 Hours</option>
+            <option value="24h" data-i18n="last24Hours">Last 24 Hours</option>
+          </select>
+          <input class="field" id="alert-item-filter" type="search" data-i18n-placeholder="itemSearch" placeholder="Item Search" />
+          <input class="field" id="alert-player-filter" type="search" data-i18n-placeholder="playerSearch" placeholder="Player Search" />
+          <select class="field" id="alert-sort-filter">
+            <option value="severity" data-i18n="sortBySeverity">Sort by Severity</option>
+            <option value="latest" data-i18n="sortByLatest">Sort by Latest</option>
+          </select>
+        </div>
+        <div id="alerts-center-list"></div>
+      </article>
     </section>
 
     <section class="section view-section" id="player-watchlist-section" data-view-section="player-watchlist" hidden>
@@ -1859,6 +1901,7 @@
           <select class="field" id="watchlist-sort">
             <option value="mps" data-i18n="highestMps">Highest MPS</option>
             <option value="ttp" data-i18n="highestTtp">Highest TTP</option>
+            <option value="related" data-i18n="highestRelatedAccounts">Highest Related Accounts</option>
             <option value="low" data-i18n="highestLowPriceRatio">Highest Low-price Ratio</option>
             <option value="counterparty" data-i18n="highestCounterpartyShare">Highest Counterparty Share</option>
             <option value="recent" data-i18n="mostRecentActivity">Most Recent Activity</option>
@@ -1958,6 +2001,12 @@
       info: "資訊",
       mpsObservationNote: "MPS 是市場觀察指標，不代表任何處置判定或玩家價值判斷。",
       transferPatternDisclaimer: "MPS 與轉移模式分析是基於公開市場資料的觀察指標，不代表任何處置判定或玩家價值判斷。",
+      allSeverities: "全部嚴重度",
+      sortBySeverity: "依嚴重度排序",
+      sortByLatest: "依最新時間排序",
+      highestRelatedAccounts: "關聯帳戶最多",
+      twoStepTransferCount: "雙步轉移數",
+      batchTransferCount: "批次轉移窗口數",
       navDashboard: "市場總覽",
       navMarketTransactions: "市場交易資料",
       navBubbleMap: "泡泡圖",
@@ -2047,6 +2096,12 @@
       marketplace: "Marketplace",
       mpsObservationNote: "MPS is a market observation indicator, not an enforcement or player-value judgment.",
       transferPatternDisclaimer: "MPS and Transfer Pattern Analysis are market observation indicators based on public marketplace data. They do not represent enforcement or player-value judgment.",
+      allSeverities: "All Severities",
+      sortBySeverity: "Sort by Severity",
+      sortByLatest: "Sort by Latest",
+      highestRelatedAccounts: "Highest Related Accounts",
+      twoStepTransferCount: "Two-step Transfer Count",
+      batchTransferCount: "Batch Transfer Count",
       navDashboard: "Dashboard",
       navMarketTransactions: "Market Transactions",
       navBubbleMap: "Bubble Map",
@@ -2223,6 +2278,11 @@
       itemGrid: document.getElementById("item-grid"),
       alertsCenterNote: document.getElementById("alerts-center-note"),
       alertsCenterList: document.getElementById("alerts-center-list"),
+      alertSeverityFilter: document.getElementById("alert-severity-filter"),
+      alertTimeFilter: document.getElementById("alert-time-filter"),
+      alertItemFilter: document.getElementById("alert-item-filter"),
+      alertPlayerFilter: document.getElementById("alert-player-filter"),
+      alertSortFilter: document.getElementById("alert-sort-filter"),
       playerWatchlistNote: document.getElementById("player-watchlist-note"),
       playerWatchlistTable: document.getElementById("player-watchlist-table"),
       watchlistSort: document.getElementById("watchlist-sort"),
@@ -3057,13 +3117,14 @@
       el.txGroupFilter.value = groups.includes(current) ? current : "";
     }
 
-    function transactionPatternTags(tx, repeatedCounts, pairCounts) {
+    function transactionPatternTags(tx, repeatedCounts, pairCounts, twoStepPlayers = new Set()) {
       const tags = [];
       const repeatedKey = `${tx.itemName || tx.itemId}::${tx.itemNum}`;
       const pairKey = [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
       if (Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold) tags.push(t("lowPriceTransfer"));
       if ((repeatedCounts.get(repeatedKey) || 0) >= 8) tags.push(t("highFrequencyPattern"));
       if ((pairCounts.get(pairKey) || 0) >= 4) tags.push(t("relatedPattern"));
+      if (twoStepPlayers.has(playerKey(tx.sellerName)) || twoStepPlayers.has(playerKey(tx.buyerName))) tags.push(t("twoStepTransferPattern"));
       return tags;
     }
 
@@ -3086,6 +3147,9 @@
         repeatedCounts.set(repeatedKey, (repeatedCounts.get(repeatedKey) || 0) + 1);
         pairCounts.set(pairKey, (pairCounts.get(pairKey) || 0) + 1);
       });
+      const twoStepPlayers = new Set([...getAllPlayerNames(transactions).values()]
+        .filter((name) => calculateMarketplacePatternScore(transactions, name).twoStepPatternCount >= 3)
+        .map((name) => playerKey(name)));
       let rows = transactions.filter((tx) => {
         if (itemQuery && !`${tx.itemName || ""} ${tx.itemGroup || ""} ${tx.itemId || ""}`.toLowerCase().includes(itemQuery)) return false;
         if (playerQuery) {
@@ -3114,7 +3178,7 @@
       if (!el.marketTransactionsTable) return;
       const visibleRows = rows.slice(0, 300);
       el.marketTransactionsTable.innerHTML = `<table class="data-table"><thead><tr><th>${t("time")}</th><th>${t("itemImage")}</th><th>${t("itemName")}</th><th>${t("itemGroup")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("unitPrice")}</th><th>${t("quantity")}</th><th>${t("totalAmount")}</th><th>${t("transactionId")}</th><th>${t("patternTags")}</th></tr></thead><tbody>${visibleRows.map((tx) => {
-        const tags = transactionPatternTags(tx, repeatedCounts, pairCounts);
+        const tags = transactionPatternTags(tx, repeatedCounts, pairCounts, twoStepPlayers);
         return `<tr><td>${formatTime(tx.txnTime)}</td><td>${itemThumbHtml(tx.itemId, tx.itemName)}</td><td>${itemButtonHtml(tx.itemId, tx.itemName)}</td><td>${escapeHtml(tx.itemGroup || "-")}</td><td>${playerButtonHtml(tx.sellerName)}</td><td>${playerButtonHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatPrice(tx.totalAmountSigil)}</td><td>${escapeHtml(tx.txnId || "-")}</td><td><div class="tag-row">${tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("") || "-"}</div></td></tr>`;
       }).join("")}</tbody></table>${rows.length > visibleRows.length ? `<div class="empty">${formatTemplate(t("showingFirstRows"), { count: formatInteger(visibleRows.length) })}</div>` : ""}`;
     }
@@ -3144,7 +3208,29 @@
     }
 
     function renderAlertsCenter(transactions) {
-      const alerts = buildMarketAlerts(transactions);
+      const severity = el.alertSeverityFilter?.value || "all";
+      const timeFilter = el.alertTimeFilter?.value || "all";
+      const itemQuery = String(el.alertItemFilter?.value || "").trim().toLowerCase();
+      const playerQuery = String(el.alertPlayerFilter?.value || "").trim().toLowerCase();
+      const sort = el.alertSortFilter?.value || "severity";
+      const latest = Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0));
+      const windowSeconds = timeFilter === "1h" ? 3600 : timeFilter === "6h" ? 21600 : timeFilter === "24h" ? 86400 : 0;
+      let alerts = buildMarketAlerts(transactions);
+      alerts = alerts.filter((alert) => {
+        if (severity !== "all") {
+          const level = Number(severity);
+          if (level === 0 ? alert.severity >= 3 : alert.severity !== level) return false;
+        }
+        if (windowSeconds && alert.lastSeen && alert.lastSeen < latest - windowSeconds) return false;
+        const itemText = `${alert.itemName || ""} ${alert.detail || ""}`.toLowerCase();
+        const playerText = `${alert.playerName || ""} ${alert.detail || ""}`.toLowerCase();
+        if (itemQuery && !itemText.includes(itemQuery)) return false;
+        if (playerQuery && !playerText.includes(playerQuery)) return false;
+        return true;
+      });
+      alerts.sort(sort === "latest"
+        ? (a, b) => b.lastSeen - a.lastSeen || b.severity - a.severity || b.sortValue - a.sortValue
+        : (a, b) => b.severity - a.severity || b.sortValue - a.sortValue || b.lastSeen - a.lastSeen);
       if (el.alertsCenterNote) el.alertsCenterNote.textContent = formatTemplate(t("signalsCount"), { market: state.activeCategory, count: formatInteger(alerts.length) });
       if (el.alertsCenterList) el.alertsCenterList.innerHTML = renderMarketAlerts(alerts);
     }
@@ -3159,14 +3245,15 @@
       });
       const sorters = {
         mps: (a, b) => b.pattern.score - a.pattern.score,
-        ttp: (a, b) => b.pattern.twoStepScore - a.pattern.twoStepScore,
+        ttp: (a, b) => b.pattern.twoStepPatternCount - a.pattern.twoStepPatternCount,
+        related: (a, b) => b.pattern.relatedAccountsCount - a.pattern.relatedAccountsCount,
         low: (a, b) => b.pattern.lowPriceRatio - a.pattern.lowPriceRatio,
         counterparty: (a, b) => b.pattern.top5CounterpartyShare - a.pattern.top5CounterpartyShare,
         recent: (a, b) => b.lastSeen - a.lastSeen
       };
       rows.sort(sorters[sort] || sorters.mps);
       if (el.playerWatchlistNote) el.playerWatchlistNote.textContent = formatTemplate(t("playersCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
-      el.playerWatchlistTable.innerHTML = `<table class="data-table"><thead><tr><th>${t("player")}</th><th>${t("mpsScore")}</th><th>${t("ttpScore")}</th><th>${t("relatedAccounts")}</th><th>${t("lowPriceRatio")}</th><th>${t("repeatedRatio")}</th><th>${t("top5CounterpartyShare")}</th><th>${t("hourlyDensity")}</th><th>${t("tradeCount")}</th><th>${t("lastSeen")}</th></tr></thead><tbody>${rows.slice(0, 100).map((row) => `<tr><td>${playerButtonHtml(row.name)}</td><td>${formatInteger(row.pattern.score)}</td><td>${formatInteger(row.pattern.twoStepScore || 0)}</td><td>${formatInteger(row.pattern.relatedAccountsCount)}</td><td>${(row.pattern.lowPriceRatio * 100).toFixed(1)}%</td><td>${(row.pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%</td><td>${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}%</td><td>${formatInteger(row.pattern.hourlyMax)}</td><td>${formatInteger(row.tradeCount)}</td><td>${formatTime(row.lastSeen)}</td></tr>`).join("")}</tbody></table>`;
+      el.playerWatchlistTable.innerHTML = `<table class="data-table"><thead><tr><th>${t("player")}</th><th>${t("mpsScore")}</th><th>${t("twoStepTransferCount")}</th><th>${t("batchTransferCount")}</th><th>${t("relatedAccounts")}</th><th>${t("lowPriceRatio")}</th><th>${t("repeatedRatio")}</th><th>${t("top5CounterpartyShare")}</th><th>${t("hourlyDensity")}</th><th>${t("tradeCount")}</th><th>${t("lastSeen")}</th></tr></thead><tbody>${rows.slice(0, 100).map((row) => `<tr><td>${playerButtonHtml(row.name)}</td><td>${formatInteger(row.pattern.score)}</td><td>${formatInteger(row.pattern.twoStepPatternCount || 0)}</td><td>${formatInteger(row.pattern.transferBatches?.length || 0)}</td><td>${formatInteger(row.pattern.relatedAccountsCount)}</td><td>${(row.pattern.lowPriceRatio * 100).toFixed(1)}%</td><td>${(row.pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%</td><td>${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}%</td><td>${formatInteger(row.pattern.hourlyMax)}</td><td>${formatInteger(row.tradeCount)}</td><td>${formatTime(row.lastSeen)}</td></tr>`).join("")}</tbody></table>`;
     }
 
     function calculateMarketHealth(transactions) {
@@ -3194,10 +3281,18 @@
       return { score, level, concentration, distribution, activity, risk, lowRatio, avgTopSellerShare, highPatternCount, hourlyMax };
     }
 
-    function buildMarketAlerts(transactions) {
+    function buildMarketAlerts(transactions, options = {}) {
       if (!transactions.length) return [{ message: t("waitingForTransactions"), severity: 0, detail: "" }];
       const alerts = [];
-      const addAlert = (message, severity, detail = "", sortValue = 0) => alerts.push({ message, severity, detail, sortValue });
+      const addAlert = (message, severity, detail = "", sortValue = 0, meta = {}) => alerts.push({
+        message,
+        severity,
+        detail,
+        sortValue,
+        lastSeen: Number(meta.lastSeen) || 0,
+        itemName: meta.itemName || "",
+        playerName: meta.playerName || ""
+      });
       const lowPriceCount = transactions.filter((tx) => Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold).length;
       const lowRatio = transactions.length ? lowPriceCount / transactions.length : 0;
       const playerPatterns = [...getAllPlayerNames(transactions).values()]
@@ -3210,7 +3305,8 @@
             t("structuredTradingPattern"),
             5,
             `${t("playerName")}: ${row.name} · MPS ${row.pattern.score} · ${t("tradeCount")}: ${formatInteger(row.pattern.txCount)}`,
-            row.pattern.score
+            row.pattern.score,
+            { playerName: row.name, lastSeen: Math.max(0, ...getPlayerTransactions(row.name, transactions).map((tx) => Number(tx.txnTime) || 0)) }
           );
         });
 
@@ -3226,7 +3322,8 @@
             t("twoStepTransferPattern"),
             severity,
             `${t("playerName")}: ${row.name} · ${t("detectedPatternCount")}: ${formatInteger(row.pattern.twoStepPatternCount)} · ${t("relatedCounterparties")}: ${formatInteger(patternSummary.counterparties)} · ${t("mostRepeatedPattern")}: ${patternSummary.repeated}`,
-            row.pattern.twoStepPatternCount
+            row.pattern.twoStepPatternCount,
+            { playerName: row.name, lastSeen: Math.max(0, ...getPlayerTransactions(row.name, transactions).map((tx) => Number(tx.txnTime) || 0)) }
           );
         });
 
@@ -3234,8 +3331,9 @@
         const share = row.topSellerShare || 0;
         const topSeller = row.topSellers[0]?.name || "-";
         const detail = `${t("item")}: ${row.itemName} · ${t("topSeller")}: ${topSeller} · ${t("topSellerShare")}: ${(share * 100).toFixed(1)}%`;
-        if (share >= 0.9) addAlert(t("extremeMarketConcentration"), 5, detail, share);
-        if (share >= 0.7) addAlert(t("highConcentration"), 4, detail, share);
+        const lastSeen = Math.max(0, ...getItemTransactions({ id: row.itemId }, transactions).map((tx) => Number(tx.txnTime) || 0));
+        if (share >= 0.9) addAlert(t("extremeMarketConcentration"), 5, detail, share, { itemName: row.itemName, playerName: topSeller, lastSeen });
+        if (share >= 0.7) addAlert(t("highConcentration"), 4, detail, share, { itemName: row.itemName, playerName: topSeller, lastSeen });
       });
 
       const priceRows = new Map();
@@ -3257,7 +3355,8 @@
             t("priceSpikeDetected"),
             4,
             `${t("item")}: ${row.itemName} · ${t("currentPrice")}: ${formatPrice(current)} · ${t("averagePrice")}: ${formatPrice(average)}`,
-            current / average
+            current / average,
+            { itemName: row.itemName, lastSeen: sorted[0]?.time || 0 }
           );
         }
       });
@@ -3267,13 +3366,14 @@
           t("frequentLowPriceTransfers"),
           3,
           `${t("lowPriceTransferRatio")}: ${(lowRatio * 100).toFixed(1)}% · ${t("tradeCount")}: ${formatInteger(lowPriceCount)}`,
-          lowRatio
+          lowRatio,
+          { lastSeen: Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0)) }
         );
       }
 
-      return alerts
-        .sort((a, b) => b.severity - a.severity || b.sortValue - a.sortValue || a.message.localeCompare(b.message))
-        .slice(0, 18);
+      const sortedAlerts = alerts
+        .sort((a, b) => b.severity - a.severity || b.sortValue - a.sortValue || a.message.localeCompare(b.message));
+      return Number.isFinite(options.limit) ? sortedAlerts.slice(0, options.limit) : sortedAlerts;
     }
 
     function renderMarketAlerts(alerts) {
@@ -3486,7 +3586,7 @@
       el.marketHealth.innerHTML = `<div class="health-score"><div class="health-ring" style="--score:${health.score}"><strong>${health.score}</strong><span>/ 100</span></div><div class="compact-list">
         ${compactRow(t("marketHealthScore"), health.level, [{ label: t("concentration"), value: `${health.concentration} / 100` }, { label: t("distribution"), value: `${health.distribution} / 100` }, { label: t("activity"), value: `${health.activity} / 100` }, { label: t("risk"), value: `${health.risk} / 100` }])}
       </div></div>`;
-      el.marketAlerts.innerHTML = renderMarketAlerts(buildMarketAlerts(transactions));
+      el.marketAlerts.innerHTML = renderMarketAlerts(buildMarketAlerts(transactions, { limit: 6 }));
       el.priceHistory.innerHTML = renderPriceHistory(transactions);
       el.bubbleMap.innerHTML = renderMarketBubbleMap(transactions);
       el.recentTransactions.innerHTML = renderTransactionTable(transactions, 20);
@@ -3859,15 +3959,34 @@
         section.hidden = section.dataset.viewSection !== state.activeView;
       });
       el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
-      renderDashboard(transactions);
-      renderMarketTransactionsPage(transactions);
-      renderBubbleMapPage(transactions);
-      renderAlertsCenter(transactions);
-      renderPlayerWatchlist(transactions);
-      renderSearch(transactions);
-      renderPlayer(transactions);
-      renderItemProfile(transactions);
-      renderItems(transactions);
+      switch (state.activeView) {
+        case "market-transactions":
+          renderMarketTransactionsPage(transactions);
+          break;
+        case "bubble-map":
+          renderBubbleMapPage(transactions);
+          break;
+        case "alerts-center":
+          renderAlertsCenter(transactions);
+          break;
+        case "player-watchlist":
+          renderPlayerWatchlist(transactions);
+          break;
+        case "search":
+          renderSearch(transactions);
+          break;
+        case "player-network":
+          renderPlayer(transactions);
+          break;
+        case "item-analysis":
+          renderItemProfile(transactions);
+          renderItems(transactions);
+          break;
+        case "dashboard":
+        default:
+          renderDashboard(transactions);
+          break;
+      }
     }
 
     async function getAccessToken() {
@@ -3980,13 +4099,18 @@
     }));
     el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
     el.viewButtons.forEach((button) => button.addEventListener("click", () => setActiveView(button.dataset.view)));
-    [el.txItemFilter, el.txPlayerFilter, el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.txLowFilter, el.bubbleSizeMode, el.bubbleColorMode, el.watchlistSort]
+    [el.txItemFilter, el.txPlayerFilter, el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.txLowFilter, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertItemFilter, el.alertPlayerFilter, el.alertSortFilter, el.watchlistSort]
       .filter(Boolean)
       .forEach((control) => control.addEventListener("input", render));
-    [el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.bubbleSizeMode, el.bubbleColorMode, el.watchlistSort]
+    [el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertSortFilter, el.watchlistSort]
       .filter(Boolean)
       .forEach((control) => control.addEventListener("change", render));
     document.addEventListener("click", (event) => {
+      const jumpButton = event.target.closest("[data-jump-view]");
+      if (jumpButton) {
+        setActiveView(jumpButton.dataset.jumpView);
+        return;
+      }
       const playerButton = event.target.closest("[data-player]");
       if (playerButton) selectPlayer(playerButton.dataset.player);
       const itemButton = event.target.closest("[data-item]");
