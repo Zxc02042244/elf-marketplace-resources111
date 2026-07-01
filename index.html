@@ -1188,6 +1188,56 @@
       border-color: rgba(240, 198, 109, 0.42);
     }
 
+    .bubble.green {
+      background: rgba(142, 207, 120, 0.16);
+      border-color: rgba(142, 207, 120, 0.55);
+    }
+
+    .bubble.yellow {
+      background: rgba(240, 198, 109, 0.18);
+      border-color: rgba(240, 198, 109, 0.62);
+      color: #fff5c9;
+    }
+
+    .bubble.red {
+      background: rgba(240, 111, 100, 0.2);
+      border-color: rgba(240, 111, 100, 0.66);
+      color: #ffe2dc;
+    }
+
+    .bubble.player {
+      border-style: dashed;
+    }
+
+    .explorer-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .explorer-link {
+      border: 1px solid rgba(52, 66, 53, 0.82);
+      border-radius: 8px;
+      padding: 9px;
+      background: rgba(8, 12, 8, 0.34);
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .explorer-link strong {
+      color: var(--gold);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .explorer-link span {
+      color: var(--muted);
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
     .network-map {
       position: relative;
       min-height: 280px;
@@ -1786,6 +1836,11 @@
       </div>
       <article class="card panel">
         <div class="toolbar">
+          <select class="field" id="bubble-view-mode">
+            <option value="market" data-i18n="marketStructureView">Market Structure View</option>
+            <option value="player" data-i18n="playerStructureView">Player Structure View</option>
+            <option value="explorer" data-i18n="marketExplorerView">Market Structure Explorer</option>
+          </select>
           <select class="field" id="bubble-size-mode">
             <option value="count" data-i18n="bubbleSizeTradeCount">Bubble Size: Trade Count</option>
             <option value="volume" data-i18n="bubbleSizeTotalVolume">Bubble Size: Total Volume</option>
@@ -2010,6 +2065,11 @@
       selectItemPrompt: "請從下方商品列表選擇商品",
       backToItemList: "返回商品列表",
       clearSelectedItem: "清除選取商品",
+      marketStructureView: "市場結構視圖",
+      playerStructureView: "玩家結構視圖",
+      marketExplorerView: "市場結構探索",
+      concentrationPercent: "集中度",
+      tradingVolume: "交易額",
       navDashboard: "市場總覽",
       navMarketTransactions: "市場交易資料",
       navBubbleMap: "泡泡圖",
@@ -2108,6 +2168,11 @@
       selectItemPrompt: "Select an item from the item list below",
       backToItemList: "Back to item list",
       clearSelectedItem: "Clear selected item",
+      marketStructureView: "Market Structure View",
+      playerStructureView: "Player Structure View",
+      marketExplorerView: "Market Structure Explorer",
+      concentrationPercent: "Concentration",
+      tradingVolume: "Trading Volume",
       navDashboard: "Dashboard",
       navMarketTransactions: "Market Transactions",
       navBubbleMap: "Bubble Map",
@@ -2270,6 +2335,7 @@
       txLowFilter: document.getElementById("tx-low-filter"),
       bubbleMapNote: document.getElementById("bubble-map-note"),
       bubbleMapFull: document.getElementById("bubble-map-full"),
+      bubbleViewMode: document.getElementById("bubble-view-mode"),
       bubbleSizeMode: document.getElementById("bubble-size-mode"),
       bubbleColorMode: document.getElementById("bubble-color-mode"),
       searchSummary: document.getElementById("search-summary"),
@@ -3209,28 +3275,79 @@
       }).join("")}</tbody></table>${rows.length > visibleRows.length ? `<div class="empty">${formatTemplate(t("showingFirstRows"), { count: formatInteger(visibleRows.length) })}</div>` : ""}`;
     }
 
-    function renderBubbleMapPage(transactions) {
-      if (!el.bubbleMapFull) return;
+    function concentrationClass(share) {
+      if (share >= 0.6) return "red";
+      if (share >= 0.3) return "yellow";
+      return "green";
+    }
+
+    function mpsClass(score) {
+      if (score >= 81) return "red";
+      if (score >= 31) return "yellow";
+      return "green";
+    }
+
+    function renderMarketStructureBubbles(transactions) {
       const rows = itemStats(transactions);
-      const sizeMode = el.bubbleSizeMode?.value || "count";
-      const colorMode = el.bubbleColorMode?.value || "concentration";
-      const max = Math.max(1, ...rows.map((row) => sizeMode === "volume" ? row.total : row.count));
+      const max = Math.max(1, ...rows.map((row) => row.total));
       if (el.bubbleMapNote) el.bubbleMapNote.textContent = formatTemplate(t("itemsCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
-      el.bubbleMapFull.innerHTML = rows.sort((a, b) => (sizeMode === "volume" ? b.total - a.total : b.count - a.count)).slice(0, 36).map((row) => {
+      return `<div class="bubble-map">${rows.sort((a, b) => b.total - a.total).slice(0, 40).map((row) => {
         const itemTx = getItemTransactions({ id: row.itemId }, transactions);
-        const prices = itemTx.map((tx) => Number(tx.price)).filter((price) => price > 0);
-        const avg = prices.length ? prices.reduce((sum, price) => sum + price, 0) / prices.length : 0;
-        const low = prices.length ? Math.min(...prices) : 0;
-        const high = prices.length ? Math.max(...prices) : 0;
         const sellers = new Set(itemTx.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
         const buyers = new Set(itemTx.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
         const topShare = row.topSellerShare || row.topShare || 0;
-        const metric = sizeMode === "volume" ? row.total : row.count;
-        const size = Math.round(54 + (metric / max) * 108);
-        const className = colorMode === "concentration" && topShare >= 0.7 ? "bubble gold" : "bubble";
-        const title = `${row.itemName} | ${t("tradeCountLabel")} ${formatInteger(row.count)} | ${t("volumeLabel")} ${formatPrice(row.total)} | ${t("averagePriceLabel")} ${formatPrice(avg)} | ${t("lowestPriceLabel")} ${formatPrice(low)} | ${t("highestPriceLabel")} ${formatPrice(high)} | ${t("activeSellersLabel")} ${formatInteger(sellers.size)} | ${t("activeBuyersLabel")} ${formatInteger(buyers.size)} | ${t("topSellerShareLabel")} ${(topShare * 100).toFixed(1)}%`;
-        return `<button class="${className}" style="--size:${size}px" title="${escapeHtml(title)}" type="button" data-item="${escapeHtml(String(row.itemId))}">${escapeHtml(row.itemName)}<span class="row-sub">${formatPrice(sizeMode === "volume" ? row.total : row.count)}</span></button>`;
-      }).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
+        const size = Math.round(54 + (row.total / max) * 108);
+        const title = `${row.itemName} | ${t("tradingVolume")} ${formatPrice(row.total)} | ${t("tradeCountLabel")} ${formatInteger(row.count)} | ${t("activeSellersLabel")} ${formatInteger(sellers.size)} | ${t("activeBuyersLabel")} ${formatInteger(buyers.size)} | ${t("concentrationPercent")} ${(topShare * 100).toFixed(1)}%`;
+        return `<button class="bubble ${concentrationClass(topShare)}" style="--size:${size}px" title="${escapeHtml(title)}" type="button" data-item="${escapeHtml(String(row.itemId))}">${escapeHtml(row.itemName)}<span class="row-sub">${(topShare * 100).toFixed(1)}%</span></button>`;
+      }).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`}</div>`;
+    }
+
+    function renderPlayerStructureBubbles(transactions) {
+      const rows = sellerStats(transactions).map((row) => {
+        const pattern = calculateMarketplacePatternScore(transactions, row.name);
+        return { ...row, pattern };
+      });
+      const max = Math.max(1, ...rows.map((row) => row.income));
+      if (el.bubbleMapNote) el.bubbleMapNote.textContent = formatTemplate(t("playersCount"), { market: state.activeCategory, count: formatInteger(rows.length) });
+      return `<div class="bubble-map">${rows.sort((a, b) => b.income - a.income).slice(0, 40).map((row) => {
+        const size = Math.round(54 + (row.income / max) * 108);
+        const title = `${t("player")}: ${row.name} | MPS ${row.pattern.score} | ${t("relatedAccounts")}: ${formatInteger(row.pattern.relatedAccountsCount)} | ${t("top5CounterpartyShare")}: ${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}% | ${t("lowPriceTransferRatio")}: ${(row.pattern.lowPriceRatio * 100).toFixed(1)}%`;
+        return `<button class="bubble player ${mpsClass(row.pattern.score)}" style="--size:${size}px" title="${escapeHtml(title)}" type="button" data-player="${escapeHtml(row.name)}">${escapeHtml(row.name)}<span class="row-sub">MPS ${formatInteger(row.pattern.score)}</span></button>`;
+      }).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`}</div>`;
+    }
+
+    function renderMarketExplorerBubbles(transactions) {
+      const itemRows = itemStats(transactions).sort((a, b) => b.total - a.total).slice(0, 12);
+      const sellerRows = sellerStats(transactions).sort((a, b) => b.income - a.income).slice(0, 12);
+      const itemMax = Math.max(1, ...itemRows.map((row) => row.total));
+      const sellerMax = Math.max(1, ...sellerRows.map((row) => row.income));
+      if (el.bubbleMapNote) el.bubbleMapNote.textContent = `${state.activeCategory} / ${t("marketExplorerView")}`;
+      const itemBubbles = itemRows.map((row) => {
+        const topShare = row.topSellerShare || row.topShare || 0;
+        const size = Math.round(54 + (row.total / itemMax) * 88);
+        return `<button class="bubble ${concentrationClass(topShare)}" style="--size:${size}px" title="${escapeHtml(`${row.itemName} | ${t("tradingVolume")} ${formatPrice(row.total)} | ${t("concentrationPercent")} ${(topShare * 100).toFixed(1)}%`)}" type="button" data-item="${escapeHtml(String(row.itemId))}">${escapeHtml(row.itemName)}<span class="row-sub">${formatPrice(row.total)}</span></button>`;
+      }).join("");
+      const playerBubbles = sellerRows.map((row) => {
+        const pattern = calculateMarketplacePatternScore(transactions, row.name);
+        const size = Math.round(50 + (row.income / sellerMax) * 82);
+        return `<button class="bubble player ${mpsClass(pattern.score)}" style="--size:${size}px" title="${escapeHtml(`${t("player")}: ${row.name} | MPS ${pattern.score} | ${t("tradingVolume")} ${formatPrice(row.income)}`)}" type="button" data-player="${escapeHtml(row.name)}">${escapeHtml(row.name)}<span class="row-sub">MPS ${formatInteger(pattern.score)}</span></button>`;
+      }).join("");
+      const links = itemRows.slice(0, 8).flatMap((item) => item.topSellers.slice(0, 3).map((seller) => ({ item, seller })));
+      return `<div class="bubble-map">${itemBubbles}${playerBubbles || ""}</div><div class="explorer-links">${links.map(({ item, seller }) => `<div class="explorer-link"><strong>${itemButtonHtml(item.itemId, item.itemName)} ↔ ${playerButtonHtml(seller.name)}</strong><span>${t("tradingVolume")}: ${formatPrice(seller.total)} / ${t("tradeCount")}: ${formatInteger(seller.count)}</span></div>`).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`}</div>`;
+    }
+
+    function renderBubbleMapPage(transactions) {
+      if (!el.bubbleMapFull) return;
+      const mode = el.bubbleViewMode?.value || "market";
+      if (mode === "player") {
+        el.bubbleMapFull.innerHTML = renderPlayerStructureBubbles(transactions);
+        return;
+      }
+      if (mode === "explorer") {
+        el.bubbleMapFull.innerHTML = renderMarketExplorerBubbles(transactions);
+        return;
+      }
+      el.bubbleMapFull.innerHTML = renderMarketStructureBubbles(transactions);
     }
 
     function renderAlertsCenter(transactions) {
@@ -4133,10 +4250,10 @@
     }));
     el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
     el.viewButtons.forEach((button) => button.addEventListener("click", () => setActiveView(button.dataset.view)));
-    [el.txItemFilter, el.txPlayerFilter, el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.txLowFilter, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertItemFilter, el.alertPlayerFilter, el.alertSortFilter, el.watchlistSort]
+    [el.txItemFilter, el.txPlayerFilter, el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.txLowFilter, el.bubbleViewMode, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertItemFilter, el.alertPlayerFilter, el.alertSortFilter, el.watchlistSort]
       .filter(Boolean)
       .forEach((control) => control.addEventListener("input", render));
-    [el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertSortFilter, el.watchlistSort]
+    [el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.bubbleViewMode, el.bubbleSizeMode, el.bubbleColorMode, el.alertSeverityFilter, el.alertTimeFilter, el.alertSortFilter, el.watchlistSort]
       .filter(Boolean)
       .forEach((control) => control.addEventListener("change", render));
     document.addEventListener("click", (event) => {
