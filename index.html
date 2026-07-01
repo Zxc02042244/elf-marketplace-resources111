@@ -191,7 +191,7 @@
       top: 0;
       z-index: 20;
       display: grid;
-      grid-template-columns: auto minmax(220px, 1fr) 180px auto;
+      grid-template-columns: auto minmax(220px, 1fr) auto 180px auto;
       gap: 10px;
       align-items: center;
       padding: 10px;
@@ -241,6 +241,7 @@
     .field:focus { border-color: var(--accent); }
     select.field { cursor: pointer; }
 
+    .search-submit,
     .refresh {
       min-height: 42px;
       border: 0;
@@ -1655,6 +1656,7 @@
         <button class="market-tab" type="button" data-category="Pi Elf Outfit" role="tab" aria-selected="false" data-i18n="piElfOutfit">Pi Elf Outfit</button>
       </div>
       <input class="field" id="global-search" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="搜尋玩家 / 物品 / 交易紀錄" />
+      <button class="search-submit" id="search-submit" type="button">搜尋</button>
       <select class="field" id="item-sort">
         <option value="default" data-i18n="defaultOrder">預設排序</option>
         <option value="price-desc" data-i18n="priceHighToLow">價格由高到低</option>
@@ -1983,6 +1985,7 @@
       activeCategory: "Resources",
       activeView: "dashboard",
       activeTab: "overview",
+      searchQuery: "",
       prices: new Map(),
       marketSnapshots: [],
       loading: false,
@@ -1998,6 +2001,7 @@
       dot: document.getElementById("status-dot"),
       status: document.getElementById("status-text"),
       search: document.getElementById("global-search"),
+      searchSubmit: document.getElementById("search-submit"),
       sort: document.getElementById("item-sort"),
       refresh: document.getElementById("refresh"),
       error: document.getElementById("error-area"),
@@ -2203,9 +2207,11 @@
       const item = params.get("item");
       if (player) {
         el.search.value = player;
+        state.searchQuery = player;
         state.activeView = "player-network";
       } else if (item) {
         el.search.value = item;
+        state.searchQuery = item;
         state.activeView = "item-analysis";
       }
     }
@@ -2586,9 +2592,33 @@
       if (!options.skipScroll) window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    function applySearch() {
+      state.searchQuery = el.search.value.trim();
+      const item = resolveItem(state.searchQuery, getCategoryTransactions());
+      const player = resolvePlayerName(state.searchQuery, getCategoryTransactions());
+      if (item) {
+        updateRoute({ item: item.name });
+        state.activeView = "item-analysis";
+        if (state.activeCategory !== item.category) {
+          switchCategory(item.category);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+      } else if (player) {
+        updateRoute({ player });
+        state.activeView = "player-network";
+      } else {
+        updateRoute({});
+        state.activeView = "search";
+      }
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function selectPlayer(playerName) {
       if (!isKnownPlayer(playerName)) return;
       el.search.value = playerName;
+      state.searchQuery = playerName;
       updateRoute({ player: playerName });
       state.activeView = "player-network";
       state.activeTab = "overview";
@@ -2609,6 +2639,7 @@
       if (!item) return;
       if (state.activeCategory !== item.category) switchCategory(item.category);
       el.search.value = item.name;
+      state.searchQuery = item.name;
       updateRoute({ item: item.name });
       state.activeView = "item-analysis";
       el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
@@ -3265,7 +3296,7 @@
     }
 
     function renderSearch(transactions) {
-      const query = el.search.value.trim().toLowerCase();
+      const query = state.searchQuery.trim().toLowerCase();
       if (!query) {
         el.searchSummary.textContent = t("enterSearch");
         el.searchPlayers.innerHTML = `<div class="empty">${t("enterSearch")}</div>`;
@@ -3283,7 +3314,7 @@
     }
 
     function renderPlayer(transactions) {
-      const playerName = resolvePlayerName(el.search.value.trim(), transactions);
+      const playerName = resolvePlayerName(state.searchQuery.trim(), transactions);
       if (!playerName) {
         el.playerNote.textContent = t("enterPlayerForProfile");
         el.playerProfile.className = "card profile";
@@ -3529,7 +3560,7 @@
 
     function renderItemProfile(transactions) {
       const routeItem = new URLSearchParams(window.location.search).get("item");
-      const query = routeItem || el.search.value.trim();
+      const query = routeItem || state.searchQuery.trim();
       const item = resolveItem(query, transactions);
       if (!item) {
         el.itemProfileNote.textContent = t("enterSearch");
@@ -3600,7 +3631,7 @@
     }
 
     function renderItems(transactions) {
-      const query = el.search.value.trim().toLowerCase();
+      const query = state.searchQuery.trim().toLowerCase();
       const categoryItems = getCategoryItems().filter((item) => {
         if (!query) return true;
         return item.name.toLowerCase().includes(query) || item.group.toLowerCase().includes(query) || String(item.id).includes(query);
@@ -3764,7 +3795,10 @@
       const itemButton = event.target.closest("[data-item]");
       if (itemButton) selectItem(itemButton.dataset.item);
     });
-    el.search.addEventListener("input", render);
+    el.searchSubmit?.addEventListener("click", applySearch);
+    el.search.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") applySearch();
+    });
     el.sort.addEventListener("change", render);
     el.refresh.addEventListener("click", refreshPrices);
 
