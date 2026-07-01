@@ -2007,6 +2007,9 @@
       highestRelatedAccounts: "關聯帳戶最多",
       twoStepTransferCount: "雙步轉移數",
       batchTransferCount: "批次轉移窗口數",
+      selectItemPrompt: "請從下方商品列表選擇商品",
+      backToItemList: "返回商品列表",
+      clearSelectedItem: "清除選取商品",
       navDashboard: "市場總覽",
       navMarketTransactions: "市場交易資料",
       navBubbleMap: "泡泡圖",
@@ -2102,6 +2105,9 @@
       highestRelatedAccounts: "Highest Related Accounts",
       twoStepTransferCount: "Two-step Transfer Count",
       batchTransferCount: "Batch Transfer Count",
+      selectItemPrompt: "Select an item from the item list below",
+      backToItemList: "Back to item list",
+      clearSelectedItem: "Clear selected item",
       navDashboard: "Dashboard",
       navMarketTransactions: "Market Transactions",
       navBubbleMap: "Bubble Map",
@@ -2220,6 +2226,7 @@
       activeView: "dashboard",
       activeTab: "overview",
       searchQuery: "",
+      selectedItemId: null,
       prices: new Map(),
       marketSnapshots: [],
       loading: false,
@@ -2465,10 +2472,19 @@
       if (player) {
         el.search.value = player;
         state.searchQuery = player;
+        state.selectedItemId = null;
         state.activeView = "player-network";
       } else if (item) {
         el.search.value = item;
         state.searchQuery = item;
+        const resolvedItem = resolveItem(item, getCategoryTransactions());
+        state.selectedItemId = resolvedItem ? String(resolvedItem.id) : null;
+        if (resolvedItem) state.activeCategory = resolvedItem.category;
+        el.marketTabs.forEach((tab) => {
+          const active = tab.dataset.category === state.activeCategory;
+          tab.classList.toggle("active", active);
+          tab.setAttribute("aria-selected", String(active));
+        });
         state.activeView = "item-analysis";
       }
     }
@@ -2841,6 +2857,11 @@
 
     function setActiveView(view, options = {}) {
       state.activeView = view || "dashboard";
+      if (state.activeView === "item-analysis" && !new URLSearchParams(window.location.search).get("item") && !options.keepSelectedItem) {
+        state.selectedItemId = null;
+        state.searchQuery = "";
+        el.search.value = "";
+      }
       el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
       el.viewSections.forEach((section) => {
         section.hidden = section.dataset.viewSection !== state.activeView;
@@ -2855,6 +2876,7 @@
       const player = resolvePlayerName(state.searchQuery, getCategoryTransactions());
       if (item) {
         updateRoute({ item: item.name });
+        state.selectedItemId = String(item.id);
         state.activeView = "item-analysis";
         if (state.activeCategory !== item.category) {
           switchCategory(item.category);
@@ -2863,9 +2885,11 @@
         }
       } else if (player) {
         updateRoute({ player });
+        state.selectedItemId = null;
         state.activeView = "player-network";
       } else {
         updateRoute({});
+        state.selectedItemId = null;
         state.activeView = "search";
       }
       render();
@@ -2876,6 +2900,7 @@
       if (!isKnownPlayer(playerName)) return;
       el.search.value = playerName;
       state.searchQuery = playerName;
+      state.selectedItemId = null;
       updateRoute({ player: playerName });
       state.activeView = "player-network";
       state.activeTab = "overview";
@@ -2897,6 +2922,7 @@
       if (state.activeCategory !== item.category) switchCategory(item.category);
       el.search.value = item.name;
       state.searchQuery = item.name;
+      state.selectedItemId = String(item.id);
       updateRoute({ item: item.name });
       state.activeView = "item-analysis";
       el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
@@ -3857,11 +3883,13 @@
 
     function renderItemProfile(transactions) {
       const routeItem = new URLSearchParams(window.location.search).get("item");
-      const query = routeItem || state.searchQuery.trim();
-      const item = resolveItem(query, transactions);
+      const selectedItem = state.selectedItemId ? ITEM_BY_ID.get(String(state.selectedItemId)) : null;
+      const query = selectedItem ? selectedItem.name : routeItem || state.searchQuery.trim();
+      const item = selectedItem || resolveItem(query, transactions);
+      if (item && !state.selectedItemId) state.selectedItemId = String(item.id);
       if (!item) {
-        el.itemProfileNote.textContent = t("enterSearch");
-        el.itemProfile.innerHTML = `<div class="notice">${t("enterSearch")}</div>`;
+        el.itemProfileNote.textContent = t("selectItemPrompt");
+        el.itemProfile.innerHTML = `<div class="notice">${t("selectItemPrompt")}</div>`;
         el.itemAnalytics.innerHTML = "";
         return;
       }
@@ -3888,7 +3916,7 @@
 
       el.itemProfileNote.textContent = `${item.name} / ID ${item.id}`;
       el.itemProfile.innerHTML = `
-        <div><span class="metric-label">${t("item")}</span><div class="profile-name">${itemLabelHtml(item.id, item.name)}</div></div>
+        <div><span class="metric-label">${t("item")}</span><div class="profile-name">${itemLabelHtml(item.id, item.name)}</div><button class="mini-action" type="button" data-clear-item>${t("backToItemList")}</button></div>
         <div class="profile-stat"><span>${t("totalSoldQuantity")}</span><strong>${formatInteger(totalQty)}</strong></div>
         <div class="profile-stat"><span>${t("totalRevenue")}</span><strong>${formatPrice(totalRevenue)}</strong></div>
         <div class="profile-stat"><span>${t("totalTrades")}</span><strong>${formatInteger(itemTx.length)}</strong></div>
@@ -3928,7 +3956,7 @@
     }
 
     function renderItems(transactions) {
-      const query = state.searchQuery.trim().toLowerCase();
+      const query = state.activeView === "item-analysis" && state.selectedItemId ? "" : state.searchQuery.trim().toLowerCase();
       const categoryItems = getCategoryItems().filter((item) => {
         if (!query) return true;
         return item.name.toLowerCase().includes(query) || item.group.toLowerCase().includes(query) || String(item.id).includes(query);
@@ -4075,6 +4103,12 @@
     function switchCategory(category) {
       if (state.activeCategory === category) return;
       state.activeCategory = category;
+      if (state.activeView === "item-analysis") {
+        state.selectedItemId = null;
+        state.searchQuery = "";
+        el.search.value = "";
+        updateRoute({});
+      }
       state.refreshRunId += 1;
       state.loading = false;
       el.refresh.disabled = false;
@@ -4109,6 +4143,17 @@
       const jumpButton = event.target.closest("[data-jump-view]");
       if (jumpButton) {
         setActiveView(jumpButton.dataset.jumpView);
+        return;
+      }
+      const clearItemButton = event.target.closest("[data-clear-item]");
+      if (clearItemButton) {
+        state.selectedItemId = null;
+        state.searchQuery = "";
+        el.search.value = "";
+        updateRoute({});
+        state.activeView = "item-analysis";
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
         return;
       }
       const playerButton = event.target.closest("[data-player]");
