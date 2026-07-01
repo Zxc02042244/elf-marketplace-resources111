@@ -157,6 +157,10 @@
       color: var(--text);
     }
 
+    .view-section[hidden] {
+      display: none !important;
+    }
+
     .side-note {
       color: var(--muted);
       font-size: 11px;
@@ -468,6 +472,69 @@
     }
 
     .wide { grid-column: 1 / -1; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .toolbar .field {
+      width: auto;
+      min-width: 170px;
+      flex: 1 1 170px;
+    }
+
+    .checkbox-pill {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(8, 12, 8, 0.34);
+      color: var(--muted);
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .checkbox-pill input {
+      accent-color: var(--accent);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(52, 66, 53, 0.78);
+      text-align: left;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(18, 26, 19, 0.98);
+      color: var(--gold);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
 
     .compact-list {
       display: grid;
@@ -1569,12 +1636,14 @@
     <aside class="sidebar" aria-label="Dashboard navigation">
       <div class="side-brand"><span class="mark" aria-hidden="true">ELF</span><span>Marketplace</span></div>
       <nav class="side-nav">
-        <button class="side-link active" type="button" data-jump="#dashboard-section">市場總覽</button>
-        <button class="side-link" type="button" data-jump="#player-section">玩家分析</button>
-        <button class="side-link" type="button" data-jump="#recent-transactions">交易紀錄</button>
-        <button class="side-link" type="button" data-jump="#search-section">搜尋結果</button>
-        <button class="side-link" type="button" data-jump="#item-profile-section">商品分析</button>
-        <button class="side-link" type="button" data-jump="#items-section">商品價格</button>
+        <button class="side-link active" type="button" data-view="dashboard">Dashboard</button>
+        <button class="side-link" type="button" data-view="market-transactions">Market Transactions</button>
+        <button class="side-link" type="button" data-view="bubble-map">Bubble Map</button>
+        <button class="side-link" type="button" data-view="player-network">Player Network</button>
+        <button class="side-link" type="button" data-view="item-analysis">Item Analysis</button>
+        <button class="side-link" type="button" data-view="alerts-center">Alerts Center</button>
+        <button class="side-link" type="button" data-view="player-watchlist">Player Watchlist</button>
+        <button class="side-link" type="button" data-view="search">Search</button>
       </nav>
       <div class="side-note">製作人：潮州人TW<br>資料來源：目前市場分頁<br>自動更新：每 5 分鐘</div>
     </aside>
@@ -1602,7 +1671,7 @@
 
     <div id="error-area"></div>
 
-    <section class="section" id="dashboard-section">
+    <section class="section view-section" id="dashboard-section" data-view-section="dashboard">
       <div class="section-head">
         <h2 class="section-title" data-i18n="marketOverview">市場總覽</h2>
         <div class="section-note" id="dashboard-note"></div>
@@ -1626,7 +1695,7 @@
           <div class="section-head"><h3 class="section-title" data-i18n="top10IncomePlayers">Top 10 收入玩家</h3></div>
           <div class="compact-list" id="top-income-list"></div>
         </article>
-        <article class="card panel">
+        <article class="card panel" hidden>
           <div class="section-head"><h3 class="section-title" data-i18n="top5ConcentratedItems">Top 5 集中商品</h3></div>
           <div class="compact-list" id="top-concentration-list"></div>
         </article>
@@ -1638,11 +1707,11 @@
           <div class="section-head"><h3 class="section-title" data-i18n="marketHealthScore">Market Health Score</h3></div>
           <div id="market-health"></div>
         </article>
-        <article class="card panel wide">
+        <article class="card panel wide" hidden>
           <div class="section-head"><h3 class="section-title" data-i18n="priceHistory">Price History</h3></div>
           <div id="price-history"></div>
         </article>
-        <article class="card panel wide">
+        <article class="card panel wide" hidden>
           <div class="section-head"><h3 class="section-title" data-i18n="bubbleMaps">BubbleMaps</h3></div>
           <div id="bubble-map"></div>
         </article>
@@ -1653,7 +1722,64 @@
       </div>
     </section>
 
-    <section class="section" id="search-section">
+    <section class="section view-section" id="market-transactions-section" data-view-section="market-transactions" hidden>
+      <div class="section-head">
+        <h2 class="section-title">Market Transactions</h2>
+        <div class="section-note" id="market-transactions-note"></div>
+      </div>
+      <article class="card panel">
+        <div class="toolbar">
+          <input class="field" id="tx-item-filter" type="search" placeholder="Item Search" />
+          <input class="field" id="tx-player-filter" type="search" placeholder="Player Search" />
+          <select class="field" id="tx-side-filter">
+            <option value="all">Seller + Buyer</option>
+            <option value="seller">Seller Only</option>
+            <option value="buyer">Buyer Only</option>
+          </select>
+          <select class="field" id="tx-group-filter"><option value="">All Item Groups</option></select>
+          <select class="field" id="tx-time-filter">
+            <option value="all">All Time</option>
+            <option value="1h">1h</option>
+            <option value="6h">6h</option>
+            <option value="24h">24h</option>
+          </select>
+          <select class="field" id="tx-sort-filter">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="total-desc">Highest Total Amount</option>
+            <option value="total-asc">Lowest Total Amount</option>
+            <option value="price-desc">Highest Price</option>
+            <option value="price-asc">Lowest Price</option>
+            <option value="qty-desc">Highest Quantity</option>
+          </select>
+          <label class="checkbox-pill"><input id="tx-low-filter" type="checkbox" /> Low-price Transfers Only</label>
+        </div>
+        <div class="table-shell" id="market-transactions-table"></div>
+      </article>
+    </section>
+
+    <section class="section view-section" id="bubble-map-section" data-view-section="bubble-map" hidden>
+      <div class="section-head">
+        <h2 class="section-title">Bubble Map</h2>
+        <div class="section-note" id="bubble-map-note"></div>
+      </div>
+      <article class="card panel">
+        <div class="toolbar">
+          <select class="field" id="bubble-size-mode">
+            <option value="count">Bubble Size: Trade Count</option>
+            <option value="volume">Bubble Size: Total Volume</option>
+          </select>
+          <select class="field" id="bubble-color-mode">
+            <option value="concentration">Bubble Color: Market Concentration</option>
+            <option value="risk">Bubble Color: Risk Level</option>
+            <option value="price">Bubble Color: Average Price</option>
+          </select>
+        </div>
+        <div id="bubble-map-full"></div>
+      </article>
+    </section>
+
+    <section class="section view-section" id="search-section" data-view-section="search" hidden>
       <div class="section-head">
         <h2 class="section-title" data-i18n="searchResults">搜尋結果</h2>
         <div class="section-note" id="search-summary"></div>
@@ -1674,7 +1800,7 @@
       </div>
     </section>
 
-    <section class="section" id="player-section">
+    <section class="section view-section" id="player-section" data-view-section="player-network" hidden>
       <div class="section-head">
         <h2 class="section-title" data-i18n="playerProfile">玩家分析</h2>
         <div class="section-note" id="player-note"></div>
@@ -1696,7 +1822,7 @@
       <div class="tab-panel" id="tab-concentration"></div>
     </section>
 
-    <section class="section" id="item-profile-section">
+    <section class="section view-section" id="item-profile-section" data-view-section="item-analysis" hidden>
       <div class="section-head">
         <h2 class="section-title" data-i18n="itemProfile">商品分析</h2>
         <div class="section-note" id="item-profile-note"></div>
@@ -1705,12 +1831,39 @@
       <div class="analytics-grid" id="item-analytics"></div>
     </section>
 
-    <section class="section" id="items-section">
+    <section class="section view-section" id="items-section" data-view-section="item-analysis" hidden>
       <div class="section-head">
         <h2 class="section-title" data-i18n="itemMarketConcentration">商品市場集中度</h2>
         <div class="section-note" id="item-note"></div>
       </div>
       <div class="item-grid" id="item-grid"></div>
+    </section>
+
+    <section class="section view-section" id="alerts-center-section" data-view-section="alerts-center" hidden>
+      <div class="section-head">
+        <h2 class="section-title">Alerts Center</h2>
+        <div class="section-note" id="alerts-center-note"></div>
+      </div>
+      <article class="card panel"><div id="alerts-center-list"></div></article>
+    </section>
+
+    <section class="section view-section" id="player-watchlist-section" data-view-section="player-watchlist" hidden>
+      <div class="section-head">
+        <h2 class="section-title">Player Watchlist</h2>
+        <div class="section-note" id="player-watchlist-note"></div>
+      </div>
+      <article class="card panel">
+        <div class="toolbar">
+          <select class="field" id="watchlist-sort">
+            <option value="mps">Highest MPS</option>
+            <option value="ttp">Highest TTP</option>
+            <option value="low">Highest Low-price Ratio</option>
+            <option value="counterparty">Highest Counterparty Share</option>
+            <option value="recent">Most Recent Activity</option>
+          </select>
+        </div>
+        <div class="table-shell" id="player-watchlist-table"></div>
+      </article>
     </section>
   </main>
 
@@ -1828,6 +1981,7 @@
       lang: localStorage.getItem("elf-market-lang") || "zh-TW",
       i18n: FALLBACK_I18N["zh-TW"],
       activeCategory: "Resources",
+      activeView: "dashboard",
       activeTab: "overview",
       prices: new Map(),
       marketSnapshots: [],
@@ -1860,6 +2014,19 @@
       priceHistory: document.getElementById("price-history"),
       bubbleMap: document.getElementById("bubble-map"),
       recentTransactions: document.getElementById("recent-transactions"),
+      marketTransactionsNote: document.getElementById("market-transactions-note"),
+      marketTransactionsTable: document.getElementById("market-transactions-table"),
+      txItemFilter: document.getElementById("tx-item-filter"),
+      txPlayerFilter: document.getElementById("tx-player-filter"),
+      txSideFilter: document.getElementById("tx-side-filter"),
+      txGroupFilter: document.getElementById("tx-group-filter"),
+      txTimeFilter: document.getElementById("tx-time-filter"),
+      txSortFilter: document.getElementById("tx-sort-filter"),
+      txLowFilter: document.getElementById("tx-low-filter"),
+      bubbleMapNote: document.getElementById("bubble-map-note"),
+      bubbleMapFull: document.getElementById("bubble-map-full"),
+      bubbleSizeMode: document.getElementById("bubble-size-mode"),
+      bubbleColorMode: document.getElementById("bubble-color-mode"),
       searchSummary: document.getElementById("search-summary"),
       searchPlayers: document.getElementById("search-players"),
       searchItems: document.getElementById("search-items"),
@@ -1871,7 +2038,14 @@
       itemAnalytics: document.getElementById("item-analytics"),
       itemNote: document.getElementById("item-note"),
       itemGrid: document.getElementById("item-grid"),
+      alertsCenterNote: document.getElementById("alerts-center-note"),
+      alertsCenterList: document.getElementById("alerts-center-list"),
+      playerWatchlistNote: document.getElementById("player-watchlist-note"),
+      playerWatchlistTable: document.getElementById("player-watchlist-table"),
+      watchlistSort: document.getElementById("watchlist-sort"),
       marketTabs: [...document.querySelectorAll(".market-tab")],
+      viewButtons: [...document.querySelectorAll(".side-link")],
+      viewSections: [...document.querySelectorAll("[data-view-section]")],
       tabButtons: [...document.querySelectorAll(".tab-btn")],
       langButtons: [...document.querySelectorAll(".lang-btn")]
     };
@@ -2027,8 +2201,13 @@
       const params = new URLSearchParams(window.location.search);
       const player = params.get("player");
       const item = params.get("item");
-      if (player) el.search.value = player;
-      else if (item) el.search.value = item;
+      if (player) {
+        el.search.value = player;
+        state.activeView = "player-network";
+      } else if (item) {
+        el.search.value = item;
+        state.activeView = "item-analysis";
+      }
     }
 
     function sellerStats(transactions) {
@@ -2397,15 +2576,28 @@
       window.history.replaceState({}, "", next);
     }
 
+    function setActiveView(view, options = {}) {
+      state.activeView = view || "dashboard";
+      el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
+      el.viewSections.forEach((section) => {
+        section.hidden = section.dataset.viewSection !== state.activeView;
+      });
+      if (!options.skipRender) render();
+      if (!options.skipScroll) window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     function selectPlayer(playerName) {
       if (!isKnownPlayer(playerName)) return;
       el.search.value = playerName;
       updateRoute({ player: playerName });
+      state.activeView = "player-network";
       state.activeTab = "overview";
+      el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
+      el.viewSections.forEach((section) => { section.hidden = section.dataset.viewSection !== state.activeView; });
       el.tabButtons.forEach((btn) => btn.classList.toggle("active", btn.dataset.tab === state.activeTab));
       document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
       render();
-      document.getElementById("player-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function openPlayerProfile(playerName) {
@@ -2418,8 +2610,11 @@
       if (state.activeCategory !== item.category) switchCategory(item.category);
       el.search.value = item.name;
       updateRoute({ item: item.name });
+      state.activeView = "item-analysis";
+      el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
+      el.viewSections.forEach((section) => { section.hidden = section.dataset.viewSection !== state.activeView; });
       render();
-      document.getElementById("item-profile-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function metricCard(label, value) {
@@ -2624,6 +2819,126 @@
       const desktop = `<div class="table-shell desktop-transactions"><table><thead><tr><th>${t("item")}</th><th>${t("seller")}</th><th>${t("buyer")}</th><th>${t("price")}</th><th>${t("quantity")}</th><th>${t("time")}</th></tr></thead><tbody>${rows.map((tx) => `<tr><td>${itemButtonHtml(tx.itemId, tx.itemName)}</td><td>${playerButtonHtml(tx.sellerName)}</td><td>${playerButtonHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatTime(tx.txnTime)}</td></tr>`).join("")}</tbody></table></div>`;
       const mobile = `<div class="mobile-transactions">${rows.map((tx) => `<article class="tx-card"><div class="tx-top">${itemButtonHtml(tx.itemId, tx.itemName)}</div><div class="tx-line">${playerButtonHtml(tx.sellerName)} → ${playerButtonHtml(tx.buyerName)}</div><div class="tx-line">${t("price")} ${formatPrice(tx.price)} / ${t("quantity")} ${formatInteger(tx.itemNum)} / ${formatTime(tx.txnTime)}</div></article>`).join("")}</div>`;
       return desktop + mobile;
+    }
+
+    function updateTransactionGroupOptions(transactions) {
+      if (!el.txGroupFilter) return;
+      const current = el.txGroupFilter.value;
+      const groups = [...new Set(transactions.map((tx) => tx.itemGroup).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      el.txGroupFilter.innerHTML = `<option value="">All Item Groups</option>${groups.map((group) => `<option value="${escapeHtml(group)}">${escapeHtml(group)}</option>`).join("")}`;
+      el.txGroupFilter.value = groups.includes(current) ? current : "";
+    }
+
+    function transactionPatternTags(tx, repeatedCounts, pairCounts) {
+      const tags = [];
+      const repeatedKey = `${tx.itemName || tx.itemId}::${tx.itemNum}`;
+      const pairKey = [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
+      if (Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold) tags.push(t("lowPriceTransfer"));
+      if ((repeatedCounts.get(repeatedKey) || 0) >= 8) tags.push("High-frequency Pattern");
+      if ((pairCounts.get(pairKey) || 0) >= 4) tags.push("Related Pattern");
+      return tags;
+    }
+
+    function renderMarketTransactionsPage(transactions) {
+      updateTransactionGroupOptions(transactions);
+      const itemQuery = String(el.txItemFilter?.value || "").trim().toLowerCase();
+      const playerQuery = String(el.txPlayerFilter?.value || "").trim().toLowerCase();
+      const side = el.txSideFilter?.value || "all";
+      const group = el.txGroupFilter?.value || "";
+      const timeFilter = el.txTimeFilter?.value || "all";
+      const sort = el.txSortFilter?.value || "newest";
+      const lowOnly = Boolean(el.txLowFilter?.checked);
+      const latest = Math.max(0, ...transactions.map((tx) => Number(tx.txnTime) || 0));
+      const windowSeconds = timeFilter === "1h" ? 3600 : timeFilter === "6h" ? 21600 : timeFilter === "24h" ? 86400 : 0;
+      const repeatedCounts = new Map();
+      const pairCounts = new Map();
+      transactions.forEach((tx) => {
+        const repeatedKey = `${tx.itemName || tx.itemId}::${tx.itemNum}`;
+        const pairKey = [playerKey(tx.sellerName), playerKey(tx.buyerName)].sort().join("::");
+        repeatedCounts.set(repeatedKey, (repeatedCounts.get(repeatedKey) || 0) + 1);
+        pairCounts.set(pairKey, (pairCounts.get(pairKey) || 0) + 1);
+      });
+      let rows = transactions.filter((tx) => {
+        if (itemQuery && !`${tx.itemName || ""} ${tx.itemGroup || ""} ${tx.itemId || ""}`.toLowerCase().includes(itemQuery)) return false;
+        if (playerQuery) {
+          const sellerMatch = String(tx.sellerName || "").toLowerCase().includes(playerQuery);
+          const buyerMatch = String(tx.buyerName || "").toLowerCase().includes(playerQuery);
+          if (side === "seller" && !sellerMatch) return false;
+          if (side === "buyer" && !buyerMatch) return false;
+          if (side === "all" && !sellerMatch && !buyerMatch) return false;
+        }
+        if (group && tx.itemGroup !== group) return false;
+        if (windowSeconds && Number(tx.txnTime) < latest - windowSeconds) return false;
+        if (lowOnly && !(Number(tx.price) > 0 && Number(tx.price) <= MPS_CONFIG.lowPriceThreshold)) return false;
+        return true;
+      });
+      const sorters = {
+        newest: (a, b) => Number(b.txnTime) - Number(a.txnTime),
+        oldest: (a, b) => Number(a.txnTime) - Number(b.txnTime),
+        "total-desc": (a, b) => Number(b.totalAmountSigil) - Number(a.totalAmountSigil),
+        "total-asc": (a, b) => Number(a.totalAmountSigil) - Number(b.totalAmountSigil),
+        "price-desc": (a, b) => Number(b.price) - Number(a.price),
+        "price-asc": (a, b) => Number(a.price) - Number(b.price),
+        "qty-desc": (a, b) => Number(b.itemNum) - Number(a.itemNum)
+      };
+      rows = rows.sort(sorters[sort] || sorters.newest);
+      if (el.marketTransactionsNote) el.marketTransactionsNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} transactions`;
+      if (!el.marketTransactionsTable) return;
+      const visibleRows = rows.slice(0, 300);
+      el.marketTransactionsTable.innerHTML = `<table class="data-table"><thead><tr><th>Time</th><th>Item Image</th><th>Item Name</th><th>Item Group</th><th>Seller</th><th>Buyer</th><th>Unit Price</th><th>Quantity</th><th>Total Amount</th><th>Transaction ID</th><th>Pattern Tags</th></tr></thead><tbody>${visibleRows.map((tx) => {
+        const tags = transactionPatternTags(tx, repeatedCounts, pairCounts);
+        return `<tr><td>${formatTime(tx.txnTime)}</td><td>${itemThumbHtml(tx.itemId, tx.itemName)}</td><td>${itemButtonHtml(tx.itemId, tx.itemName)}</td><td>${escapeHtml(tx.itemGroup || "-")}</td><td>${playerButtonHtml(tx.sellerName)}</td><td>${playerButtonHtml(tx.buyerName)}</td><td>${formatPrice(tx.price)}</td><td>${formatInteger(tx.itemNum)}</td><td>${formatPrice(tx.totalAmountSigil)}</td><td>${escapeHtml(tx.txnId || "-")}</td><td><div class="tag-row">${tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("") || "-"}</div></td></tr>`;
+      }).join("")}</tbody></table>${rows.length > visibleRows.length ? `<div class="empty">Showing first ${formatInteger(visibleRows.length)} rows</div>` : ""}`;
+    }
+
+    function renderBubbleMapPage(transactions) {
+      if (!el.bubbleMapFull) return;
+      const rows = itemStats(transactions);
+      const sizeMode = el.bubbleSizeMode?.value || "count";
+      const colorMode = el.bubbleColorMode?.value || "concentration";
+      const max = Math.max(1, ...rows.map((row) => sizeMode === "volume" ? row.total : row.count));
+      if (el.bubbleMapNote) el.bubbleMapNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} items`;
+      el.bubbleMapFull.innerHTML = rows.sort((a, b) => (sizeMode === "volume" ? b.total - a.total : b.count - a.count)).slice(0, 36).map((row) => {
+        const itemTx = getItemTransactions({ id: row.itemId }, transactions);
+        const prices = itemTx.map((tx) => Number(tx.price)).filter((price) => price > 0);
+        const avg = prices.length ? prices.reduce((sum, price) => sum + price, 0) / prices.length : 0;
+        const low = prices.length ? Math.min(...prices) : 0;
+        const high = prices.length ? Math.max(...prices) : 0;
+        const sellers = new Set(itemTx.map((tx) => playerKey(tx.sellerName)).filter(Boolean));
+        const buyers = new Set(itemTx.map((tx) => playerKey(tx.buyerName)).filter(Boolean));
+        const topShare = row.topSellerShare || row.topShare || 0;
+        const metric = sizeMode === "volume" ? row.total : row.count;
+        const size = Math.round(54 + (metric / max) * 108);
+        const className = colorMode === "concentration" && topShare >= 0.7 ? "bubble gold" : "bubble";
+        const title = `${row.itemName} | Trades ${row.count} | Volume ${formatPrice(row.total)} | Avg ${formatPrice(avg)} | Low ${formatPrice(low)} | High ${formatPrice(high)} | Sellers ${sellers.size} | Buyers ${buyers.size} | Top Seller Share ${(topShare * 100).toFixed(1)}%`;
+        return `<button class="${className}" style="--size:${size}px" title="${escapeHtml(title)}" type="button" data-item="${escapeHtml(String(row.itemId))}">${escapeHtml(row.itemName)}<span class="row-sub">${formatPrice(sizeMode === "volume" ? row.total : row.count)}</span></button>`;
+      }).join("") || `<div class="empty">${t("waitingForTransactions")}</div>`;
+    }
+
+    function renderAlertsCenter(transactions) {
+      const alerts = buildMarketAlerts(transactions);
+      if (el.alertsCenterNote) el.alertsCenterNote.textContent = `${state.activeCategory} / ${formatInteger(alerts.length)} signals`;
+      if (el.alertsCenterList) el.alertsCenterList.innerHTML = renderMarketAlerts(alerts);
+    }
+
+    function renderPlayerWatchlist(transactions) {
+      if (!el.playerWatchlistTable) return;
+      const sort = el.watchlistSort?.value || "mps";
+      const rows = [...getAllPlayerNames(transactions).values()].map((name) => {
+        const pattern = calculateMarketplacePatternScore(transactions, name);
+        const playerTx = getPlayerTransactions(name, transactions);
+        return { name, pattern, tradeCount: playerTx.length, lastSeen: Math.max(0, ...playerTx.map((tx) => Number(tx.txnTime) || 0)) };
+      });
+      const sorters = {
+        mps: (a, b) => b.pattern.score - a.pattern.score,
+        ttp: (a, b) => b.pattern.twoStepScore - a.pattern.twoStepScore,
+        low: (a, b) => b.pattern.lowPriceRatio - a.pattern.lowPriceRatio,
+        counterparty: (a, b) => b.pattern.top5CounterpartyShare - a.pattern.top5CounterpartyShare,
+        recent: (a, b) => b.lastSeen - a.lastSeen
+      };
+      rows.sort(sorters[sort] || sorters.mps);
+      if (el.playerWatchlistNote) el.playerWatchlistNote.textContent = `${state.activeCategory} / ${formatInteger(rows.length)} players`;
+      el.playerWatchlistTable.innerHTML = `<table class="data-table"><thead><tr><th>Player</th><th>MPS Score</th><th>TTP Score</th><th>Related Accounts</th><th>Low-price Ratio</th><th>Repeated Ratio</th><th>Top5 Counterparty Share</th><th>Hourly Density</th><th>Trade Count</th><th>Last Seen</th></tr></thead><tbody>${rows.slice(0, 100).map((row) => `<tr><td>${playerButtonHtml(row.name)}</td><td>${formatInteger(row.pattern.score)}</td><td>${formatInteger(row.pattern.twoStepScore || 0)}</td><td>${formatInteger(row.pattern.relatedAccountsCount)}</td><td>${(row.pattern.lowPriceRatio * 100).toFixed(1)}%</td><td>${(row.pattern.repeatedItemQuantityRatio * 100).toFixed(1)}%</td><td>${(row.pattern.top5CounterpartyShare * 100).toFixed(1)}%</td><td>${formatInteger(row.pattern.hourlyMax)}</td><td>${formatInteger(row.tradeCount)}</td><td>${formatTime(row.lastSeen)}</td></tr>`).join("")}</tbody></table>`;
     }
 
     function calculateMarketHealth(transactions) {
@@ -3049,7 +3364,7 @@
         return compactRow(playerButtonHtml(row.name), `${t("mainItems")}: ${escapeHtml(mainItems || "-")}`, [{ label: t("totalAmount"), value: formatPrice(row.total) }, { label: t("tradeCount"), value: formatInteger(row.count) }, { label: t("lastSeen"), value: formatTime(row.lastSeen) }], row.lowCount ? t("hasLowPrice") : t("noLowPrice"));
       }).join("") : `<div class="empty">${t("noDataFound")}</div>`}</div>`;
       document.getElementById("related-sort")?.addEventListener("change", () => renderPlayerTabs(playerName, transactions, playerTx, network, pattern));
-      if (state.activeTab === "related") setTimeout(() => mountVisNetworkGraph(playerName, sortedNetwork), 0);
+      if (state.activeView === "player-network" && state.activeTab === "related") setTimeout(() => mountVisNetworkGraph(playerName, sortedNetwork), 0);
 
       const daily = new Map();
       playerTx.filter((tx) => playerKey(tx.sellerName) === playerKey(playerName)).forEach((tx) => {
@@ -3312,7 +3627,15 @@
 
     function render() {
       const transactions = getCategoryTransactions();
+      el.viewSections.forEach((section) => {
+        section.hidden = section.dataset.viewSection !== state.activeView;
+      });
+      el.viewButtons.forEach((button) => button.classList.toggle("active", button.dataset.view === state.activeView));
       renderDashboard(transactions);
+      renderMarketTransactionsPage(transactions);
+      renderBubbleMapPage(transactions);
+      renderAlertsCenter(transactions);
+      renderPlayerWatchlist(transactions);
       renderSearch(transactions);
       renderPlayer(transactions);
       renderItemProfile(transactions);
@@ -3423,15 +3746,18 @@
       state.activeTab = button.dataset.tab;
       el.tabButtons.forEach((tab) => tab.classList.toggle("active", tab === button));
       document.querySelectorAll(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${state.activeTab}`));
-      if (state.activeTab === "related" && state.networkGraphData) {
+      if (state.activeView === "player-network" && state.activeTab === "related" && state.networkGraphData) {
         setTimeout(() => mountVisNetworkGraph(state.networkGraphData.playerName, state.networkGraphData.network), 0);
       }
     }));
     el.langButtons.forEach((button) => button.addEventListener("click", () => loadLanguage(button.dataset.lang)));
-    document.querySelectorAll(".side-link").forEach((button) => button.addEventListener("click", () => {
-      document.querySelectorAll(".side-link").forEach((link) => link.classList.toggle("active", link === button));
-      document.querySelector(button.dataset.jump)?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }));
+    el.viewButtons.forEach((button) => button.addEventListener("click", () => setActiveView(button.dataset.view)));
+    [el.txItemFilter, el.txPlayerFilter, el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.txLowFilter, el.bubbleSizeMode, el.bubbleColorMode, el.watchlistSort]
+      .filter(Boolean)
+      .forEach((control) => control.addEventListener("input", render));
+    [el.txSideFilter, el.txGroupFilter, el.txTimeFilter, el.txSortFilter, el.bubbleSizeMode, el.bubbleColorMode, el.watchlistSort]
+      .filter(Boolean)
+      .forEach((control) => control.addEventListener("change", render));
     document.addEventListener("click", (event) => {
       const playerButton = event.target.closest("[data-player]");
       if (playerButton) selectPlayer(playerButton.dataset.player);
